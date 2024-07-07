@@ -1,0 +1,79 @@
+{
+    "knownSupportedEmoji":[
+        "1f600",
+        "1f603",
+        "1f641",
+        "1f3da"
+    ],
+    "data" : {
+        "1f600" : {
+            "alt": "smiley",
+            "emojiCodepoint": "1f600",
+            "emoji": "😀",
+            "sourceURL" : "https://em-content.zobj.net/source/twitter/376/grinning-face_1f600.png",
+            "data" : {
+                "base_url": "./assets/custom/default_face/default_body.png",
+                "face":{
+                    "eyes" : {
+                        "url" : "./assets/custom/default_face/default_eyes.png",
+                        "isDominant" : false
+                    } ,
+                    "mouth" : {
+                        "url" : "./assets/custom/default_face/open_smile.png",
+                        "isDominant" : false
+                    }
+                }
+            }
+        },
+        "1f603": {
+            "alt" : "grinning_face_with_big_eyes",
+            "emojiCodepoint": "1f603",
+            "emoji": "😃",
+            "sourceURL" : "https://em-content.zobj.net/source/twitter/376/grinning-face-with-big-eyes_1f603.png",
+            "data" : {
+                "base_url": "./assets/custom/default_face/default_body.png",
+                "face":{
+                    "eyes" : {
+                        "url" : "./assets/custom/default_face/big_eyes.png",
+                        "offset_y" : -8,
+                        "isDominant" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "./assets/custom/default_face/open_smile.png",
+                        "offset_y" : 8,
+                        "isDominant" : false
+                    }
+                }
+            }
+        },
+        "1f641": {
+            "alt" : "slightly_frowning_face",
+            "emojiCodepoint": "1f641",
+            "emoji": "🙁",
+            "sourceURL" : "https://em-content.zobj.net/source/twitter/376/slightly-frowning-face_1f641.png",
+            "data" : {
+                "base_url": "./assets/custom/default_face/default_body.png",
+                "face":{
+                    "eyes" : {
+                        "url" : "./assets/custom/default_face/default_eyes.png",
+                        "isDominant" : false
+                    } ,
+                    "mouth" : {
+                        "url" : "./assets/custom/default_face/slight_frown.png",
+                        "isDominant" : false
+                    }
+                }
+            }
+        },
+        "1f3da": {
+            "alt" : "derelict_house",
+            "emoji": "🏚️",
+            "emojiCodepoint": "1f3da",
+            "sourceURL": "https://em-content.zobj.net/source/twitter/376/derelict-house_1f3da-fe0f.png",
+            "data" : {
+                "base_url" :"./assets/custom/other/derelict-house.png"
+            }
+        }
+    }
+
+}

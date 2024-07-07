@@ -16,7 +16,7 @@ import {
   ManageSearchOutlined,
   Search as SearchIcon,
 } from "@mui/icons-material";
-import { getEmojiData, getNotoEmojiUrl } from "./utils";
+import { getEmojiData, getNotoEmojiUrl } from "../Custom/utils";
 
 export default function Search({
   setSearchResults,

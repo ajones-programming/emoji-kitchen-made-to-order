@@ -10,15 +10,16 @@ import {
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { imageListItemClasses } from "@mui/material/ImageListItem";
-import { Download, ContentCopy } from "@mui/icons-material";
+import { Download, ContentCopy, Margin } from "@mui/icons-material";
 import JSZip from "jszip";
 import saveAs from "file-saver";
 import { v4 as uuidv4 } from "uuid";
-import { MouseCoordinates } from "./types";
-import { getEmojiData, getSupportedEmoji } from "./utils";
+import { MouseCoordinates } from "../Custom/types";
+import { getEmojiData, getSupportedEmoji } from "../Custom/utils";
 import Search from "./search";
 import RightEmojiList from "./right-emoji-list";
 import LeftEmojiList from "./left-emoji-list";
+import { CustomEmojiObject, isEmojiEqual } from "../Custom/basecustom";
 
 export default function Kitchen() {
   // Selection helpers
@@ -93,12 +94,13 @@ export default function Kitchen() {
    * 🎲 Handle right-hand randomize button clicked
    */
   const handleRightEmojiRandomize = () => {
-    var emojiToPick: Array<string>;
-
-    const data = getEmojiData(selectedLeftEmoji);
-    const possibleEmoji = Object.keys(data.combinations).filter(
-      (codepoint) =>
-        codepoint !== selectedLeftEmoji && codepoint !== selectedRightEmoji
+    // var emojiToPick: Array<string>;
+    // const possibleEmoji = Object.keys(data.combinations).filter(
+    //   (codepoint) =>
+    //     codepoint !== selectedLeftEmoji && codepoint !== selectedRightEmoji
+    // );
+    const possibleEmoji = getSupportedEmoji().filter(
+      (codepoint) => codepoint !== selectedLeftEmoji && codepoint !== selectedRightEmoji
     );
 
     const randomEmoji =
@@ -118,9 +120,13 @@ export default function Kitchen() {
       ];
 
     const data = getEmojiData(randomLeftEmoji);
-    const possibleRightEmoji = Object.keys(data.combinations).filter(
-      (codepoint) => codepoint !== randomLeftEmoji
+    // const possibleRightEmoji = Object.keys(data.combinations).filter(
+    //   (codepoint) => codepoint !== randomLeftEmoji
+    // );
+    const possibleRightEmoji = getSupportedEmoji().filter(
+      (codepoint) => codepoint !== selectedLeftEmoji
     );
+
 
     const randomRightEmoji =
       possibleRightEmoji[Math.floor(Math.random() * possibleRightEmoji.length)];
@@ -152,118 +158,187 @@ export default function Kitchen() {
    * 💾 Handle bulk combination downloads
    */
   const handleBulkImageDownload = async () => {
-    try {
-      // See: https://github.com/Stuk/jszip/issues/369
-      // See: https://github.com/Stuk/jszip/issues/690
-      const currentDate = new Date();
-      const dateWithOffset = new Date(
-        currentDate.getTime() - currentDate.getTimezoneOffset() * 60000
-      );
-      (JSZip as any).defaults.date = dateWithOffset;
+    console.log("BULK DOWNLOAD UNIMPLEMENTED");
+    return;
+    // try {
+    //   // See: https://github.com/Stuk/jszip/issues/369
+    //   // See: https://github.com/Stuk/jszip/issues/690
+    //   const currentDate = new Date();
+    //   const dateWithOffset = new Date(
+    //     currentDate.getTime() - currentDate.getTimezoneOffset() * 60000
+    //   );
+    //   (JSZip as any).defaults.date = dateWithOffset;
 
-      const zip = new JSZip();
-      const data = getEmojiData(selectedLeftEmoji);
-      const photoZip = zip.folder(data.alt)!;
+    //   const zip = new JSZip();
+    //   const data = getEmojiData(selectedLeftEmoji);
+    //   const photoZip = zip.folder(data.alt)!;
 
-      setIsBulkDownloading(true);
+    //   setIsBulkDownloading(true);
 
-      const combinations = Object.values(data.combinations)
-        .flat()
-        .filter((c) => c.isLatest);
-      for (var i = 0; i < combinations.length; i++) {
-        const combination = combinations[i];
-        const image = await fetch(combination.gStaticUrl);
-        const imageBlob = await image.blob();
-        photoZip.file(`${combination.alt}.png`, imageBlob);
-      }
+    //   const combinations = Object.values(data.combinations)
+    //     .flat()
+    //     .filter((c) => c.isLatest);
+    //   for (var i = 0; i < combinations.length; i++) {
+    //     const combination = combinations[i];
+    //     const image = await fetch(combination.gStaticUrl);
+    //     const imageBlob = await image.blob();
+    //     photoZip.file(`${combination.alt}.png`, imageBlob);
+    //   }
 
-      const archive = await zip.generateAsync({ type: "blob" });
-      saveAs(archive, data.alt);
+    //   const archive = await zip.generateAsync({ type: "blob" });
+    //   saveAs(archive, data.alt);
 
-      setBulkDownloadMenu(undefined);
-      setIsBulkDownloading(false);
-    } catch (e) {
-      setBulkDownloadMenu(undefined);
-      setIsBulkDownloading(false);
-    }
+    //   setBulkDownloadMenu(undefined);
+    //   setIsBulkDownloading(false);
+    // } catch (e) {
+    //   setBulkDownloadMenu(undefined);
+    //   setIsBulkDownloading(false);
+    // }
   };
 
   /**
    * 💾 Handle single combination downloads
    */
   const handleImageDownload = () => {
-    var combination = getEmojiData(selectedLeftEmoji).combinations[
-      selectedRightEmoji
-    ].filter((c) => c.isLatest)[0];
+    console.log("IMAGE DOWNLOAD UNIMPLEMENTED");
+    return;
+    // var combination = getEmojiData(selectedLeftEmoji).combinations[
+    //   selectedRightEmoji
+    // ].filter((c) => c.isLatest)[0];
 
-    saveAs(combination.gStaticUrl, combination.alt);
+    // saveAs(combination.gStaticUrl, combination.alt);
   };
 
   /**
    * 💾 Handle single image copy-to-clipboard
    */
   const handleImageCopy = async () => {
-    var combination = getEmojiData(selectedLeftEmoji).combinations[
-      selectedRightEmoji
-    ].filter((c) => c.isLatest)[0];
+    console.log("UNIMPLEMENTED IMAGE COPY");
+    // var combination = getEmojiData(selectedLeftEmoji).combinations[
+    //   selectedRightEmoji
+    // ].filter((c) => c.isLatest)[0];
 
-    const fetchImage = async () => {
-      const image = await fetch(combination.gStaticUrl);
-      return await image.blob();
-    };
+    // const fetchImage = async () => {
+    //   const image = await fetch(combination.gStaticUrl);
+    //   return await image.blob();
+    // };
 
-    navigator.clipboard
-      .write([
-        new ClipboardItem({
-          "image/png": fetchImage(),
-        }),
-      ])
-      .then(function () {})
-      .catch(function (error) {
-        console.log(error);
-      });
+    // navigator.clipboard
+    //   .write([
+    //     new ClipboardItem({
+    //       "image/png": fetchImage(),
+    //     }),
+    //   ])
+    //   .then(function () {})
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   };
 
   // See: https://caniuse.com/async-clipboard
   var hasClipboardSupport = "write" in navigator.clipboard;
+  //THIS IS WHAT WE NEED TO CHANGE
   var middleList;
   var showOneCombo = false;
 
   // Neither are selected, show left list, empty middle list, and disable right list
-  if (selectedLeftEmoji === "" && selectedRightEmoji === "") {
+  if (selectedLeftEmoji === "" || selectedRightEmoji === "") {
     middleList = <div></div>;
   }
   // Left emoji is selected, but not right, disable the right list appropriately
-  else if (selectedLeftEmoji !== "" && selectedRightEmoji === "") {
-    middleList = Object.values(getEmojiData(selectedLeftEmoji).combinations)
-      .flat()
-      .filter((combination) => combination.isLatest)
-      .sort((c1, c2) => c1.gBoardOrder - c2.gBoardOrder)
-      .map((combination) => {
-        return (
-          <ImageListItem key={combination.alt}>
-            <img
-              loading="lazy"
-              width="256px"
-              height="256px"
-              alt={combination.alt}
-              src={combination.gStaticUrl}
-            />
-          </ImageListItem>
-        );
-      });
-  }
+  // else if (selectedLeftEmoji !== "" && selectedRightEmoji === "") {
+  //   middleList = Object.values(getEmojiData(selectedLeftEmoji).combinations)
+  //     .flat()
+  //     .filter((combination) => combination.isLatest)
+  //     .sort((c1, c2) => c1.gBoardOrder - c2.gBoardOrder)
+  //     .map((combination) => {
+  //       return (
+  //         <ImageListItem key={combination.alt}>
+  //           <img
+  //             loading="lazy"
+  //             width="256px"
+  //             height="256px"
+  //             alt={combination.alt}
+  //             src={combination.gStaticUrl}
+  //           />
+  //         </ImageListItem>
+  //       );
+  //     });
+  // }
   // Both are selected, show the single combo
   else {
     showOneCombo = true;
-    var combination = getEmojiData(selectedLeftEmoji).combinations[
-      selectedRightEmoji
-    ].filter((c) => c.isLatest)[0];
+    // var combination = getEmojiData(selectedLeftEmoji).combinations[
+    //   selectedRightEmoji
+    // ].filter((c) => c.isLatest)[0];
+
+    const leftEmojiData = getEmojiData(selectedLeftEmoji);
+    const rightEmojiData = getEmojiData(selectedRightEmoji);
+    const leftEmoji = new CustomEmojiObject(selectedLeftEmoji,leftEmojiData.data);
+    const rightEmoji = new CustomEmojiObject(selectedRightEmoji,rightEmojiData.data);
+
+    var renderLR = false;
+    var renderRL = false;
+
+    var combined_lr : CustomEmojiObject | undefined;
+    if (leftEmoji != undefined && rightEmoji != undefined){
+      combined_lr = leftEmoji.inherit_traits(rightEmoji);
+      if (!isEmojiEqual(combined_lr, leftEmoji) && !isEmojiEqual(combined_lr,rightEmoji)){
+        combined_lr.render();
+        renderLR = true;
+      }
+
+    }
+
+    var combined_rl : CustomEmojiObject | undefined;
+    if (leftEmoji != undefined && rightEmoji != undefined && selectedLeftEmoji != selectedRightEmoji){
+      combined_rl = rightEmoji.inherit_traits(leftEmoji);
+      if (!isEmojiEqual(combined_rl, leftEmoji) && !isEmojiEqual(combined_rl,rightEmoji)){
+        combined_rl.render();
+        renderRL = true;
+      }
+    }
+
+    const style1 = {
+        margin: "20px",
+        fontSize : "200%",
+        "text-align" : "center",
+        "background-color" : "coral"
+    };
+    const style2 = {
+      margin: "20px",
+      fontSize : "200%",
+      "text-align" : "center",
+      "background-color" : "pink"
+  };
+
+
+    const imgStyle = {
+      margin: "20px"
+    }
 
     middleList = (
-      <ImageListItem>
-        <img alt={combination.alt} src={combination.gStaticUrl} />
-      </ImageListItem>
+      <div>
+        <div dir="horizontal" style={style1}>
+          <img alt={leftEmojiData.alt} src={leftEmojiData.sourceURL} width="100px" height="100px" style={imgStyle}/>
+          +
+          <img alt={rightEmojiData.alt} src={rightEmojiData.sourceURL} width="100px" height="100px" style={imgStyle}/>
+        </div>
+        <div dir="horizontal" style={style2}>
+            {renderLR && combined_lr != undefined &&
+              <img alt={combined_lr.id()} id={combined_lr.id()} width="150px" height="150px" style={imgStyle}/>
+            }
+            {renderRL && combined_rl != undefined &&
+              <img alt={combined_rl.id()} id={combined_rl?.id()} width="150px" height="150px" style={imgStyle}/>
+            }
+            {!renderRL && !renderLR &&
+              <text>
+                Cannot render, result is same as a source emoji
+              </text>
+            }
+        </div>
+      </div>
+
     );
   }
 
@@ -466,4 +541,5 @@ export default function Kitchen() {
       </Box>
     </Container>
   );
+
 }

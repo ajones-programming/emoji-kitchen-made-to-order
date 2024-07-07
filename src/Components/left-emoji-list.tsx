@@ -1,5 +1,5 @@
 import React, { Dispatch } from "react";
-import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "./utils";
+import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "../Custom/utils";
 import { ImageListItem } from "@mui/material";
 
 export default function LeftEmojiList({

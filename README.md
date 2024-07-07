@@ -1,3 +1,7 @@
+# Emoji Kitchen, Made to order FORK
+This is for generating emojis on the fly, using the merge-images package.
+
+View below for the original information
 # 🧑‍🍳 Emoji Kitchen
 
 This repository contains the source code for the website [https://emojikitchen.dev](https://emojikitchen.dev).
@@ -12,10 +16,16 @@ This repository leverages [VSCode's devcontainer](https://code.visualstudio.com/
 
 ### Application
 
+~~
 To get started, you will need to first download the supporting metadata, then install and start the project normally:
 
 ```bash
 curl -L --compressed https://raw.githubusercontent.com/xsalazar/emoji-kitchen-backend/main/app/metadata.json -o src/Components/metadata.json
+npm install && npm start
+```
+~~
+Instead, you only need
+```bash
 npm install && npm start
 ```
 

@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "./utils";
+import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "../Custom/utils";
 import { ImageListItem } from "@mui/material";
 
 export default function RightEmojiList({
@@ -27,7 +27,7 @@ export default function RightEmojiList({
   var possibleEmoji: Array<string> = [];
   if (hasSelectedLeftEmoji) {
     const data = getEmojiData(selectedLeftEmoji);
-    possibleEmoji = Object.keys(data.combinations);
+    possibleEmoji = getSupportedEmoji();
   }
 
   return knownSupportedEmoji.map((emojiCodepoint) => {
