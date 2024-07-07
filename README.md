@@ -16,13 +16,7 @@ This repository leverages [VSCode's devcontainer](https://code.visualstudio.com/
 
 ### Application
 
-~~To get started, you will need to first download the supporting metadata, then install and start the project normally:
-
-```bash
-curl -L --compressed https://raw.githubusercontent.com/xsalazar/emoji-kitchen-backend/main/app/metadata.json -o src/Components/metadata.json
-npm install && npm start
-```~~
-Instead, you only need
+Instead, now you only need
 ```bash
 npm install && npm start
 ```
