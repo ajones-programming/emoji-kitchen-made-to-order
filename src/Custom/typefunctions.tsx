@@ -1,4 +1,6 @@
-import { EmojiItem, FaceData } from "./types";
+import { mergeImages_Caller } from "./mergeImages";
+import { transformImage_Caller } from "./transformImages";
+import { EmojiItem, FaceData, ItemScale } from "./types";
 export function pushItemDataToList(item : EmojiItem, data : Object[]){
     data.push({src : item.url, x : item.offset_x, y  : item.offset_y})
 }
@@ -54,4 +56,28 @@ export function isFaceEqual(face1 : FaceData | undefined, face2 : FaceData | und
     }
     return isItemEqual(face1.eyes, face2.eyes) && isItemEqual(face1.mouth, face2.mouth);
 
+}
+
+export async function RenderFace(face1 : FaceData) : Promise<string | undefined > {
+    const list : Object[] = [];
+    pushFaceDataToList(face1,list);
+    var returnValue : string | undefined;
+    //render
+    await mergeImages_Caller(list).then((b64 : string) =>
+        {
+            returnValue = b64;
+        }
+    );
+    return returnValue;
+}
+
+export async function TransformFace(b64 : string, resize : ItemScale){
+    var returnValue : string | undefined;
+
+    await transformImage_Caller(b64, resize.width, resize.height).then(value => {
+        returnValue = value;
+    }).catch(err =>
+        {console.log("TRANSFORMATION FAILED, " + err);}
+    );
+    return returnValue;
 }

@@ -51,12 +51,10 @@ export default function Kitchen() {
     // If we're unsetting the left column, clear the right column too
     if (selectedLeftEmoji === clickedEmoji) {
       setSelectedLeftEmoji("");
-      setSelectedRightEmoji("");
     }
     // Else we clicked another left emoji while both are selected, set the left column as selected and clear right column
     else if (selectedLeftEmoji !== "" && selectedRightEmoji !== "") {
       setSelectedLeftEmoji(clickedEmoji);
-      setSelectedRightEmoji("");
     } else {
       setSelectedLeftEmoji(clickedEmoji);
     }
@@ -303,13 +301,13 @@ export default function Kitchen() {
         margin: "20px",
         fontSize : "200%",
         "text-align" : "center",
-        "background-color" : "coral"
+        backgroundColor : "coral"
     };
     const style2 = {
       margin: "20px",
       fontSize : "200%",
       "text-align" : "center",
-      "background-color" : "pink"
+      backgroundColor : "pink"
   };
 
 
@@ -332,9 +330,9 @@ export default function Kitchen() {
               <img alt={combined_rl.id()} id={combined_rl?.id()} width="150px" height="150px" style={imgStyle}/>
             }
             {!renderRL && !renderLR &&
-              <text>
+              <div>
                 Cannot render, result is same as a source emoji
-              </text>
+              </div>
             }
         </div>
       </div>

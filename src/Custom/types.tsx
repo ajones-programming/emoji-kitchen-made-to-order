@@ -11,6 +11,7 @@ export interface EmojiData{
     emojiCodepoint: string;
     data : CustomEmojiData;
     sourceURL : string;
+    resize? : ItemScale;
 
   }
 
@@ -18,11 +19,19 @@ export interface CustomEmojiData{
     base_url? : string;
     _id? : string;
     face? : FaceData;
+    resize? : ItemScale;
   }
 
 export class FaceData{
   eyes? : EmojiItem;
   mouth? : EmojiItem;
+}
+
+export class ItemScale{
+  x : number = 0;
+  y : number = 0;
+  width : number = 300;
+  height : number = 300;
 }
 
 export class EmojiItem{

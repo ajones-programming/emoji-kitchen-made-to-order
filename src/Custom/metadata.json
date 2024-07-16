@@ -3,7 +3,8 @@
         "1f600",
         "1f603",
         "1f641",
-        "1f3da"
+        "1f3da",
+        "1f35e"
     ],
     "data" : {
         "1f600" : {
@@ -71,7 +72,28 @@
             "emojiCodepoint": "1f3da",
             "sourceURL": "https://em-content.zobj.net/source/twitter/376/derelict-house_1f3da-fe0f.png",
             "data" : {
-                "base_url" :"./assets/custom/other/derelict-house.png"
+                "base_url" :"./assets/custom/other/derelict-house.png",
+                "resize" : {
+                    "x" : 125,
+                    "y" : 201,
+                    "width" : 55,
+                    "height" : 55
+                }
+            }
+        },
+        "1f35e": {
+            "alt" : "bread",
+            "emoji": "🍞",
+            "emojiCodepoint": "1f35e",
+            "sourceURL": "https://em-content.zobj.net/source/twitter/376/bread_1f35e.png",
+            "data" : {
+                "base_url" :"./assets/custom/food/bread.png",
+                "resize" : {
+                    "x" : 32,
+                    "y" : 80,
+                    "width" : 127,
+                    "height" : 175
+                }
             }
         }
     }

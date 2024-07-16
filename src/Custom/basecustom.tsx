@@ -1,6 +1,6 @@
 import { mergeImages_Caller } from './mergeImages';
-import { CustomEmojiData, EmojiItem, FaceData } from './types';
-import { addFaces, isFaceEqual, pushFaceDataToList, pushItemDataToList } from './typefunctions';
+import { CustomEmojiData, EmojiItem, FaceData, ItemScale } from './types';
+import { addFaces, isFaceEqual, pushFaceDataToList, pushItemDataToList, RenderFace, TransformFace } from './typefunctions';
 
 
 export class CustomEmojiObject implements CustomEmojiData{
@@ -8,12 +8,14 @@ export class CustomEmojiObject implements CustomEmojiData{
     face : FaceData | undefined = undefined;
     _b64 : string = "";
     _id : string | undefined = "";
+    resize: ItemScale | undefined = undefined;
 
     constructor(id? : string, data?:  CustomEmojiData){
         if (data){
             this.base_url = data.base_url;
             this.face = data.face;
             this._id = data._id;
+            this.resize = data.resize;
         }
         if (id){
             this._id = id;
@@ -24,6 +26,7 @@ export class CustomEmojiObject implements CustomEmojiData{
     public inherit_traits( emoji : CustomEmojiObject) : CustomEmojiObject{
         var combined = new CustomEmojiObject(this.id() + emoji.id());
         combined.base_url = this.base_url;
+        combined.resize = this.resize;
         combined.face = addFaces(this.face, emoji.face);
         return combined;
     }
@@ -36,7 +39,16 @@ export class CustomEmojiObject implements CustomEmojiData{
             });
         }
         if (this.face != undefined){
-            pushFaceDataToList(this.face, allImages);
+            var faceString : string | undefined;
+            var x = 0;
+            var y= 0;
+            await RenderFace(this.face).then((b64) => faceString = b64);
+            if (faceString != undefined && this.resize != undefined){
+                x = this.resize.x;
+                y = this.resize.y;
+                await TransformFace(faceString, this.resize).then(value => faceString = value);
+            }
+            allImages.push({src : faceString, x: x, y : y});
         }
         await mergeImages_Caller(allImages).then((b64) =>
             {
@@ -44,9 +56,6 @@ export class CustomEmojiObject implements CustomEmojiData{
                 const item = document.getElementById(this.id()) as HTMLImageElement;
                 if (item != null){
                     item.src = b64;
-                    item.width = 150;
-                    item.height = 150;
-                    console.log("FOUND BASE ITEM");
                 }
             }
         );
