@@ -2,9 +2,11 @@
     "knownSupportedEmoji":[
         "1f600",
         "1f603",
+        "1f604",
         "1f641",
-        "1f3da",
-        "1f35e"
+        "1f35e",
+        "1f3da"
+
     ],
     "data" : {
         "1f600" : {
@@ -21,7 +23,8 @@
                     } ,
                     "mouth" : {
                         "url" : "./assets/custom/default_face/open_smile.png",
-                        "isDominant" : false
+                        "isDominant" : false,
+                        "auto_scale" : true
                     }
                 }
             }
@@ -35,14 +38,39 @@
                 "base_url": "./assets/custom/default_face/default_body.png",
                 "face":{
                     "eyes" : {
-                        "url" : "./assets/custom/default_face/big_eyes.png",
+                        "url" : "./assets/custom/default_face/default_eyes.png",
                         "offset_y" : -8,
+                        "scale_x" : 1.08,
+                        "scale_y" : 1.57,
                         "isDominant" : true
                     } ,
                     "mouth" : {
                         "url" : "./assets/custom/default_face/open_smile.png",
                         "offset_y" : 8,
-                        "isDominant" : false
+                        "isDominant" : false,
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        "1f604": {
+            "alt" : "grinning_face_with_smiling_eyes",
+            "emojiCodepoint": "1f604",
+            "emoji": "😄",
+            "sourceURL" : "https://em-content.zobj.net/source/twitter/376/grinning-face-with-smiling-eyes_1f604.png",
+            "data" : {
+                "base_url": "./assets/custom/default_face/default_body.png",
+                "face":{
+                    "eyes" : {
+                        "url" : "./assets/custom/default_face/smiling_eyes.png",
+                        "offset_y" : 25,
+                        "isDominant" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "./assets/custom/default_face/open_smile.png",
+                        "offset_y" : 8,
+                        "isDominant" : false,
+                        "auto_scale" : true
                     }
                 }
             }
@@ -61,23 +89,9 @@
                     } ,
                     "mouth" : {
                         "url" : "./assets/custom/default_face/slight_frown.png",
-                        "isDominant" : false
+                        "isDominant" : false,
+                        "auto_scale" : true
                     }
-                }
-            }
-        },
-        "1f3da": {
-            "alt" : "derelict_house",
-            "emoji": "🏚️",
-            "emojiCodepoint": "1f3da",
-            "sourceURL": "https://em-content.zobj.net/source/twitter/376/derelict-house_1f3da-fe0f.png",
-            "data" : {
-                "base_url" :"./assets/custom/other/derelict-house.png",
-                "resize" : {
-                    "x" : 125,
-                    "y" : 201,
-                    "width" : 55,
-                    "height" : 55
                 }
             }
         },
@@ -93,6 +107,21 @@
                     "y" : 80,
                     "width" : 127,
                     "height" : 175
+                }
+            }
+        },
+        "1f3da": {
+            "alt" : "derelict_house",
+            "emoji": "🏚️",
+            "emojiCodepoint": "1f3da",
+            "sourceURL": "https://em-content.zobj.net/source/twitter/376/derelict-house_1f3da-fe0f.png",
+            "data" : {
+                "base_url" :"./assets/custom/other/derelict-house.png",
+                "resize" : {
+                    "x" : 125,
+                    "y" : 201,
+                    "width" : 55,
+                    "height" : 55
                 }
             }
         }

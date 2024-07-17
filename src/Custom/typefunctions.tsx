@@ -2,18 +2,30 @@ import { GetDimensions } from "./image";
 import { mergeImagesCustom, mergeInfo } from "./mergeImages";
 import { EmojiItem, FaceData, ItemAnchor, ItemScale} from "./types";
 
-async function pushItemDataToList(item : EmojiItem | undefined, data : Object[], anchor? : ItemAnchor){
+async function emojiItemToMergeInfo(item : EmojiItem | undefined, anchor? : ItemAnchor){
     if (item == undefined){
-        return;
+        return {src: ""};
     }
     var x = item.offset_x ?? 0;
     var y = item.offset_y ?? 0;
-    if (anchor){
+    var width : number | undefined;
+    var height : number | undefined;
+
+    if (anchor || item.scale_x || item.scale_y){
         const dimensions = await GetDimensions(item.url);
-        x += anchor.x - (dimensions.width / 2);
-        y += anchor.y - (dimensions.height / 2);
+        if (item.scale_x || item.scale_y){
+            width = dimensions.width * (item.scale_x ?? 1.0);
+            height = dimensions.height * (item.scale_y ?? 1.0);
+            dimensions.width = width;
+            dimensions.height = height;
+        }
+        if (anchor){
+            x += anchor.x - (dimensions.width / 2);
+            y += anchor.y - (dimensions.height / 2);
+        }
+
     }
-    data.push({src : item.url, x : x, y  : y})
+    return {src : item.url, x : x, y : y, width: width, height: height}
 }
 
 function addItems(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined) : EmojiItem | undefined{
@@ -24,9 +36,33 @@ function addItems(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined) 
         return item1;
     }
     var item : EmojiItem = new EmojiItem();
-    item.url = ((item1.isDominant && !item2.isDominant) ? item1 :item2).url;
+    const itemURLEqual = item1.url ==item2.url;
+    const isItem1Dominant = (item1.isDominant && !item2.isDominant) ;
+    item.url = (isItem1Dominant ? item1 :item2).url;
     item.offset_x = (item1.offset_x?? 0) + (item2.offset_x?? 0);
+    if (item.offset_x == 0){
+        item.offset_x = undefined;
+    }
     item.offset_y = (item1.offset_y ?? 0) + (item2.offset_y ?? 0);
+    if (item.offset_y == 0){
+        item.offset_y = undefined;
+    }
+    item.scale_x = (item1.scale_x ?? 1.0) * (item2.scale_x ?? 1.0);
+    item.scale_y = (item1.scale_y ?? 1.0) * (item2.scale_y ?? 1.0);
+    //this is not correct, it should be able to scale more somehow, but idk how
+    if (itemURLEqual && item.scale_x == 1.0 && item.scale_y == 1.0 && (item1.auto_scale && item2.auto_scale) ){
+        item.scale_x *= 1.25;
+        item.scale_y *= 1.25;
+    }
+
+
+    if (item.scale_x == 1.0){
+        item.scale_x = undefined;
+    }
+    if (item.scale_y == 1.0){
+        item.scale_y = undefined;
+    }
+
     return item;
 }
 
@@ -49,7 +85,9 @@ function isItemEqual(item1 : EmojiItem | undefined, item2 : EmojiItem | undefine
     }
     return item1.url == item2.url &&
     (item1.offset_x ?? 0) == (item2.offset_x ?? 0) &&
-    (item1.offset_y ?? 0) == (item2.offset_y ?? 0);
+    (item1.offset_y ?? 0) == (item2.offset_y ?? 0) &&
+    (item1.scale_x ?? 1.0) == (item2.scale_x ?? 1.0) &&
+    (item1.scale_y ?? 1.0) == (item2.scale_y ?? 1.0);
 }
 
 export function isResizeEqual(resize1 : ItemScale | undefined, resize2 : ItemScale | undefined){
@@ -72,8 +110,9 @@ export function isFaceEqual(face1 : FaceData | undefined, face2 : FaceData | und
 //have defined anchors for now
 export async function RenderFace(face : FaceData){
     //ANCHOR FACE ITEMS, THEN DRAW ON A 300X300 CANVAS
-    const list : mergeInfo[] = [];
-    await pushItemDataToList(face.eyes, list, {x: 150, y: 112});
-    await pushItemDataToList(face.mouth, list, {x : 150, y: 213});
+    const list : mergeInfo[] = [
+        await emojiItemToMergeInfo(face.eyes, {x: 150, y: 112}),
+        await emojiItemToMergeInfo(face.mouth,  {x : 150, y: 213})
+    ];
     return await mergeImagesCustom(list);
 }

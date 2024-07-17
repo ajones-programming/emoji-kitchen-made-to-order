@@ -39,6 +39,9 @@ export class EmojiItem{
   isDominant? : boolean = false;
   offset_x? : number;
   offset_y? : number;
+  scale_x? : number;
+  scale_y? : number;
+  auto_scale? : boolean;
 }
 
 export class ItemAnchor{
