@@ -1,6 +1,6 @@
-import { mergeImages_Caller } from './mergeImages';
-import { CustomEmojiData, EmojiItem, FaceData, ItemScale } from './types';
-import { addFaces, isFaceEqual, pushFaceDataToList, pushItemDataToList, RenderFace, TransformFace } from './typefunctions';
+import { mergeImagesCustom, mergeInfo } from './mergeImages';
+import { CustomEmojiData, FaceData, ItemScale } from './types';
+import { addFaces, isFaceEqual, isResizeEqual, RenderFace} from './typefunctions';
 
 
 export class CustomEmojiObject implements CustomEmojiData{
@@ -32,33 +32,29 @@ export class CustomEmojiObject implements CustomEmojiData{
     }
 
     public async render(){
-        const allImages : Object[] = [];
+        const allImages : mergeInfo[] = [];
         if (this.base_url != undefined){
             allImages.push({
                 src: this.base_url
             });
         }
         if (this.face != undefined){
-            var faceString : string | undefined;
-            var x = 0;
-            var y= 0;
-            await RenderFace(this.face).then((b64) => faceString = b64);
-            if (faceString != undefined && this.resize != undefined){
-                x = this.resize.x;
-                y = this.resize.y;
-                await TransformFace(faceString, this.resize).then(value => faceString = value);
+            const faceString = await RenderFace(this.face);
+            if (faceString != undefined){
+                allImages.push(
+                {
+                    src : faceString,
+                    x: this.resize?.x,
+                    y : this.resize?.y,
+                    scalex : this.resize?.width,
+                    scaley : this.resize?.height
+                });
             }
-            allImages.push({src : faceString, x: x, y : y});
         }
-        await mergeImages_Caller(allImages).then((b64) =>
-            {
-                this._b64 = b64;
-                const item = document.getElementById(this.id()) as HTMLImageElement;
-                if (item != null){
-                    item.src = b64;
-                }
-            }
-        );
+        const item = document.getElementById(this.id()) as HTMLImageElement;
+        if (item != null){
+            item.src = await mergeImagesCustom(allImages);
+        }
     }
 
     public id(){
@@ -71,5 +67,5 @@ export class CustomEmojiObject implements CustomEmojiData{
 }
 
 export function isEmojiEqual(emoji1 : CustomEmojiObject, emoji2 : CustomEmojiObject) : boolean{
-    return emoji1.base_url == emoji2.base_url && isFaceEqual(emoji1.face, emoji2.face);
+    return emoji1.base_url == emoji2.base_url && isFaceEqual(emoji1.face, emoji2.face) && isResizeEqual(emoji1.resize, emoji2.resize);
 }

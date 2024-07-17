@@ -1,5 +1,5 @@
 # Emoji Kitchen, Made to Order FORK
-This is for generating emojis on the fly, using the merge-images package.
+This is for generating emojis on the fly.
 
 View below for the original information
 # 🧑‍🍳 Emoji Kitchen

@@ -42,9 +42,5 @@
     "uuid": "^9.0.1",
     "vite": "^5.3.2",
     "vite-tsconfig-paths": "^4.3.2"
-  },
-  "dependencies": {
-    "merge-images": "^2.0.0",
-    "unicode-emoji": "^2.5.0"
   }
 }

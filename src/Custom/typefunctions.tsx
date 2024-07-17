@@ -1,17 +1,11 @@
-import { mergeImages_Caller } from "./mergeImages";
-import { transformImage_Caller } from "./transformImages";
-import { EmojiItem, FaceData, ItemScale } from "./types";
-export function pushItemDataToList(item : EmojiItem, data : Object[]){
-    data.push({src : item.url, x : item.offset_x, y  : item.offset_y})
-}
+import { mergeImagesCustom, mergeInfo } from "./mergeImages";
+import { EmojiItem, FaceData, ItemScale} from "./types";
 
-export function pushFaceDataToList(face : FaceData, data : Object[]){
-    if (face.eyes != null){
-        pushItemDataToList(face.eyes, data);
+export function pushItemDataToList(item : EmojiItem | undefined, data : Object[]){
+    if (item == undefined){
+        return;
     }
-    if (face.mouth != null){
-        pushItemDataToList(face.mouth, data);
-    }
+    data.push({src : item.url, x : item.offset_x, y  : item.offset_y})
 }
 
 export function addItems(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined) : EmojiItem | undefined{
@@ -50,34 +44,27 @@ export function isItemEqual(item1 : EmojiItem | undefined, item2 : EmojiItem | u
     (item1.offset_y ?? 0) == (item2.offset_y ?? 0);
 }
 
+export function isResizeEqual(resize1 : ItemScale | undefined, resize2 : ItemScale | undefined){
+    if (resize1 == undefined || resize2 == undefined){
+        return (resize1 == undefined && resize2 == undefined);
+    }
+    return (resize1.x ?? 0) == (resize2.x ?? 0) &&
+            (resize1.y ?? 0) == (resize2.y ?? 0) &&
+            (resize1.width?? 300) == (resize2.width ?? 300) &&
+            (resize1.height?? 300) == (resize2.height ?? 300);
+}
+
 export function isFaceEqual(face1 : FaceData | undefined, face2 : FaceData | undefined) : boolean{
     if (face1 == undefined || face2 == undefined){
         return face1 == undefined && face2 == undefined;
     }
     return isItemEqual(face1.eyes, face2.eyes) && isItemEqual(face1.mouth, face2.mouth);
-
 }
 
-export async function RenderFace(face1 : FaceData) : Promise<string | undefined > {
-    const list : Object[] = [];
-    pushFaceDataToList(face1,list);
-    var returnValue : string | undefined;
-    //render
-    await mergeImages_Caller(list).then((b64 : string) =>
-        {
-            returnValue = b64;
-        }
-    );
-    return returnValue;
-}
-
-export async function TransformFace(b64 : string, resize : ItemScale){
-    var returnValue : string | undefined;
-
-    await transformImage_Caller(b64, resize.width, resize.height).then(value => {
-        returnValue = value;
-    }).catch(err =>
-        {console.log("TRANSFORMATION FAILED, " + err);}
-    );
-    return returnValue;
+//have defined anchors for now
+export async function RenderFace(face : FaceData){
+    const list : mergeInfo[] = [];
+    pushItemDataToList(face.eyes, list);
+    pushItemDataToList(face.mouth, list);
+    return await mergeImagesCustom(list);
 }
