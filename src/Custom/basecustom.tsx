@@ -46,8 +46,8 @@ export class CustomEmojiObject implements CustomEmojiData{
                     src : faceString,
                     x: this.resize?.x,
                     y : this.resize?.y,
-                    scalex : this.resize?.width,
-                    scaley : this.resize?.height
+                    width : this.resize?.width,
+                    height : this.resize?.height
                 });
             }
         }

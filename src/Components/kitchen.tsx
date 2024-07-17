@@ -243,32 +243,8 @@ export default function Kitchen() {
   if (selectedLeftEmoji === "" || selectedRightEmoji === "") {
     middleList = <div></div>;
   }
-  // Left emoji is selected, but not right, disable the right list appropriately
-  // else if (selectedLeftEmoji !== "" && selectedRightEmoji === "") {
-  //   middleList = Object.values(getEmojiData(selectedLeftEmoji).combinations)
-  //     .flat()
-  //     .filter((combination) => combination.isLatest)
-  //     .sort((c1, c2) => c1.gBoardOrder - c2.gBoardOrder)
-  //     .map((combination) => {
-  //       return (
-  //         <ImageListItem key={combination.alt}>
-  //           <img
-  //             loading="lazy"
-  //             width="256px"
-  //             height="256px"
-  //             alt={combination.alt}
-  //             src={combination.gStaticUrl}
-  //           />
-  //         </ImageListItem>
-  //       );
-  //     });
-  // }
-  // Both are selected, show the single combo
   else {
     showOneCombo = true;
-    // var combination = getEmojiData(selectedLeftEmoji).combinations[
-    //   selectedRightEmoji
-    // ].filter((c) => c.isLatest)[0];
 
     const leftEmojiData = getEmojiData(selectedLeftEmoji);
     const rightEmojiData = getEmojiData(selectedRightEmoji);
@@ -318,9 +294,9 @@ export default function Kitchen() {
     middleList = (
       <div>
         <div dir="horizontal" style={style1}>
-          <img alt={leftEmojiData.alt} src={leftEmojiData.sourceURL} width="100px" height="100px" style={imgStyle}/>
+          <img alt={leftEmojiData.alt} id={leftEmoji.id()} src={leftEmojiData.sourceURL} width="100px" height="100px" style={imgStyle}/>
           +
-          <img alt={rightEmojiData.alt} src={rightEmojiData.sourceURL} width="100px" height="100px" style={imgStyle}/>
+          <img alt={rightEmojiData.alt} id={rightEmoji.id()} src={rightEmojiData.sourceURL} width="100px" height="100px" style={imgStyle}/>
         </div>
         <div dir="horizontal" style={style2}>
             {renderLR && combined_lr != undefined &&

@@ -6,8 +6,8 @@ export class mergeInfo{
   src : string = "";
   x? : number;
   y? : number;
-  scalex? : number;
-  scaley? : number;
+  width? : number;
+  height? : number;
 };
 
 class drawInfo_Internal{
@@ -18,10 +18,10 @@ class drawInfo_Internal{
 
 
 async function processImage(value : mergeInfo){
-  if (value.scalex != undefined && value.scaley != undefined){
-    value.src = await transformImage_Caller(value.src, value.scalex, value.scaley);
-    value.scalex = undefined;
-    value.scaley = undefined;
+  if (value.width != undefined && value.height != undefined){
+    value.src = await transformImage_Caller(value.src, value.width, value.height);
+    value.width = undefined;
+    value.height = undefined;
   }
   return await addImage(value);
 }

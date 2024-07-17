@@ -41,6 +41,11 @@ export class EmojiItem{
   offset_y? : number;
 }
 
+export class ItemAnchor{
+  x : number = 0;
+  y : number = 0;
+}
+
 
   export interface MouseCoordinates {
   mouseX: number;

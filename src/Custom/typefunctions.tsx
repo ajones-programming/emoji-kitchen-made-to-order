@@ -1,14 +1,22 @@
+import { GetDimensions } from "./image";
 import { mergeImagesCustom, mergeInfo } from "./mergeImages";
-import { EmojiItem, FaceData, ItemScale} from "./types";
+import { EmojiItem, FaceData, ItemAnchor, ItemScale} from "./types";
 
-export function pushItemDataToList(item : EmojiItem | undefined, data : Object[]){
+async function pushItemDataToList(item : EmojiItem | undefined, data : Object[], anchor? : ItemAnchor){
     if (item == undefined){
         return;
     }
-    data.push({src : item.url, x : item.offset_x, y  : item.offset_y})
+    var x = item.offset_x ?? 0;
+    var y = item.offset_y ?? 0;
+    if (anchor){
+        const dimensions = await GetDimensions(item.url);
+        x += anchor.x - (dimensions.width / 2);
+        y += anchor.y - (dimensions.height / 2);
+    }
+    data.push({src : item.url, x : x, y  : y})
 }
 
-export function addItems(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined) : EmojiItem | undefined{
+function addItems(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined) : EmojiItem | undefined{
     if (item1 == undefined){
         return item2;
     }
@@ -35,7 +43,7 @@ export function addFaces(face1 : FaceData | undefined, face2 : FaceData | undefi
     return face;
 }
 
-export function isItemEqual(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined){
+function isItemEqual(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined){
     if (item1 == undefined || item2 == undefined){
         return (item1 == undefined && item2 == undefined);
     }
@@ -63,8 +71,9 @@ export function isFaceEqual(face1 : FaceData | undefined, face2 : FaceData | und
 
 //have defined anchors for now
 export async function RenderFace(face : FaceData){
+    //ANCHOR FACE ITEMS, THEN DRAW ON A 300X300 CANVAS
     const list : mergeInfo[] = [];
-    pushItemDataToList(face.eyes, list);
-    pushItemDataToList(face.mouth, list);
+    await pushItemDataToList(face.eyes, list, {x: 150, y: 112});
+    await pushItemDataToList(face.mouth, list, {x : 150, y: 213});
     return await mergeImagesCustom(list);
 }
