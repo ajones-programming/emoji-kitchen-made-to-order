@@ -35,6 +35,7 @@ export class ItemScale{
 }
 
 export class EmojiItem{
+  custom = false;
   url : string = "";
   isDominant? : boolean = false;
   offset_x? : number;

@@ -2,6 +2,10 @@ import { GetDimensions } from "./image";
 import { mergeImagesCustom, mergeInfo } from "./mergeImages";
 import { EmojiItem, FaceData, ItemAnchor, ItemScale} from "./types";
 
+function getURL(item : EmojiItem): string{
+    return item.custom ? item.url : ("./assets/custom/" + item.url + ".png");
+  }
+
 async function emojiItemToMergeInfo(item : EmojiItem | undefined, anchor? : ItemAnchor){
     if (item == undefined){
         return {src: ""};
@@ -12,7 +16,7 @@ async function emojiItemToMergeInfo(item : EmojiItem | undefined, anchor? : Item
     var height : number | undefined;
 
     if (anchor || item.scale_x || item.scale_y){
-        const dimensions = await GetDimensions(item.url);
+        const dimensions = await GetDimensions(getURL(item));
         if (item.scale_x || item.scale_y){
             width = dimensions.width * (item.scale_x ?? 1.0);
             height = dimensions.height * (item.scale_y ?? 1.0);
@@ -25,7 +29,7 @@ async function emojiItemToMergeInfo(item : EmojiItem | undefined, anchor? : Item
         }
 
     }
-    return {src : item.url, x : x, y : y, width: width, height: height}
+    return {src : getURL(item), x : x, y : y, width: width, height: height}
 }
 
 function addItems(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined) : EmojiItem | undefined{
@@ -36,9 +40,10 @@ function addItems(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined) 
         return item1;
     }
     var item : EmojiItem = new EmojiItem();
-    const itemURLEqual = item1.url ==item2.url;
+    item.custom = true;
+    const itemURLEqual = getURL(item1) == getURL(item2);
     const isItem1Dominant = (item1.isDominant && !item2.isDominant) ;
-    item.url = (isItem1Dominant ? item1 :item2).url;
+    item.url = getURL(isItem1Dominant ? item1 :item2);
     item.offset_x = (item1.offset_x?? 0) + (item2.offset_x ?? 0);
     if (item.offset_x == 0){
         item.offset_x = undefined;
@@ -90,7 +95,7 @@ function isItemEqual(item1 : EmojiItem | undefined, item2 : EmojiItem | undefine
     if (item1 == undefined || item2 == undefined){
         return (item1 == undefined && item2 == undefined);
     }
-    return item1.url == item2.url &&
+    return getURL(item1) == getURL(item2) &&
     (item1.offset_x ?? 0) == (item2.offset_x ?? 0) &&
     (item1.offset_y ?? 0) == (item2.offset_y ?? 0) &&
     (item1.scale_x ?? 1.0) == (item2.scale_x ?? 1.0) &&

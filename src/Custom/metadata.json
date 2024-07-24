@@ -10,19 +10,19 @@
     ],
     "data" : {
         "1f600" : {
-            "alt": "smiley",
+            "alt": "grinning-face",
             "emojiCodepoint": "1f600",
             "emoji": "😀",
             "sourceURL" : "grinning-face_1f600",
             "data" : {
-                "base_url": "./assets/custom/default_face/default_body.png",
+                "base_url": "default_face/default_body",
                 "face":{
                     "eyes" : {
-                        "url" : "./assets/custom/default_face/default_eyes.png",
+                        "url" : "default_face/default_eyes",
                         "isDominant" : false
                     } ,
                     "mouth" : {
-                        "url" : "./assets/custom/default_face/open_smile.png",
+                        "url" : "default_face/open_smile",
                         "isDominant" : false,
                         "auto_scale" : true
                     }
@@ -35,17 +35,17 @@
             "emoji": "😃",
             "sourceURL" : "grinning-face-with-big-eyes_1f603",
             "data" : {
-                "base_url": "./assets/custom/default_face/default_body.png",
+                "base_url": "default_face/default_body",
                 "face":{
                     "eyes" : {
-                        "url" : "./assets/custom/default_face/default_eyes.png",
+                        "url" : "default_face/default_eyes",
                         "offset_y" : -8,
                         "scale_x" : 1.08,
                         "scale_y" : 1.57,
                         "isDominant" : true
                     } ,
                     "mouth" : {
-                        "url" : "./assets/custom/default_face/open_smile.png",
+                        "url" : "default_face/open_smile",
                         "offset_y" : 8,
                         "isDominant" : false,
                         "auto_scale" : true
@@ -59,16 +59,16 @@
             "emoji": "😄",
             "sourceURL" : "grinning-face-with-smiling-eyes_1f604",
             "data" : {
-                "base_url": "./assets/custom/default_face/default_body.png",
+                "base_url": "default_face/default_body",
                 "face":{
                     "eyes" : {
-                        "url" : "./assets/custom/default_face/smiling_eyes.png",
+                        "url" : "default_face/smiling_eyes",
                         "offset_y" : 25,
                         "isDominant" : true,
                         "proportionate" : true
                     } ,
                     "mouth" : {
-                        "url" : "./assets/custom/default_face/open_smile.png",
+                        "url" : "default_face/open_smile",
                         "offset_y" : 8,
                         "isDominant" : false,
                         "auto_scale" : true
@@ -82,14 +82,14 @@
             "emoji": "🙁",
             "sourceURL" : "slightly-frowning-face_1f641",
             "data" : {
-                "base_url": "./assets/custom/default_face/default_body.png",
+                "base_url": "default_face/default_body",
                 "face":{
                     "eyes" : {
-                        "url" : "./assets/custom/default_face/default_eyes.png",
+                        "url" : "default_face/default_eyes",
                         "isDominant" : false
                     } ,
                     "mouth" : {
-                        "url" : "./assets/custom/default_face/slight_frown.png",
+                        "url" : "default_face/slight_frown",
                         "isDominant" : false,
                         "auto_scale" : true
                     }
@@ -102,7 +102,7 @@
             "emojiCodepoint": "1f35e",
             "sourceURL": "bread_1f35e",
             "data" : {
-                "base_url" :"./assets/custom/food/bread.png",
+                "base_url" :"food/bread",
                 "resize" : {
                     "x" : 32,
                     "y" : 80,
@@ -117,7 +117,7 @@
             "emojiCodepoint": "1f3da",
             "sourceURL": "derelict-house_1f3da-fe0f",
             "data" : {
-                "base_url" :"./assets/custom/other/derelict-house.png",
+                "base_url" :"travel_and_places/derelict-house",
                 "resize" : {
                     "x" : 125,
                     "y" : 201,

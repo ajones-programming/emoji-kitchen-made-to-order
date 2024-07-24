@@ -9,6 +9,7 @@ export class CustomEmojiObject implements CustomEmojiData{
     _b64 : string = "";
     _id : string | undefined = "";
     resize: ItemScale | undefined = undefined;
+    #isCustom = false;
 
     constructor(id? : string, data?:  CustomEmojiData){
         if (data){
@@ -22,10 +23,14 @@ export class CustomEmojiObject implements CustomEmojiData{
         }
     }
 
+    public getSourceString() : string{
+        return this.#isCustom ? (this.base_url ?? "") : ( "./assets/custom/" + (this.base_url??"") + ".png");
+    }
 
     public inherit_traits( emoji : CustomEmojiObject) : CustomEmojiObject{
         var combined = new CustomEmojiObject(this.id() + emoji.id());
-        combined.base_url = this.base_url;
+        combined.#isCustom = true;
+        combined.base_url = this.getSourceString();
         combined.resize = this.resize;
         combined.face = addFaces(this.face, emoji.face);
         return combined;
@@ -35,7 +40,7 @@ export class CustomEmojiObject implements CustomEmojiData{
         const allImages : mergeInfo[] = [];
         if (this.base_url != undefined){
             allImages.push({
-                src: this.base_url
+                src: this.getSourceString()
             });
         }
         if (this.face != undefined){
@@ -67,5 +72,5 @@ export class CustomEmojiObject implements CustomEmojiData{
 }
 
 export function isEmojiEqual(emoji1 : CustomEmojiObject, emoji2 : CustomEmojiObject) : boolean{
-    return emoji1.base_url == emoji2.base_url && isFaceEqual(emoji1.face, emoji2.face) && isResizeEqual(emoji1.resize, emoji2.resize);
+    return emoji1.getSourceString() == emoji2.getSourceString() && isFaceEqual(emoji1.face, emoji2.face) && isResizeEqual(emoji1.resize, emoji2.resize);
 }
