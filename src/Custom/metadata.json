@@ -13,7 +13,7 @@
             "alt": "smiley",
             "emojiCodepoint": "1f600",
             "emoji": "😀",
-            "sourceURL" : "https://em-content.zobj.net/source/twitter/376/grinning-face_1f600.png",
+            "sourceURL" : "grinning-face_1f600",
             "data" : {
                 "base_url": "./assets/custom/default_face/default_body.png",
                 "face":{
@@ -33,7 +33,7 @@
             "alt" : "grinning_face_with_big_eyes",
             "emojiCodepoint": "1f603",
             "emoji": "😃",
-            "sourceURL" : "https://em-content.zobj.net/source/twitter/376/grinning-face-with-big-eyes_1f603.png",
+            "sourceURL" : "grinning-face-with-big-eyes_1f603",
             "data" : {
                 "base_url": "./assets/custom/default_face/default_body.png",
                 "face":{
@@ -57,7 +57,7 @@
             "alt" : "grinning_face_with_smiling_eyes",
             "emojiCodepoint": "1f604",
             "emoji": "😄",
-            "sourceURL" : "https://em-content.zobj.net/source/twitter/376/grinning-face-with-smiling-eyes_1f604.png",
+            "sourceURL" : "grinning-face-with-smiling-eyes_1f604",
             "data" : {
                 "base_url": "./assets/custom/default_face/default_body.png",
                 "face":{
@@ -80,7 +80,7 @@
             "alt" : "slightly_frowning_face",
             "emojiCodepoint": "1f641",
             "emoji": "🙁",
-            "sourceURL" : "https://em-content.zobj.net/source/twitter/376/slightly-frowning-face_1f641.png",
+            "sourceURL" : "slightly-frowning-face_1f641",
             "data" : {
                 "base_url": "./assets/custom/default_face/default_body.png",
                 "face":{
@@ -100,7 +100,7 @@
             "alt" : "bread",
             "emoji": "🍞",
             "emojiCodepoint": "1f35e",
-            "sourceURL": "https://em-content.zobj.net/source/twitter/376/bread_1f35e.png",
+            "sourceURL": "bread_1f35e",
             "data" : {
                 "base_url" :"./assets/custom/food/bread.png",
                 "resize" : {
@@ -115,7 +115,7 @@
             "alt" : "derelict_house",
             "emoji": "🏚️",
             "emojiCodepoint": "1f3da",
-            "sourceURL": "https://em-content.zobj.net/source/twitter/376/derelict-house_1f3da-fe0f.png",
+            "sourceURL": "derelict-house_1f3da-fe0f",
             "data" : {
                 "base_url" :"./assets/custom/other/derelict-house.png",
                 "resize" : {

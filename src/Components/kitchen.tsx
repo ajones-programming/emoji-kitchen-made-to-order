@@ -15,7 +15,7 @@ import JSZip from "jszip";
 import saveAs from "file-saver";
 import { v4 as uuidv4 } from "uuid";
 import { MouseCoordinates } from "../Custom/types";
-import { getEmojiData, getSupportedEmoji } from "../Custom/utils";
+import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "../Custom/utils";
 import Search from "./search";
 import RightEmojiList from "./right-emoji-list";
 import LeftEmojiList from "./left-emoji-list";
@@ -250,6 +250,8 @@ export default function Kitchen() {
     const rightEmojiData = getEmojiData(selectedRightEmoji);
     const leftEmoji = new CustomEmojiObject(selectedLeftEmoji,leftEmojiData.data);
     const rightEmoji = new CustomEmojiObject(selectedRightEmoji,rightEmojiData.data);
+    const leftEmojiURL = getNotoEmojiUrl(selectedLeftEmoji);
+    const rightEmojiURL = getNotoEmojiUrl(selectedRightEmoji);
 
     var renderLR = false;
     var renderRL = false;
@@ -294,9 +296,9 @@ export default function Kitchen() {
     middleList = (
       <div>
         <div dir="horizontal" style={style1}>
-          <img alt={leftEmojiData.alt} id={leftEmoji.id()} src={leftEmojiData.sourceURL} width="100px" height="100px" style={imgStyle}/>
+          <img alt={leftEmojiData.alt} id={leftEmoji.id()} src={leftEmojiURL} width="100px" height="100px" style={imgStyle}/>
           +
-          <img alt={rightEmojiData.alt} id={rightEmoji.id()} src={rightEmojiData.sourceURL} width="100px" height="100px" style={imgStyle}/>
+          <img alt={rightEmojiData.alt} id={rightEmoji.id()} src={rightEmojiURL} width="100px" height="100px" style={imgStyle}/>
         </div>
         <div dir="horizontal" style={style2}>
             {renderLR && combined_lr != undefined &&

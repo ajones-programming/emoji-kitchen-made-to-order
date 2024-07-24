@@ -14,7 +14,7 @@ export function toPrintableEmoji(emojiCodepoint: string): string {
  * Converts an emoji codepoint into a static github reference image url
  */
 export function getNotoEmojiUrl(emojiCodepoint: string): string {
-    return getEmojiData(emojiCodepoint).sourceURL;
+    return  "https://em-content.zobj.net/source/twitter/376/" + getEmojiData(emojiCodepoint).sourceURL + ".png";
 }
 
 export function getEmojiData(emojiCodepoint: string): EmojiData {
