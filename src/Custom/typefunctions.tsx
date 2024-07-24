@@ -39,7 +39,7 @@ function addItems(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined) 
     const itemURLEqual = item1.url ==item2.url;
     const isItem1Dominant = (item1.isDominant && !item2.isDominant) ;
     item.url = (isItem1Dominant ? item1 :item2).url;
-    item.offset_x = (item1.offset_x?? 0) + (item2.offset_x?? 0);
+    item.offset_x = (item1.offset_x?? 0) + (item2.offset_x ?? 0);
     if (item.offset_x == 0){
         item.offset_x = undefined;
     }
@@ -53,6 +53,13 @@ function addItems(item1 : EmojiItem | undefined, item2 : EmojiItem | undefined) 
     if (itemURLEqual && item.scale_x == 1.0 && item.scale_y == 1.0 && (item1.auto_scale && item2.auto_scale) ){
         item.scale_x *= 1.25;
         item.scale_y *= 1.25;
+    }
+
+    if ((isItem1Dominant ? item1 :item2).proportionate){
+        const minimum = item.scale_x < item.scale_y ? item.scale_x : item.scale_y;
+        item.scale_x = minimum;
+        item.scale_y = minimum;
+        item.proportionate = true;
     }
 
 

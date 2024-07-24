@@ -42,6 +42,7 @@ export class EmojiItem{
   scale_x? : number;
   scale_y? : number;
   auto_scale? : boolean;
+  proportionate? : boolean;
 }
 
 export class ItemAnchor{

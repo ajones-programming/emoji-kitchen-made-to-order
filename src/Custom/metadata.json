@@ -64,7 +64,8 @@
                     "eyes" : {
                         "url" : "./assets/custom/default_face/smiling_eyes.png",
                         "offset_y" : 25,
-                        "isDominant" : true
+                        "isDominant" : true,
+                        "proportionate" : true
                     } ,
                     "mouth" : {
                         "url" : "./assets/custom/default_face/open_smile.png",
