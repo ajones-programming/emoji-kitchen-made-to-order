@@ -76,7 +76,7 @@ export default function Kitchen() {
 
     // Since we're selecting a new left emoji, clear out the right emoji
     setSelectedLeftEmoji(randomEmoji);
-    setSelectedRightEmoji("");
+    //setSelectedRightEmoji("");
   };
 
   /**
@@ -117,7 +117,7 @@ export default function Kitchen() {
         Math.floor(Math.random() * knownSupportedEmoji.length)
       ];
 
-    const data = getEmojiData(randomLeftEmoji);
+    //const data = getEmojiData(randomLeftEmoji);
     // const possibleRightEmoji = Object.keys(data.combinations).filter(
     //   (codepoint) => codepoint !== randomLeftEmoji
     // );
