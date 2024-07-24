@@ -267,7 +267,7 @@ export default function Kitchen() {
     var combined_rl : CustomEmojiObject | undefined;
     if (leftEmoji != undefined && rightEmoji != undefined && selectedLeftEmoji != selectedRightEmoji){
       combined_rl = rightEmoji.inherit_traits(leftEmoji);
-      if (!isEmojiEqual(combined_rl, leftEmoji) && !isEmojiEqual(combined_rl,rightEmoji)){
+      if (!isEmojiEqual(combined_rl, leftEmoji) && !isEmojiEqual(combined_rl,rightEmoji) && (combined_lr ? !isEmojiEqual(combined_lr, combined_rl) : true)){
         combined_rl.render();
         renderRL = true;
       }
