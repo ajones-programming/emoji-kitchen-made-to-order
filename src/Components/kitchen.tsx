@@ -19,7 +19,7 @@ import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "../Custom/util
 import Search from "./search";
 import RightEmojiList from "./right-emoji-list";
 import LeftEmojiList from "./left-emoji-list";
-import { CustomEmojiObject, isEmojiEqual } from "../Custom/basecustom";
+import { CustomEmojiObject} from "../Custom/customEmojiObject";
 
 export default function Kitchen() {
   // Selection helpers
@@ -259,7 +259,7 @@ export default function Kitchen() {
     var combined_lr : CustomEmojiObject | undefined;
     if (leftEmoji != undefined && rightEmoji != undefined){
       combined_lr = leftEmoji.inherit_traits(rightEmoji);
-      if (!isEmojiEqual(combined_lr, leftEmoji) && !isEmojiEqual(combined_lr,rightEmoji)){
+      if (!combined_lr.isEqual(leftEmoji) && !combined_lr.isEqual(rightEmoji)){
         combined_lr.render();
         renderLR = true;
       }
@@ -269,7 +269,7 @@ export default function Kitchen() {
     var combined_rl : CustomEmojiObject | undefined;
     if (leftEmoji != undefined && rightEmoji != undefined && selectedLeftEmoji != selectedRightEmoji){
       combined_rl = rightEmoji.inherit_traits(leftEmoji);
-      if (!isEmojiEqual(combined_rl, leftEmoji) && !isEmojiEqual(combined_rl,rightEmoji) && (combined_lr ? !isEmojiEqual(combined_lr, combined_rl) : true)){
+      if (!combined_rl.isEqual(leftEmoji) && !combined_rl.isEqual(rightEmoji) && (combined_lr ? !combined_lr.isEqual(combined_rl) : true)){
         combined_rl.render();
         renderRL = true;
       }

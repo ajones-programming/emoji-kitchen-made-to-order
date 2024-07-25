@@ -34,10 +34,10 @@ export class ItemScale{
   height : number = 300;
 }
 
-export class EmojiItem{
-  custom = false;
-  url : string = "";
-  isDominant? : boolean = false;
+export interface EmojiItem{
+  custom? : boolean;
+  url : string;
+  isDominant? : boolean ;
   offset_x? : number;
   offset_y? : number;
   scale_x? : number;

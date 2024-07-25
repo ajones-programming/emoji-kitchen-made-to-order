@@ -1,20 +1,19 @@
 import { mergeImagesCustom, mergeInfo } from './mergeImages';
-import { CustomEmojiData, FaceData, ItemScale } from './types';
-import { addFaces, isFaceEqual, isResizeEqual, RenderFace} from './typefunctions';
+import { CustomEmojiData, ItemScale } from './types';
+import { isResizeEqual} from './ResizeFunctions';
+import { CustomFaceObject } from './customFaceObject';
 
 
-export class CustomEmojiObject implements CustomEmojiData{
-    base_url : string | undefined= undefined;
-    face : FaceData | undefined = undefined;
-    _b64 : string = "";
-    _id : string | undefined = "";
-    resize: ItemScale | undefined = undefined;
-    #isCustom = false;
+export class CustomEmojiObject{
+    private base_url? : string;
+    private face? : CustomFaceObject;
+    private _id? : string;
+    private resize? : ItemScale;
 
     constructor(id? : string, data?:  CustomEmojiData){
         if (data){
-            this.base_url = data.base_url;
-            this.face = data.face;
+            this.base_url =  "./assets/custom/" + (data.base_url ?? "") + ".png";
+            this.face = new CustomFaceObject(data.face);
             this._id = data._id;
             this.resize = data.resize;
         }
@@ -23,16 +22,16 @@ export class CustomEmojiObject implements CustomEmojiData{
         }
     }
 
-    public getSourceString() : string{
-        return this.#isCustom ? (this.base_url ?? "") : ( "./assets/custom/" + (this.base_url??"") + ".png");
-    }
-
     public inherit_traits( emoji : CustomEmojiObject) : CustomEmojiObject{
         var combined = new CustomEmojiObject(this.id() + emoji.id());
-        combined.#isCustom = true;
-        combined.base_url = this.getSourceString();
+        combined.base_url = this.base_url;
         combined.resize = this.resize;
-        combined.face = addFaces(this.face, emoji.face);
+        if (!this.face || !emoji.face){
+            combined.face = this.face ?? emoji.face;
+        }
+        else{
+            combined.face =  this.face.inheritTraits(emoji.face);
+        }
         return combined;
     }
 
@@ -40,11 +39,12 @@ export class CustomEmojiObject implements CustomEmojiData{
         const allImages : mergeInfo[] = [];
         if (this.base_url != undefined){
             allImages.push({
-                src: this.getSourceString()
+                src: this.base_url
             });
         }
         if (this.face != undefined){
-            const faceString = await RenderFace(this.face);
+            //see if we can somehow put this into one command
+            const faceString = await this.face.Render();
             if (faceString != undefined){
                 allImages.push(
                 {
@@ -66,11 +66,8 @@ export class CustomEmojiObject implements CustomEmojiData{
         return this._id ?? "";
     }
 
-    public b64(){
-        return this._b64;
+    public isEqual(emoji : CustomEmojiObject) : boolean{
+        const facesEqual = (this.face && emoji.face ) ? this.face.isEqual(emoji.face) : (!this.face && !emoji.face);
+        return this.base_url == emoji.base_url && facesEqual && isResizeEqual(this.resize, emoji.resize);
     }
-}
-
-export function isEmojiEqual(emoji1 : CustomEmojiObject, emoji2 : CustomEmojiObject) : boolean{
-    return emoji1.getSourceString() == emoji2.getSourceString() && isFaceEqual(emoji1.face, emoji2.face) && isResizeEqual(emoji1.resize, emoji2.resize);
 }
