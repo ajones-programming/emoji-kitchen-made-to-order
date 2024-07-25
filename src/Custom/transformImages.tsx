@@ -2,7 +2,7 @@
 
 //https://stackoverflow.com/questions/20958078/resize-a-base-64-image-in-javascript-without-using-canvas
 // Takes a data URI and returns the Data URI corresponding to the resized image at the wanted size.
-export async function transformImage_Caller(file : string, width : number, height : number){
+export async function transformImage(file : string, width : number, height : number){
   return new Promise<string>(async function(resolve,reject){
 
     // We create an image to receive the Data URI

@@ -1,6 +1,6 @@
 //somehow use this for faces? no source?
 
-import { transformImage_Caller } from "./transformImages";
+import { transformImage } from "./transformImages";
 
 export class mergeInfo{
   src : string = "";
@@ -19,7 +19,7 @@ class drawInfo_Internal{
 
 async function processImage(value : mergeInfo){
   if (value.width != undefined && value.height != undefined){
-    value.src = await transformImage_Caller(value.src, value.width, value.height);
+    value.src = await transformImage(value.src, value.width, value.height);
     value.width = undefined;
     value.height = undefined;
   }
