@@ -22,7 +22,9 @@ export interface CustomEmojiData{
     resize? : ItemScale;
   }
 
-export class FaceData{
+export interface FaceData{
+  //split url into type and base, then get items to inherit?
+  category : string;
   eyes? : EmojiItem;
   mouth? : EmojiItem;
 }

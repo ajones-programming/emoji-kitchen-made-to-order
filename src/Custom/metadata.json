@@ -15,14 +15,15 @@
             "emoji": "😀",
             "sourceURL" : "grinning-face_1f600",
             "data" : {
-                "base_url": "default_face/default_body",
+                "base_url": "smileys/default_body",
                 "face":{
+                    "category": "smileys",
                     "eyes" : {
-                        "url" : "default_face/default_eyes",
+                        "url" : "default_eyes",
                         "isDominant" : false
                     } ,
                     "mouth" : {
-                        "url" : "default_face/open_smile",
+                        "url" : "open_smile",
                         "isDominant" : false,
                         "auto_scale" : true
                     }
@@ -35,17 +36,18 @@
             "emoji": "😃",
             "sourceURL" : "grinning-face-with-big-eyes_1f603",
             "data" : {
-                "base_url": "default_face/default_body",
+                "base_url": "smileys/default_body",
                 "face":{
+                    "category": "smileys",
                     "eyes" : {
-                        "url" : "default_face/default_eyes",
+                        "url" : "default_eyes",
                         "offset_y" : -8,
                         "scale_x" : 1.08,
                         "scale_y" : 1.57,
                         "isDominant" : true
                     } ,
                     "mouth" : {
-                        "url" : "default_face/open_smile",
+                        "url" : "open_smile",
                         "offset_y" : 8,
                         "isDominant" : false,
                         "auto_scale" : true
@@ -59,16 +61,17 @@
             "emoji": "😄",
             "sourceURL" : "grinning-face-with-smiling-eyes_1f604",
             "data" : {
-                "base_url": "default_face/default_body",
+                "base_url": "smileys/default_body",
                 "face":{
+                    "category": "smileys",
                     "eyes" : {
-                        "url" : "default_face/smiling_eyes",
+                        "url" : "smiling_eyes",
                         "offset_y" : 25,
                         "isDominant" : true,
                         "proportionate" : true
                     } ,
                     "mouth" : {
-                        "url" : "default_face/open_smile",
+                        "url" : "open_smile",
                         "offset_y" : 8,
                         "isDominant" : false,
                         "auto_scale" : true
@@ -82,14 +85,15 @@
             "emoji": "🙁",
             "sourceURL" : "slightly-frowning-face_1f641",
             "data" : {
-                "base_url": "default_face/default_body",
+                "base_url": "smileys/default_body",
                 "face":{
+                    "category": "smileys",
                     "eyes" : {
-                        "url" : "default_face/default_eyes",
+                        "url" : "default_eyes",
                         "isDominant" : false
                     } ,
                     "mouth" : {
-                        "url" : "default_face/slight_frown",
+                        "url" : "slight_frown",
                         "isDominant" : false,
                         "auto_scale" : true
                     }

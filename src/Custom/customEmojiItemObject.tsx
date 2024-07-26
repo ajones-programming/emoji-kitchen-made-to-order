@@ -14,7 +14,7 @@ export class CustomEmojiItemObject{
 
     constructor(item? : EmojiItem){
         if (item){
-            this.url = "./assets/custom/" + item.url + ".png";
+            this.url = item.url;
             this.isDominant = item.isDominant ?? false;
             this.offset_x = item.offset_x ?? 0;
             this.offset_y = item.offset_y ?? 0;
@@ -66,14 +66,18 @@ export class CustomEmojiItemObject{
         this.scale_y == item.scale_y;
     }
 
-    public async toMergeInfo(anchor? : ItemAnchor){
+    private getFullURL(category? : string){
+        return "./assets/custom/" + (category ? (category + "/") : "") + this.url + ".png";
+    }
+
+    public async toMergeInfo(anchor? : ItemAnchor, category? : string){
         var x = this.offset_x;
         var y = this.offset_y;
         var width : number | undefined;
         var height : number | undefined;
 
         if (anchor || this.scale_x != 1.0 || this.scale_y != 1.0){
-            const dimensions = await GetDimensions(this.url);
+            const dimensions = await GetDimensions(this.getFullURL(category));
             if (this.scale_x != 1.0 || this.scale_y != 1.0){
                 width = dimensions.width * this.scale_x;
                 height = dimensions.height * this.scale_y;
@@ -85,6 +89,6 @@ export class CustomEmojiItemObject{
                 y += anchor.y - (dimensions.height / 2);
             }
         }
-        return {src : this.url, x : x, y : y, width: width, height: height}
+        return {src : this.getFullURL(category), x : x, y : y, width: width, height: height}
     }
 }
