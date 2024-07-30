@@ -296,9 +296,9 @@ export default function Kitchen() {
     middleList = (
       <div>
         <div dir="horizontal" style={style1}>
-          <img alt={leftEmojiData.alt} id={leftEmoji.id()} src={leftEmojiURL} width="100px" height="100px" style={imgStyle}/>
+          <img alt={leftEmojiData.name} id={leftEmoji.id()} src={leftEmojiURL} width="100px" height="100px" style={imgStyle}/>
           +
-          <img alt={rightEmojiData.alt} id={rightEmoji.id()} src={rightEmojiURL} width="100px" height="100px" style={imgStyle}/>
+          <img alt={rightEmojiData.name} id={rightEmoji.id()} src={rightEmojiURL} width="100px" height="100px" style={imgStyle}/>
         </div>
         <div dir="horizontal" style={style2}>
             {renderLR && combined_lr != undefined &&

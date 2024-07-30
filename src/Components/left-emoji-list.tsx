@@ -27,7 +27,7 @@ export default function LeftEmojiList({
 
     return (
       <div
-        key={data.alt}
+        key={data.name}
         onContextMenu={
           selectedLeftEmoji === data.emojiCodepoint
             ? handleBulkImageDownloadMenuOpen
@@ -52,8 +52,8 @@ export default function LeftEmojiList({
             loading="lazy"
             width="32px"
             height="32px"
-            alt={data.alt}
-            src={getNotoEmojiUrl(data.emojiCodepoint)}
+            alt={data.name}
+            src={getNotoEmojiUrl(data.emojiCodepoint ?? "")}
           />
         </ImageListItem>
       </div>

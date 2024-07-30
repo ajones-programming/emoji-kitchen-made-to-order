@@ -14,11 +14,15 @@ export function toPrintableEmoji(emojiCodepoint: string): string {
  * Converts an emoji codepoint into a static github reference image url
  */
 export function getNotoEmojiUrl(emojiCodepoint: string): string {
-    return  "https://em-content.zobj.net/source/twitter/376/" + getEmojiData(emojiCodepoint).sourceURL + ".png";
+    const data = getEmojiData(emojiCodepoint);
+    const url =  data.name + "_" + (data.emojiCodepoint ?? "");
+    return  "https://em-content.zobj.net/source/twitter/376/" + url + ".png";
 }
 
 export function getEmojiData(emojiCodepoint: string): EmojiData {
-  return (emojiMetadata as EmojiMetadata).data[emojiCodepoint];
+  const emoji = (emojiMetadata as EmojiMetadata).data[emojiCodepoint];
+  emoji.emojiCodepoint = emojiCodepoint;
+  return emoji;
 }
 
 export function getSupportedEmoji(): Array<string> {

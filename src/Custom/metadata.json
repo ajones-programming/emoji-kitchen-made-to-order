@@ -5,36 +5,30 @@
         "1f604",
         "1f641",
         "1f35e",
-        "1f3da"
+        "1f3da-fe0f"
 
     ],
     "data" : {
         "1f600" : {
-            "alt": "grinning-face",
-            "emojiCodepoint": "1f600",
+            "name": "grinning-face",
             "emoji": "😀",
-            "sourceURL" : "grinning-face_1f600",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes",
-                        "isDominant" : false
+                        "url" : "default_eyes"
                     } ,
                     "mouth" : {
                         "url" : "open_smile",
-                        "isDominant" : false,
                         "auto_scale" : true
                     }
                 }
             }
         },
         "1f603": {
-            "alt" : "grinning_face_with_big_eyes",
-            "emojiCodepoint": "1f603",
+            "name" : "grinning-face-with-big-eyes",
             "emoji": "😃",
-            "sourceURL" : "grinning-face-with-big-eyes_1f603",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -43,23 +37,19 @@
                         "url" : "default_eyes",
                         "offset_y" : -8,
                         "scale_x" : 1.08,
-                        "scale_y" : 1.57,
-                        "isDominant" : true
+                        "scale_y" : 1.57
                     } ,
                     "mouth" : {
                         "url" : "open_smile",
                         "offset_y" : 8,
-                        "isDominant" : false,
                         "auto_scale" : true
                     }
                 }
             }
         },
         "1f604": {
-            "alt" : "grinning_face_with_smiling_eyes",
-            "emojiCodepoint": "1f604",
+            "name" : "grinning-face-with-smiling-eyes",
             "emoji": "😄",
-            "sourceURL" : "grinning-face-with-smiling-eyes_1f604",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -80,31 +70,25 @@
             }
         },
         "1f641": {
-            "alt" : "slightly_frowning_face",
-            "emojiCodepoint": "1f641",
+            "name" : "slightly-frowning-face",
             "emoji": "🙁",
-            "sourceURL" : "slightly-frowning-face_1f641",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes",
-                        "isDominant" : false
+                        "url" : "default_eyes"
                     } ,
                     "mouth" : {
                         "url" : "slight_frown",
-                        "isDominant" : false,
                         "auto_scale" : true
                     }
                 }
             }
         },
         "1f35e": {
-            "alt" : "bread",
+            "name" : "bread",
             "emoji": "🍞",
-            "emojiCodepoint": "1f35e",
-            "sourceURL": "bread_1f35e",
             "data" : {
                 "base_url" :"food/bread",
                 "resize" : {
@@ -115,11 +99,9 @@
                 }
             }
         },
-        "1f3da": {
-            "alt" : "derelict_house",
+        "1f3da-fe0f": {
+            "name" : "derelict-house",
             "emoji": "🏚️",
-            "emojiCodepoint": "1f3da",
-            "sourceURL": "derelict-house_1f3da-fe0f",
             "data" : {
                 "base_url" :"travel_and_places/derelict-house",
                 "resize" : {

@@ -6,11 +6,10 @@ export interface EmojiMetadata {
   }
 
 export interface EmojiData{
-    alt: string;
+    name: string;
     emoji : string;
-    emojiCodepoint: string;
+    emojiCodepoint? : string;
     data : CustomEmojiData;
-    sourceURL : string;
     resize? : ItemScale;
 
   }
