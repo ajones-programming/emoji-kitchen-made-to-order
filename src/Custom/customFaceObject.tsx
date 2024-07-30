@@ -39,6 +39,6 @@ export class CustomFaceObject{
         if (this.mouth){
             list.push(await this.mouth.toMergeInfo({x : 150, y: 213}, this.category));
         }
-        return (await mergeImagesCustom(list).catch(err => console.error("couldn't merge"))) ?? undefined;
+        return await mergeImagesCustom(list);
     }
 }

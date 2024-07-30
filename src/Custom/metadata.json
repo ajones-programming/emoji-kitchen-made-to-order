@@ -3,6 +3,9 @@
         "1f600",
         "1f603",
         "1f604",
+        "1f601",
+        "1f606",
+        "1f605",
         "1f641",
         "1f35e",
         "1f3da-fe0f"
@@ -63,10 +66,76 @@
                     "mouth" : {
                         "url" : "open_smile",
                         "offset_y" : 8,
-                        "isDominant" : false,
                         "auto_scale" : true
                     }
                 }
+            }
+        },
+        "1f601": {
+            "name" : "beaming-face-with-smiling-eyes",
+            "emoji": "😁",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "beaming_closed_eyes",
+                        "offset_y" : 20,
+                        "proportionate" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "grin",
+                        "offset_y" : 9,
+                        "isDominant" : true,
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        "1f606": {
+            "name" : "grinning-squinting-face",
+            "emoji": "😆",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "squinting_eyes",
+                        "offset_y" : 21,
+                        "isDominant" : true,
+                        "proportionate" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "open_smile",
+                        "offset_y" : 9,
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        "1f605": {
+            "name" : "grinning-face-with-sweat",
+            "emoji": "😅",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "smiling_eyes",
+                        "offset_y" : 25,
+                        "always_recessive" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "open_smile",
+                        "offset_y" : 8,
+                        "always_recessive" : true
+                    }
+                },
+                "additional_parts":[{
+                    "url": "smileys/sweat_droplet",
+                    "offset_x" : 207,
+                    "offset_y" : 9
+                }]
             }
         },
         "1f641": {

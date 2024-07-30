@@ -2,6 +2,7 @@ import { mergeImagesCustom, mergeInfo } from './mergeImages';
 import { CustomEmojiData, ItemScale } from './types';
 import { isResizeEqual} from './ResizeFunctions';
 import { CustomFaceObject } from './customFaceObject';
+import { CustomEmojiItemObject } from './customEmojiItemObject';
 
 
 export class CustomEmojiObject{
@@ -9,6 +10,7 @@ export class CustomEmojiObject{
     private face? : CustomFaceObject;
     private _id? : string;
     private resize? : ItemScale;
+    private additionalObjects : CustomEmojiItemObject[] = [];
 
     constructor(id? : string, data?:  CustomEmojiData){
         if (data){
@@ -16,6 +18,11 @@ export class CustomEmojiObject{
             this.face = new CustomFaceObject(data.face);
             this._id = data._id;
             this.resize = data.resize;
+            if (data.additional_parts){
+                data.additional_parts.forEach(item =>{
+                    this.additionalObjects?.push(new CustomEmojiItemObject(item));
+                });
+            }
         }
         if (id){
             this._id = id;
@@ -32,6 +39,7 @@ export class CustomEmojiObject{
         else{
             combined.face =  this.face.inheritTraits(emoji.face);
         }
+        combined.additionalObjects = CustomEmojiItemObject.mergeItemLists(this.additionalObjects, emoji.additionalObjects);
         return combined;
     }
 
@@ -56,6 +64,11 @@ export class CustomEmojiObject{
                 });
             }
         }
+        if (this.additionalObjects){
+            allImages.push(...(await CustomEmojiItemObject.getListedMergeInfo(
+                this.additionalObjects.map(value => {return {item : value};})
+            )));
+        }
         const item = document.getElementById(this.id()) as HTMLImageElement;
         if (item != null){
             item.src = await mergeImagesCustom(allImages);
@@ -68,6 +81,7 @@ export class CustomEmojiObject{
 
     public isEqual(emoji : CustomEmojiObject) : boolean{
         const facesEqual = (this.face && emoji.face ) ? this.face.isEqual(emoji.face) : (!this.face && !emoji.face);
-        return this.base_url == emoji.base_url && facesEqual && isResizeEqual(this.resize, emoji.resize);
+        return this.base_url == emoji.base_url && facesEqual && isResizeEqual(this.resize, emoji.resize) &&
+        CustomEmojiItemObject.itemListsEqual(this.additionalObjects,emoji.additionalObjects) ;
     }
 }

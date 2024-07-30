@@ -19,6 +19,7 @@ export interface CustomEmojiData{
     _id? : string;
     face? : FaceData;
     resize? : ItemScale;
+    additional_parts?:EmojiItem[];
   }
 
 export interface FaceData{
@@ -45,6 +46,7 @@ export interface EmojiItem{
   scale_y? : number;
   auto_scale? : boolean;
   proportionate? : boolean;
+  always_recessive?: boolean;
 }
 
 export class ItemAnchor{
