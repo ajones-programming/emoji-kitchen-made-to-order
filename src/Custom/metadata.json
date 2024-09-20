@@ -1,20 +1,10 @@
 {
-    "knownSupportedEmoji":[
-        "1f600",
-        "1f603",
-        "1f604",
-        "1f601",
-        "1f606",
-        "1f605",
-        "1f641",
-        "1f35e",
-        "1f3da-fe0f"
-
-    ],
-    "data" : {
-        "1f600" : {
+    "data" :
+    [
+        {
             "name": "grinning-face",
             "emoji": "😀",
+            "emojiCodepoint": "1f600",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -29,9 +19,10 @@
                 }
             }
         },
-        "1f603": {
+        {
             "name" : "grinning-face-with-big-eyes",
             "emoji": "😃",
+            "emojiCodepoint":"1f603",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -50,9 +41,10 @@
                 }
             }
         },
-        "1f604": {
+        {
             "name" : "grinning-face-with-smiling-eyes",
             "emoji": "😄",
+            "emojiCodepoint":"1f604",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -71,9 +63,10 @@
                 }
             }
         },
-        "1f601": {
+        {
             "name" : "beaming-face-with-smiling-eyes",
             "emoji": "😁",
+            "emojiCodepoint": "1f601",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -92,8 +85,9 @@
                 }
             }
         },
-        "1f606": {
+        {
             "name" : "grinning-squinting-face",
+            "emojiCodepoint":"1f606",
             "emoji": "😆",
             "data" : {
                 "base_url": "smileys/default_body",
@@ -113,9 +107,10 @@
                 }
             }
         },
-        "1f605": {
+        {
             "name" : "grinning-face-with-sweat",
             "emoji": "😅",
+            "emojiCodepoint":"1f605",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -138,9 +133,10 @@
                 }]
             }
         },
-        "1f641": {
+        {
             "name" : "slightly-frowning-face",
             "emoji": "🙁",
+            "emojiCodepoint":"1f641",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -155,9 +151,10 @@
                 }
             }
         },
-        "1f35e": {
+        {
             "name" : "bread",
             "emoji": "🍞",
+            "emojiCodepoint":"1f35e",
             "data" : {
                 "base_url" :"food/bread",
                 "resize" : {
@@ -168,9 +165,10 @@
                 }
             }
         },
-        "1f3da-fe0f": {
+        {
             "name" : "derelict-house",
             "emoji": "🏚️",
+            "emojiCodepoint":"1f3da-fe0f",
             "data" : {
                 "base_url" :"travel_and_places/derelict-house",
                 "resize" : {
@@ -181,6 +179,5 @@
                 }
             }
         }
-    }
-
+    ]
 }

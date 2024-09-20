@@ -1,8 +1,5 @@
 export interface EmojiMetadata {
-    knownSupportedEmoji: Array<string>;
-    data: {
-      [emojiCodepoint: string]: EmojiData;
-    };
+    data: EmojiData[];
   }
 
 export interface EmojiData{
