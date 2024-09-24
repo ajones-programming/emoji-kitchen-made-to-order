@@ -108,21 +108,26 @@ export class CustomEmojiItemObject{
                 y += anchor.y - (dimensions.height / 2);
             }
         }
-        return {src : this.getFullURL(category), x : x, y : y, width: width, height: height, copies : this.numOfCopies}
+        const info : mergeInfo = new mergeInfo();
+        info.src = this.getFullURL(category);
+        info.x = x;
+        info.y = y;
+        info.width = width;
+        info.height = height;
+        info.copies = this.numOfCopies;
+        return info;
+    }
+
+    private static async method (value : {item : CustomEmojiItemObject, anchor? : ItemAnchor, category ? : string}) : Promise<mergeInfo>{
+        return value.item.toMergeInfo(value.anchor,value.category);
     }
 
     public static async getListedMergeInfo(itemList: {item : CustomEmojiItemObject, anchor? : ItemAnchor, category ? : string}[]){
-        const method = (value : {item : CustomEmojiItemObject, anchor? : ItemAnchor, category ? : string}) =>
-            value.item.toMergeInfo(value.anchor,value.category);
-        return await Promise.all(itemList.map(method));
-
+        return await Promise.all(itemList.map(this.method));
     }
 
     public static mergeItemLists(itemList1 : CustomEmojiItemObject[], itemList2 : CustomEmojiItemObject[]){
         const newList : CustomEmojiItemObject[] = [];
-        //foreach in first list
-        // newList.push(...itemList1);
-        // newList.push(...itemList2);
         const list1 : CustomEmojiItemObject[] = itemList1.map(x => new CustomEmojiItemObject(undefined,x));
         const list2 : (CustomEmojiItemObject| undefined)[]  = itemList2.map(x => new CustomEmojiItemObject(undefined,x));
         list1.forEach(value =>
@@ -159,4 +164,7 @@ export class CustomEmojiItemObject{
         }
         return true;
     }
+
+    public getOffset_x(){return this.offset_x};
+    public getOffset_y(){return this.offset_y};
 }

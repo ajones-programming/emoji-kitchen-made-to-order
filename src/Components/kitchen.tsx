@@ -248,13 +248,16 @@ export default function Kitchen() {
 
     const leftEmojiData = getEmojiData(selectedLeftEmoji);
     const rightEmojiData = getEmojiData(selectedRightEmoji);
-    const leftEmoji = new CustomEmojiObject(selectedLeftEmoji,leftEmojiData.data);
-    const rightEmoji = new CustomEmojiObject(selectedRightEmoji,rightEmojiData.data);
+    const leftEmoji = new CustomEmojiObject(selectedLeftEmoji,leftEmojiData?.data);
+    const rightEmoji = new CustomEmojiObject(selectedRightEmoji,rightEmojiData?.data);
     const leftEmojiURL = getNotoEmojiUrl(selectedLeftEmoji);
     const rightEmojiURL = getNotoEmojiUrl(selectedRightEmoji);
 
     var renderLR = false;
     var renderRL = false;
+
+    // leftEmoji.render();
+    // rightEmoji.render();
 
     var combined_lr : CustomEmojiObject | undefined;
     if (leftEmoji != undefined && rightEmoji != undefined){
@@ -296,9 +299,9 @@ export default function Kitchen() {
     middleList = (
       <div>
         <div dir="horizontal" style={style1}>
-          <img alt={leftEmojiData.name} id={leftEmoji.id()} src={leftEmojiURL} width="100px" height="100px" style={imgStyle}/>
+          <img alt={leftEmojiData?.name} id={leftEmoji.id()} src={leftEmojiURL} width="100px" height="100px" style={imgStyle}/>
           +
-          <img alt={rightEmojiData.name} id={rightEmoji.id()} src={rightEmojiURL} width="100px" height="100px" style={imgStyle}/>
+          <img alt={rightEmojiData?.name} id={rightEmoji.id()} src={rightEmojiURL} width="100px" height="100px" style={imgStyle}/>
         </div>
         <div dir="horizontal" style={style2}>
             {renderLR && combined_lr != undefined &&

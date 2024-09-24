@@ -5,7 +5,7 @@ export interface EmojiMetadata {
 export interface EmojiData{
     name: string;
     emoji : string;
-    emojiCodepoint? : string;
+    emojiCodepoint : string;
     data : CustomEmojiData;
     resize? : ItemScale;
 
@@ -17,12 +17,15 @@ export interface CustomEmojiData{
     face? : FaceData;
     resize? : ItemScale;
     additional_parts?:EmojiItem[];
+    rotation?: number;
   }
 
 export interface FaceData{
   //split url into type and base, then get items to inherit?
   category : string;
   eyes? : EmojiItem;
+  eyeDecoration? : EmojiItem;
+  eyebrows?: EmojiItem;
   mouth? : EmojiItem;
 }
 
