@@ -13,6 +13,7 @@ export interface EmojiData{
 
 export interface CustomEmojiData{
     base_url? : string;
+    details? :EmojiFlatDetail;
     _id? : string;
     face? : FaceData;
     resize? : ItemScale;
@@ -34,6 +35,11 @@ export class ItemScale{
   y : number = 0;
   width : number = 300;
   height : number = 300;
+}
+
+export interface EmojiFlatDetail{
+  url : string;
+  resize ? : ItemScale;
 }
 
 export interface EmojiItem{

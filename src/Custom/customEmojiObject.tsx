@@ -1,5 +1,5 @@
 import { mergeImagesCustom, mergeInfo, transformInfo } from './mergeImages';
-import { CustomEmojiData, ItemScale } from './types';
+import { CustomEmojiData, EmojiFlatDetail, ItemScale } from './types';
 import { isResizeEqual} from './ResizeFunctions';
 import { CustomFaceObject } from './customFaceObject';
 import { CustomEmojiItemObject } from './customEmojiItemObject';
@@ -7,15 +7,20 @@ import { CustomEmojiItemObject } from './customEmojiItemObject';
 
 export class CustomEmojiObject{
     private base_url? : string;
+    private base_details? : EmojiFlatDetail;
     private face? : CustomFaceObject;
     private _id? : string;
     private resize? : ItemScale;
     private additionalObjects : CustomEmojiItemObject[] = [];
     private rotation? : number;
 
-    constructor(id? : string, data?:  CustomEmojiData){
+    constructor(id? : string, data?:  CustomEmojiData) {
         if (data){
             this.base_url =  "./assets/custom/" + (data.base_url ?? "") + ".png";
+
+            if (data.details){
+                this.base_details = {url: "./assets/custom/" + (data.details.url ?? "") + ".png", resize: data.details.resize};//new EmojiFlatDetail();
+            }
             this.face = new CustomFaceObject(data.face);
             this._id = data._id;
             this.resize = data.resize;
@@ -35,6 +40,13 @@ export class CustomEmojiObject{
         var combined = new CustomEmojiObject(this.id() + emoji.id());
         combined.base_url = this.base_url;
         combined.resize = this.resize;
+        if (this.base_details && emoji.base_details){
+            combined.base_details = {url: emoji.base_details.url, resize: this.base_details.resize};
+        }
+        else{
+            combined.base_details = this.base_details;
+        }
+
         if (this.rotation != undefined || emoji.rotation != undefined){
             combined.rotation = (this.rotation ?? 0) + (emoji.rotation ?? 0);
         }
@@ -54,6 +66,17 @@ export class CustomEmojiObject{
             const base = new mergeInfo();
             base.src = this.base_url;
             allInstructions.push(base);
+        }
+        if (this.base_details != undefined){
+            const baseMergeDetails = new mergeInfo();
+            baseMergeDetails.src = this.base_details.url;
+            //surely we can make this smaller by adding a resize?
+            baseMergeDetails.x = this.base_details.resize?.x;
+            baseMergeDetails.y = this.base_details.resize?.y;
+            baseMergeDetails.width = this.base_details.resize?.width;
+            baseMergeDetails.height = this.base_details.resize?.height;
+
+            allInstructions.push(baseMergeDetails);
         }
         if (this.face != undefined){
             //see if we can somehow put this into one command
@@ -97,9 +120,21 @@ export class CustomEmojiObject{
         return this._id ?? "";
     }
 
+    private flatDetailsEqual(flat1 : EmojiFlatDetail | undefined, flat2 : EmojiFlatDetail | undefined){
+
+        if (!flat1 || !flat2){
+            return flat1 == flat2;
+        }
+        return flat1.url == flat2.url && isResizeEqual(flat1.resize, flat2.resize);
+    }
+
     public isEqual(emoji : CustomEmojiObject) : boolean{
         const facesEqual = (this.face && emoji.face ) ? this.face.isEqual(emoji.face) : (!this.face && !emoji.face);
-        return this.base_url == emoji.base_url && facesEqual && isResizeEqual(this.resize, emoji.resize) &&
-        CustomEmojiItemObject.itemListsEqual(this.additionalObjects,emoji.additionalObjects) && this.rotation == emoji.rotation ;
+        return this.base_url == emoji.base_url &&
+        this.flatDetailsEqual(this.base_details, emoji.base_details) &&
+        facesEqual &&
+        isResizeEqual(this.resize, emoji.resize) &&
+        CustomEmojiItemObject.itemListsEqual(this.additionalObjects,emoji.additionalObjects) &&
+        this.rotation == emoji.rotation ;
     }
 }
