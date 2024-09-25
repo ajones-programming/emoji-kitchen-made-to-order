@@ -34,6 +34,38 @@ export async function resizeImage(file : string, width : number, height : number
 })
 }
 
+export function rotate(file : string, rotation : number ,  width : number, height : number) : Promise<string>{
+return new Promise<string>(async function(resolve,reject){
+  var img : HTMLImageElement= document.createElement('img');
+  const inradians = rotation * Math.PI / 180;
+  // When the event "onload" is triggered we can resize the image.
+  img.onload = function()
+  {
+      // We create a canvas and get its context.
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+
+      // We set the dimensions at the wanted size.
+      canvas.width = width;
+      canvas.height = height;
+
+      if (ctx != null){
+        ctx.translate(width/2, height/2);
+        ctx.rotate(inradians);
+        ctx.translate(-width/2, -width/2);
+        ctx.drawImage(img, 0,0);
+      }
+      // We resize the image with the canvas method drawImage();
+      var dataURI = canvas.toDataURL();
+      // This is the return of the Promise
+      resolve(dataURI);
+  };
+  img.onerror = reject;
+  // We put the Data URI in the image's src attribute
+  img.src = file;
+})
+}
+
 export async function cropImage(file : string, width : number, height : number, oldWidth : number, oldHeight : number){
   return new Promise<string>(async function(resolve,reject){
 

@@ -1,6 +1,6 @@
 //somehow use this for faces? no source?
 
-import { cropImage, resizeImage as resizeImage } from "./transformImages";
+import { cropImage, resizeImage, rotate } from "./transformImages";
 
 function preCropSize(){return 500;}
 export function postCropSize(){return 300;}
@@ -114,29 +114,26 @@ function Draw(imgdata : imageObject, context : CanvasRenderingContext2D){
     }
 }
 
-function Transform(transformInfo : transformInfo, canvas : HTMLCanvasElement){
+async function TransformCanvas(transformInfo : transformInfo, canvas : HTMLCanvasElement)
+{
   if (transformInfo.rotate){
     const dataURL = canvas.toDataURL();
-    const inradians = transformInfo.rotate * Math.PI / 180;
     const context = canvas.getContext('2d');
     if (!context){
       return;
     }
     context.clearRect(0, 0, canvas.width, canvas.height);
-    return new Promise((resolve, reject) => {
-      let img = new Image()
-      img.onload = () =>
-        {
-          context.translate(preCropSize()/2, preCropSize()/2);
-          context.rotate(inradians);
-          context.translate(-preCropSize()/2, -preCropSize()/2);
-          context.drawImage(img, 0,0);
-          context.setTransform(1, 0, 0, 1, 0, 0);
+    if (transformInfo.rotate != undefined){
+      const val = await rotate(dataURL,transformInfo.rotate,preCropSize(),preCropSize());
+      const imgObj= new Image();
+      return new Promise<undefined>((resolve, reject)=>{
+        imgObj.onload = () =>{
+          context.drawImage(imgObj,0,0);
           resolve(undefined);
         }
-      img.onerror = reject;
-      img.src = dataURL;
-    })
+        imgObj.src = val;
+      });
+    }
   }
 }
 
@@ -159,7 +156,7 @@ export async function mergeImagesCustom(data : (mergeInfo | transformInfo)[], cr
         Draw(imgdata, context);
       }
       else if (imgdata instanceof transformInfo){
-        return Transform(imgdata,canvas);
+        return TransformCanvas(imgdata,canvas);
       }
       else{
         console.error(typeof(imgdata));
