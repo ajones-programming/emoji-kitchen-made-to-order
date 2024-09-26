@@ -7,7 +7,8 @@ import { CustomEmojiItemObject } from './customEmojiItemObject';
 
 export class CustomEmojiObject{
     private base_url? : string;
-    private base_details? : EmojiFlatDetail;
+    private base_details_url? : string;
+    private additional_base_details? : EmojiFlatDetail;
     private face? : CustomFaceObject;
     private _id? : string;
     private _emoji? : string;
@@ -19,13 +20,18 @@ export class CustomEmojiObject{
         if (data){
             this.base_url =  "./assets/custom/" + (data.base_url ?? "") + ".png";
 
-            if (data.details){
-                this.base_details = {url: "./assets/custom/" + (data.details.url ?? "") + ".png", resize: data.details.resize};//new EmojiFlatDetail();
+            if (data.inherited_details_url){
+                this.base_details_url = "./assets/custom/" + data.inherited_details_url + ".png";
+            }
+            if (data.additional_details_rect){
+                this.additional_base_details = {resize: data.additional_details_rect};
             }
             this.face = new CustomFaceObject(data.face);
-            this._id = data._id;
-            this.resize = data.resize;
+            this.resize = data.unique_face_rect;
             this.rotation = data.rotation;
+            if (this.rotation){
+                this.rotation = (this.rotation + 360)%360;
+            }
             if (data.additional_parts){
                 data.additional_parts.forEach(item =>{
                     this.additionalObjects?.push(new CustomEmojiItemObject(item));
@@ -40,28 +46,28 @@ export class CustomEmojiObject{
         }
     }
 
-    public inherit_traits( emoji : CustomEmojiObject) : CustomEmojiObject{
+    public inherit_traits( emoji : CustomEmojiObject, ignoreTags : boolean = false) : CustomEmojiObject{
         var combined = new CustomEmojiObject(this.id() + emoji.id());
         if (this._emoji || emoji._emoji){
             combined._emoji = (this._emoji ?? "") + (emoji._emoji ?? "");
         }
         combined.base_url = this.base_url;
         combined.resize = this.resize;
-        if (this.base_details && emoji.base_details){
-            combined.base_details = {url: emoji.base_details.url, resize: this.base_details.resize};
+        combined.base_details_url = this.base_details_url;
+        if (this.additional_base_details && this.additional_base_details.resize && emoji.base_details_url){
+            combined.additional_base_details = {url: emoji.base_details_url, resize: this.additional_base_details.resize};
         }
-        else{
-            combined.base_details = this.base_details;
-        }
-
-        if (this.rotation != undefined || emoji.rotation != undefined){
-            combined.rotation = (this.rotation ?? 0) + (emoji.rotation ?? 0);
+        if (this.rotation || emoji.rotation){
+            combined.rotation = ((this.rotation ?? 0) + (emoji.rotation ?? 0)+360)%360;
+            if (combined.rotation == 0){
+                combined.rotation = undefined;
+            }
         }
         if (!this.face || !emoji.face){
             combined.face = this.face ?? emoji.face;
         }
         else{
-            combined.face =  this.face.inheritTraits(emoji.face);
+            combined.face =  this.face.inheritTraits(emoji.face,ignoreTags);
         }
         combined.additionalObjects = CustomEmojiItemObject.mergeItemLists(this.additionalObjects, emoji.additionalObjects);
         return combined;
@@ -74,15 +80,16 @@ export class CustomEmojiObject{
             base.src = this.base_url;
             allInstructions.push(base);
         }
-        if (this.base_details != undefined){
+        if (this.additional_base_details != undefined && this.additional_base_details.url){
             const baseMergeDetails = new mergeInfo();
-            baseMergeDetails.src = this.base_details.url;
-            //surely we can make this smaller by adding a resize?
-            baseMergeDetails.x = this.base_details.resize?.x;
-            baseMergeDetails.y = this.base_details.resize?.y;
-            baseMergeDetails.width = this.base_details.resize?.width;
-            baseMergeDetails.height = this.base_details.resize?.height;
-
+            baseMergeDetails.src = this.additional_base_details.url;
+            if (this.additional_base_details.resize){
+                //surely we can make this smaller by adding a resize?
+                baseMergeDetails.x = this.additional_base_details.resize.x;
+                baseMergeDetails.y = this.additional_base_details.resize.y;
+                baseMergeDetails.width = this.additional_base_details.resize.width;
+                baseMergeDetails.height = this.additional_base_details.resize.height;
+            }
             allInstructions.push(baseMergeDetails);
         }
         if (this.face != undefined){
@@ -129,19 +136,20 @@ export class CustomEmojiObject{
 
     private flatDetailsEqual(flat1 : EmojiFlatDetail | undefined, flat2 : EmojiFlatDetail | undefined){
 
-        if (!flat1 || !flat2){
-            return flat1 == flat2;
+        if (!flat1?.url && !flat2?.url){
+            return true;
         }
-        return flat1.url == flat2.url && isResizeEqual(flat1.resize, flat2.resize);
+        return flat1?.url == flat2?.url && isResizeEqual(flat1?.resize, flat2?.resize);
     }
 
     public isEqual(emoji : CustomEmojiObject) : boolean{
         const facesEqual = (this.face && emoji.face ) ? this.face.isEqual(emoji.face) : (!this.face && !emoji.face);
-        return this.base_url == emoji.base_url &&
-        this.flatDetailsEqual(this.base_details, emoji.base_details) &&
+        const isEqual = this.base_url == emoji.base_url &&
+        this.flatDetailsEqual(this.additional_base_details, emoji.additional_base_details) &&
         facesEqual &&
-        isResizeEqual(this.resize, emoji.resize) &&
+        (this.face != undefined && emoji.face != undefined && isResizeEqual(this.resize, emoji.resize)) &&
         CustomEmojiItemObject.itemListsEqual(this.additionalObjects,emoji.additionalObjects) &&
-        this.rotation == emoji.rotation ;
+        this.rotation == emoji.rotation;
+        return isEqual;
     }
 }

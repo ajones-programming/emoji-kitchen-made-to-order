@@ -11,10 +11,10 @@ export interface EmojiData{
 
 export interface CustomEmojiData{
     base_url? : string;
-    details? :EmojiFlatDetail;
-    _id? : string;
+    inherited_details_url?: string;
+    additional_details_rect? : ItemScale;
     face? : FaceData;
-    resize? : ItemScale;
+    unique_face_rect? : ItemScale;
     additional_parts?:EmojiItem[];
     rotation?: number;
   }
@@ -36,7 +36,7 @@ export class ItemScale{
 }
 
 export interface EmojiFlatDetail{
-  url : string;
+  url? : string;
   resize ? : ItemScale;
 }
 

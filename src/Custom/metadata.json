@@ -188,7 +188,14 @@
             "emojiCodepoint":"1f35e",
             "data" : {
                 "base_url" :"food/bread",
-                "resize" : {
+                "inherited_details_url" :"food/bread-middle",
+                "additional_details_rect":{
+                    "x" : 32,
+                    "y" : 80,
+                    "width" : 127,
+                    "height" : 175
+                },
+                "unique_face_rect" : {
                     "x" : 32,
                     "y" : 80,
                     "width" : 127,
@@ -202,7 +209,14 @@
             "emojiCodepoint":"1f3da-fe0f",
             "data" : {
                 "base_url" :"travel_and_places/derelict-house",
-                "resize" : {
+                "inherited_details_url" : "travel_and_places/derelict-house-windows",
+                "additional_details_rect":{
+                    "x" : 125,
+                    "y" : 205,
+                    "width" : 55,
+                    "height" : 55
+                },
+                "unique_face_rect" : {
                     "x" : 125,
                     "y" : 201,
                     "width" : 55,
