@@ -14,6 +14,7 @@ export class CustomEmojiObject{
     private _emoji? : string;
     private resize? : ItemScale;
     private additionalObjects : CustomEmojiItemObject[] = [];
+    private additionalObjects_back : CustomEmojiItemObject[] = [];
     private rotation? : number;
 
     constructor(id? : string, data?:  CustomEmojiData, emoji? : string) {
@@ -35,6 +36,11 @@ export class CustomEmojiObject{
             if (data.additional_parts){
                 data.additional_parts.forEach(item =>{
                     this.additionalObjects?.push(new CustomEmojiItemObject(item));
+                });
+            }
+            if (data.additional_parts_back){
+                data.additional_parts_back.forEach(item =>{
+                    this.additionalObjects_back?.push(new CustomEmojiItemObject(item));
                 });
             }
         }
@@ -70,11 +76,17 @@ export class CustomEmojiObject{
             combined.face =  this.face.inheritTraits(emoji.face,ignoreTags);
         }
         combined.additionalObjects = CustomEmojiItemObject.mergeItemLists(this.additionalObjects, emoji.additionalObjects);
+        combined.additionalObjects_back = CustomEmojiItemObject.mergeItemLists(this.additionalObjects_back, emoji.additionalObjects_back);
         return combined;
     }
 
     public async render(){
         const allInstructions : (mergeInfo | transformInfo) [] = [];
+        if (this.additionalObjects_back){
+            allInstructions.push(...(await CustomEmojiItemObject.getListedMergeInfo(
+                this.additionalObjects_back.map(value => {return {item : value};})
+            )));
+        }
         if (this.base_url != undefined){
             const base = new mergeInfo();
             base.src = this.base_url;
@@ -149,6 +161,7 @@ export class CustomEmojiObject{
         facesEqual &&
         (this.face != undefined && emoji.face != undefined && isResizeEqual(this.resize, emoji.resize)) &&
         CustomEmojiItemObject.itemListsEqual(this.additionalObjects,emoji.additionalObjects) &&
+        CustomEmojiItemObject.itemListsEqual(this.additionalObjects_back,emoji.additionalObjects_back) &&
         this.rotation == emoji.rotation;
         return isEqual;
     }

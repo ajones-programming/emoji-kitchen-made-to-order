@@ -15,6 +15,7 @@ export interface CustomEmojiData{
     additional_details_rect? : ItemScale;
     face? : FaceData;
     unique_face_rect? : ItemScale;
+    additional_parts_back?:EmojiItem[];
     additional_parts?:EmojiItem[];
     rotation?: number;
   }
@@ -52,6 +53,8 @@ export interface EmojiItem{
   auto_scale? : boolean;
   proportionate? : boolean;
   always_recessive?: boolean;
+  copy_vertically?:boolean;
+  copy_set_offset?:number;
 }
 
 export class ItemAnchor{

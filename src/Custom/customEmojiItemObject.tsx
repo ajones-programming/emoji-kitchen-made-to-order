@@ -14,6 +14,8 @@ export class CustomEmojiItemObject{
     private proportionate : boolean = false;
     private always_recessive : boolean = false;
     private numOfCopies : number = 1;
+    private copy_vertically : boolean = false;
+    private set_copy_offset?:number;
 
     constructor(item? : EmojiItem, copy? : CustomEmojiItemObject){
         if (item){
@@ -26,6 +28,9 @@ export class CustomEmojiItemObject{
             this.auto_scale = item.auto_scale ?? false;
             this.proportionate = item.proportionate ?? false;
             this.always_recessive = item.always_recessive ?? false;
+            this.copy_vertically = item.copy_vertically ?? false;
+            this.set_copy_offset = item.copy_set_offset;
+
         }
         if (copy){
             this.url = copy.url;
@@ -38,6 +43,8 @@ export class CustomEmojiItemObject{
             this.proportionate = copy.proportionate;
             this.always_recessive = copy.always_recessive;
             this.numOfCopies = copy.numOfCopies;
+            this.copy_vertically = copy.copy_vertically;
+            this.set_copy_offset = copy.set_copy_offset;
         }
     }
     public static InheritTraits(base : CustomEmojiItemObject | undefined, toBeInherited : CustomEmojiItemObject | undefined,
@@ -83,7 +90,9 @@ export class CustomEmojiItemObject{
         this.offset_y == item.offset_y &&
         this.scale_x == item.scale_x &&
         this.scale_y == item.scale_y &&
-        (includeCopies ? this.numOfCopies == item.numOfCopies : true);
+        (includeCopies ? this.numOfCopies == item.numOfCopies : true) &&
+        (includeCopies ? this.copy_vertically == item.copy_vertically : true) &&
+        (includeCopies ? this.set_copy_offset == item.set_copy_offset : true);
     }
 
     private getFullURL(category? : string){
@@ -116,6 +125,8 @@ export class CustomEmojiItemObject{
         info.width = width;
         info.height = height;
         info.copies = this.numOfCopies;
+        info.copy_vertically = this.copy_vertically;
+        info.set_copy_offset = this.set_copy_offset;
         return info;
     }
 

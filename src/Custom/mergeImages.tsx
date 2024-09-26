@@ -12,6 +12,8 @@ export class mergeInfo{
   width? : number;
   height? : number;
   copies? : number;
+  copy_vertically?:boolean;
+  set_copy_offset?:number;
   ignoreOffset ? : boolean;
   allowCropArea? : boolean;
 };
@@ -27,6 +29,8 @@ class imageObject{
   y : number = 0;
   ignoreOffset : boolean = false;
   copies : number = 1;
+  copy_vertically : boolean = false;
+  set_copy_offset ? : number;
 }
 
 
@@ -79,6 +83,8 @@ async function addImage(value : mergeInfo) : Promise<imageObject>{
           drawInfo.y = y;
           drawInfo.copies = copies;
           drawInfo.ignoreOffset = !!value.ignoreOffset;
+          drawInfo.copy_vertically = !!value.copy_vertically;
+          drawInfo.set_copy_offset = value.set_copy_offset;
           resolve(drawInfo);
         }
       img.onerror = reject
@@ -98,14 +104,29 @@ function Draw(imgdata : imageObject, context : CanvasRenderingContext2D){
       }
       //draw side by side
       else{
-        const width = imgdata.img.width;
-        var startingPoint = imgdata.x - (width/2) *(imgdata.copies - 1);
-        if (startingPoint + width*imgdata.copies > postCropSize()){
-          startingPoint = postCropSize() - width*imgdata.copies;
+        console.log("multiple copies of item");
+        if (imgdata.copy_vertically){
+          console.log("copying vertically");
+          const copy_offset =  imgdata.set_copy_offset ?? imgdata.img.height;
+          var startingPoint = imgdata.y - (copy_offset/2) *(imgdata.copies - 1);
+          if (startingPoint + copy_offset*imgdata.copies > postCropSize()){
+            startingPoint = postCropSize() - copy_offset*imgdata.copies;
+          }
+          for (var i : number = 0; i < imgdata.copies; i++){
+            context.drawImage(imgdata.img, imgdata.x + offset,startingPoint + (copy_offset * i) + offset);
+          }
         }
-        for (var i : number = 0; i < imgdata.copies; i++){
-          context.drawImage(imgdata.img, startingPoint + (width * i) + offset, imgdata.y + offset);
+        else{
+          const copy_offset = imgdata.set_copy_offset ?? imgdata.img.width;
+          var startingPoint = imgdata.x - (copy_offset/2) *(imgdata.copies - 1);
+          if (startingPoint + copy_offset*imgdata.copies > postCropSize()){
+            startingPoint = postCropSize() - copy_offset*imgdata.copies;
+          }
+          for (var i : number = 0; i < imgdata.copies; i++){
+            context.drawImage(imgdata.img, startingPoint + (copy_offset * i) + offset, imgdata.y + offset);
+          }
         }
+
       }
 
     }
