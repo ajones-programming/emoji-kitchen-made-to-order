@@ -257,18 +257,163 @@
                     "category": "smileys",
                     "eyes" : {
                         "url" : "smiling_eyes_uniform",
-                        "offset_y" : -4,
-                        "isDominant":true
+                        "offset_y" : -4
                     } ,
                     "mouth" : {
                         "url" : "long_smile",
-                        "offset_y" : -9
+                        "offset_y" : -9,
+                        "always_recessive":true
                     },
                     "cheeks" : {
                         "url" : "blush",
                         "auto_scale":true
                     }
                 }
+            }
+        },
+        {
+            "twemoji_name" : "smiling-face-with-halo",
+            "char": "😇",
+            "emojiCodepoint": "1f607",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "beaming_closed_eyes",
+                        "offset_y" : 26,
+                        "proportionate" : true,
+                        "always_recessive" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "long_smile",
+                        "offset_y" : -1,
+                        "always_recessive":true
+                    }
+                },
+                "additional_parts_back":[
+                    {
+                        "url": "smileys/halo-back",
+                        "copy_vertically" : true,
+                        "copy_set_offset" : 30
+                    }
+                ],
+                "additional_parts":[
+                    {
+                        "url": "smileys/halo-front",
+                        "offset_y":40,
+                        "copy_vertically":true,
+                        "copy_set_offset" : 30
+                    }
+                ]
+            }
+        },
+        {
+            "twemoji_name" : "smiling-face-with-hearts",
+            "char": "🥰",
+            "emojiCodepoint": "1f970",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "beaming_closed_eyes",
+                        "offset_y" : 26,
+                        "proportionate" : true,
+                        "always_recessive" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "long_smile",
+                        "offset_y" : -1,
+                        "always_recessive":true
+                    }
+                },
+                "additional_parts":[
+                    {
+                        "url": "smileys/many_hearts",
+                        "copy_set_offset" : 100
+                    }
+                ]
+            }
+        },
+        {
+            "twemoji_name" : "smiling-face-with-heart-eyes",
+            "char": "😍",
+            "emojiCodepoint":"1f60d",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "heart_eyes",
+                        "offset_y" : -45,
+                        "isDominant" : true,
+                        "proportionate" : true,
+                        "auto_scale":true
+                    } ,
+                    "mouth" : {
+                        "url" : "open_mouth_no_teeth",
+                        "auto_scale" : true,
+                        "always_recessive" : true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "star-struck",
+            "char": "🤩",
+            "emojiCodepoint":"1f929",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "stars",
+                        "offset_y" : -35,
+                        "isDominant" : true,
+                        "proportionate" : true,
+                        "auto_scale":true
+                    } ,
+                    "mouth" : {
+                        "url" : "open_smile",
+                        "always_recessive" : true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-blowing-a-kiss",
+            "char": "😘",
+            "emojiCodepoint":"1f618",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "wink",
+                        "offset_y": 21,
+                        "proportionate" : true
+                    } ,
+                    "eyebrows":{
+                        "url" : "wink_eyebrows",
+                        "offset_y" : -20,
+                        "proportionate" : true,
+                        "auto_scale" : true
+
+                    },
+                    "mouth" : {
+                        "url" : "kiss_mouth",
+                        "auto_scale" : true,
+                        "isDominant" : true,
+                        "offset_x" : 15,
+                        "offset_y" : 10
+                    }
+                },
+                "additional_parts":[{
+                    "url": "smileys/kiss_heart",
+                    "offset_x" : 210,
+                    "offset_y" : 170
+                }]
             }
         },
         {
@@ -300,7 +445,7 @@
                     "x" : 32,
                     "y" : 80,
                     "width" : 127,
-                    "height" : 175
+                    "height" : 195
                 },
                 "unique_face_rect" : {
                     "x" : 32,
