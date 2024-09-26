@@ -23,9 +23,10 @@ export interface FaceData{
   //split url into type and base, then get items to inherit?
   category : string;
   eyes? : EmojiItem;
-  eyeDecoration? : EmojiItem;
+  tears? : EmojiItem;
   eyebrows?: EmojiItem;
   mouth? : EmojiItem;
+  cheeks? : EmojiItem;
 }
 
 export class ItemScale{
