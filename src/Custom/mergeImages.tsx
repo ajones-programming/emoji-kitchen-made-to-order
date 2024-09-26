@@ -39,19 +39,16 @@ function processCommand(value : mergeInfo | transformInfo){
   }
 }
 
+//both width and height must be assigned? put them in some kind of pair?
 async function processImage(value : mergeInfo){
-  if (value.width != undefined && value.height != undefined){
+  if (value.width && value.height){
     if (value.allowCropArea){
-      if (value.width){
-        const oldWidth = value.width;
-        value.width *= preCropSize()/postCropSize();
-        value.x = (value.x ?? 0) - (value.width - oldWidth)/2;
-      }
-      if (value.height){
-        const oldHeight = value.height;
-        value.height *= preCropSize()/postCropSize();
-        value.y = (value.y ?? 0) - (value.height - oldHeight)/2;
-      }
+      const oldWidth = value.width;
+      value.width *= preCropSize()/postCropSize();
+      value.x = (value.x ?? 0) - (value.width - oldWidth)/2;
+      const oldHeight = value.height;
+      value.height *= preCropSize()/postCropSize();
+      value.y = (value.y ?? 0) - (value.height - oldHeight)/2;
 
     }
     value.src = await resizeImage(value.src, value.width, value.height);
