@@ -165,6 +165,113 @@
             }
         },
         {
+            "twemoji_name" : "face-with-tears-of-joy",
+            "char": "😂",
+            "emojiCodepoint":"1f602",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "smiling_eyes",
+                        "offset_y" : 25,
+                        "isDominant" : true,
+                        "proportionate" : true
+                    },
+                    "eyebrows":{
+                        "url" : "laughing_crying_eyebrows",
+                        "offset_y" : -10,
+                        "isDominant" : true,
+                        "proportionate" : true,
+                        "auto_scale" : true
+
+                    },
+                    "tears":{
+                        "url": "laughing_crying_tears",
+                        "offset_y": 35,
+                        "proportionate" : true,
+                        "auto_scale" : true
+                    },
+                    "mouth" : {
+                        "url" : "open_smile",
+                        "offset_y" : 8,
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "slightly-smiling-face",
+            "char": "🙂",
+            "emojiCodepoint":"1f642",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "default_eyes"
+                    } ,
+                    "mouth" : {
+                        "url" : "slight_smile",
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "winking-face",
+            "char": "😉",
+            "emojiCodepoint":"1f609",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "wink",
+                        "offset_y": 21,
+                        "proportionate" : true,
+                        "isDominant" : true
+                    } ,
+                    "eyebrows":{
+                        "url" : "wink_eyebrows",
+                        "offset_y" : -20,
+                        "isDominant" : true,
+                        "proportionate" : true,
+                        "auto_scale" : true
+
+                    },
+                    "mouth" : {
+                        "url" : "small_smile",
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "smiling-face-with-smiling-eyes",
+            "char": "😊",
+            "emojiCodepoint":"1f60a",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "smiling_eyes_uniform",
+                        "offset_y" : -4,
+                        "isDominant":true
+                    } ,
+                    "mouth" : {
+                        "url" : "long_smile",
+                        "offset_y" : -9
+                    },
+                    "cheeks" : {
+                        "url" : "blush",
+                        "auto_scale":true
+                    }
+                }
+            }
+        },
+        {
             "twemoji_name" : "slightly-frowning-face",
             "char": "🙁",
             "emojiCodepoint":"1f641",
