@@ -10,11 +10,12 @@ export class CustomEmojiObject{
     private base_details? : EmojiFlatDetail;
     private face? : CustomFaceObject;
     private _id? : string;
+    private _emoji? : string;
     private resize? : ItemScale;
     private additionalObjects : CustomEmojiItemObject[] = [];
     private rotation? : number;
 
-    constructor(id? : string, data?:  CustomEmojiData) {
+    constructor(id? : string, data?:  CustomEmojiData, emoji? : string) {
         if (data){
             this.base_url =  "./assets/custom/" + (data.base_url ?? "") + ".png";
 
@@ -34,10 +35,16 @@ export class CustomEmojiObject{
         if (id){
             this._id = id;
         }
+        if (emoji){
+            this._emoji = emoji;
+        }
     }
 
     public inherit_traits( emoji : CustomEmojiObject) : CustomEmojiObject{
         var combined = new CustomEmojiObject(this.id() + emoji.id());
+        if (this._emoji || emoji._emoji){
+            combined._emoji = (this._emoji ?? "") + (emoji._emoji ?? "");
+        }
         combined.base_url = this.base_url;
         combined.resize = this.resize;
         if (this.base_details && emoji.base_details){

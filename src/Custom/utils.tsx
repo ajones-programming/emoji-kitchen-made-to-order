@@ -33,7 +33,7 @@ export function toPrintableEmoji(emojiCodepoint: string): string {
  */
 export function getNotoEmojiUrl(emojiCodepoint: string): string {
     const data = getEmojiData(emojiCodepoint);
-    const url =  data?.name + "_" + (data?.emojiCodepoint ?? "");
+    const url =  data?.twemoji_name + "_" + (data?.emojiCodepoint ?? "");
     return  "https://em-content.zobj.net/source/twitter/376/" + url + ".png";
 }
 

@@ -27,9 +27,9 @@ export default function LeftEmojiList({
 
     return (
       <div
-        key={data.name}
+        key={data?.twemoji_name}
         onContextMenu={
-          selectedLeftEmoji === data.emojiCodepoint
+          selectedLeftEmoji === data?.emojiCodepoint
             ? handleBulkImageDownloadMenuOpen
             : () => {}
         }
@@ -40,7 +40,7 @@ export default function LeftEmojiList({
             p: 0.5,
             borderRadius: 2,
             backgroundColor: (theme) =>
-              selectedLeftEmoji === data.emojiCodepoint
+              selectedLeftEmoji === data?.emojiCodepoint
                 ? theme.palette.action.selected
                 : theme.palette.background.default,
             "&:hover": {
@@ -52,8 +52,8 @@ export default function LeftEmojiList({
             loading="lazy"
             width="32px"
             height="32px"
-            alt={data.name}
-            src={getNotoEmojiUrl(data.emojiCodepoint ?? "")}
+            alt={data?.twemoji_name}
+            src={getNotoEmojiUrl(data?.emojiCodepoint ?? "")}
           />
         </ImageListItem>
       </div>

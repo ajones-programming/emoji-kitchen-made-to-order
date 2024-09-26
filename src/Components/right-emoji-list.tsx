@@ -40,7 +40,7 @@ export default function RightEmojiList({
     }
 
     return (
-      <div key={data.name}>
+      <div key={data?.twemoji_name}>
         <ImageListItem
           onClick={(event) =>
             hasSelectedLeftEmoji && isValidCombo
@@ -74,7 +74,7 @@ export default function RightEmojiList({
             loading="lazy"
             width="32px"
             height="32px"
-            alt={data.name}
+            alt={data?.twemoji_name}
             src={getNotoEmojiUrl(emojiCodepoint)}
           />
         </ImageListItem>

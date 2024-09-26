@@ -3,12 +3,10 @@ export interface EmojiMetadata {
   }
 
 export interface EmojiData{
-    name: string;
-    emoji : string;
+    twemoji_name: string;
+    char : string;
     emojiCodepoint : string;
     data : CustomEmojiData;
-    resize? : ItemScale;
-
   }
 
 export interface CustomEmojiData{

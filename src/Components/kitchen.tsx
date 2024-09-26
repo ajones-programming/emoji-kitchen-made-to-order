@@ -248,8 +248,8 @@ export default function Kitchen() {
 
     const leftEmojiData = getEmojiData(selectedLeftEmoji);
     const rightEmojiData = getEmojiData(selectedRightEmoji);
-    const leftEmoji = new CustomEmojiObject(selectedLeftEmoji,leftEmojiData?.data);
-    const rightEmoji = new CustomEmojiObject(selectedRightEmoji,rightEmojiData?.data);
+    const leftEmoji = new CustomEmojiObject(selectedLeftEmoji,leftEmojiData?.data,leftEmojiData?.char);
+    const rightEmoji = new CustomEmojiObject(selectedRightEmoji,rightEmojiData?.data,rightEmojiData?.char);
     const leftEmojiURL = getNotoEmojiUrl(selectedLeftEmoji);
     const rightEmojiURL = getNotoEmojiUrl(selectedRightEmoji);
 
