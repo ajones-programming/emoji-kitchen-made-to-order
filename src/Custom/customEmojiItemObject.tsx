@@ -40,24 +40,25 @@ export class CustomEmojiItemObject{
             this.numOfCopies = copy.numOfCopies;
         }
     }
-    public static InheritTraits(base : CustomEmojiItemObject | undefined, toBeInherited : CustomEmojiItemObject | undefined){
-        return (base && toBeInherited) ? base.inheritTraits(toBeInherited) : (base ?? toBeInherited);
+    public static InheritTraits(base : CustomEmojiItemObject | undefined, toBeInherited : CustomEmojiItemObject | undefined,
+        ignoreTags : boolean = false){
+        return (base && toBeInherited) ? base.inheritTraits(toBeInherited, ignoreTags) : (base ?? toBeInherited);
     }
 
-    private inheritTraits(item : CustomEmojiItemObject){
+    private inheritTraits(item : CustomEmojiItemObject, ignoreTags : boolean = false){
 
         var newItem : CustomEmojiItemObject = new CustomEmojiItemObject();
         const itemURLEqual = this.url == item.url;
-        const thisDominant = item.always_recessive || (this.isDominant && !item.isDominant);
+        const thisDominant = (item.always_recessive && !ignoreTags) || (this.isDominant && !item.isDominant);
         const dominantItem = thisDominant ? this : item ;
         const nonDominantItem = thisDominant ? item : this;
         newItem.url = dominantItem.url;
-        newItem.offset_x = dominantItem.offset_x + (nonDominantItem.always_recessive ? 0 : nonDominantItem.offset_x);//this.offset_x + (item.ignore_maths ? 0 : item.offset_x );
-        newItem.offset_y = dominantItem.offset_y + (nonDominantItem.always_recessive ? 0 : nonDominantItem.offset_y);
-        newItem.scale_x = dominantItem.scale_x * (nonDominantItem.always_recessive ? 1.0 : nonDominantItem.scale_x);
-        newItem.scale_y = dominantItem.scale_y * (nonDominantItem.always_recessive ? 1.0 : nonDominantItem.scale_y);
+        newItem.offset_x = dominantItem.offset_x + (nonDominantItem.always_recessive&&!ignoreTags ? 0 : nonDominantItem.offset_x);//this.offset_x + (item.ignore_maths ? 0 : item.offset_x );
+        newItem.offset_y = dominantItem.offset_y + (nonDominantItem.always_recessive&&!ignoreTags ? 0 : nonDominantItem.offset_y);
+        newItem.scale_x = dominantItem.scale_x * (nonDominantItem.always_recessive&&!ignoreTags ? 1.0 : nonDominantItem.scale_x);
+        newItem.scale_y = dominantItem.scale_y * (nonDominantItem.always_recessive&&!ignoreTags ? 1.0 : nonDominantItem.scale_y);
         //this is not correct, it should be able to scale more somehow, but idk how
-        if (itemURLEqual && newItem.scale_x == 1.0 && newItem.scale_y == 1.0 && (this.auto_scale && item.auto_scale) ){
+        if (itemURLEqual && newItem.scale_x == 1.0 && newItem.scale_y == 1.0 && ((this.auto_scale && item.auto_scale) || ignoreTags) ){
             newItem.scale_x *= 1.25;
             newItem.scale_y *= 1.25;
         }

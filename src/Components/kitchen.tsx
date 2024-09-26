@@ -277,6 +277,20 @@ export default function Kitchen() {
         renderRL = true;
       }
     }
+    //go crazy go stupid
+    if (!renderLR && !renderRL){
+      combined_lr = leftEmoji.inherit_traits(rightEmoji, true);
+      combined_rl = rightEmoji.inherit_traits(leftEmoji, true);
+      if (!combined_lr.isEqual(leftEmoji) && !combined_lr.isEqual(rightEmoji)){
+        combined_lr.render();
+        renderLR = true;
+      }
+      if (!combined_rl.isEqual(leftEmoji) && !combined_rl.isEqual(rightEmoji) && (combined_lr ? !combined_lr.isEqual(combined_rl) : true)){
+        combined_rl.render();
+        renderRL = true;
+      }
+
+    }
 
     const style1 = {
         margin: "20px",
