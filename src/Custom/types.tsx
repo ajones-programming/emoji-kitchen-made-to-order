@@ -28,6 +28,7 @@ export interface FaceData{
   eyebrows?: EmojiItem;
   mouth? : EmojiItem;
   cheeks? : EmojiItem;
+  additional_parts?:EmojiItem[];
 }
 
 export class ItemScale{
