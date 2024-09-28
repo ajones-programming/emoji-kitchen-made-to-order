@@ -10,6 +10,7 @@ export class CustomFaceObject{
     private tears? : CustomEmojiItemObject;
     private mouth? : CustomEmojiItemObject;
     private cheeks? : CustomEmojiItemObject;
+    private additionalObjects : CustomEmojiItemObject[] = [];
 
     constructor(face? : FaceData){
         if (face){
@@ -19,6 +20,11 @@ export class CustomFaceObject{
             this.eyebrows = face.eyebrows ? new CustomEmojiItemObject(face.eyebrows) : undefined;
             this.tears = face.tears ? new CustomEmojiItemObject(face.tears) : undefined;
             this.cheeks = face.cheeks ? new CustomEmojiItemObject(face.cheeks) : undefined;
+            if (face.additional_parts){
+                face.additional_parts.forEach(item =>{
+                    this.additionalObjects.push(new CustomEmojiItemObject(item));
+                });
+            }
         }
 
     }
@@ -31,6 +37,7 @@ export class CustomFaceObject{
         newFace.mouth = CustomEmojiItemObject.InheritTraits(this.mouth, face.mouth, ignoreTags);
         newFace.tears = CustomEmojiItemObject.InheritTraits(this.tears, face.tears, ignoreTags);
         newFace.cheeks = CustomEmojiItemObject.InheritTraits(this.cheeks, face.cheeks, ignoreTags);
+        newFace.additionalObjects = CustomEmojiItemObject.mergeItemLists(this.additionalObjects, face.additionalObjects);
         return newFace;
     }
 
@@ -40,7 +47,8 @@ export class CustomFaceObject{
         CustomEmojiItemObject.IsEqual(this.eyebrows, face.eyebrows) &&
         CustomEmojiItemObject.IsEqual(this.mouth, face.mouth) &&
         CustomEmojiItemObject.IsEqual(this.cheeks, face.cheeks) &&
-        CustomEmojiItemObject.IsEqual(this.tears, face.tears);
+        CustomEmojiItemObject.IsEqual(this.tears, face.tears) &&
+        CustomEmojiItemObject.itemListsEqual(this.additionalObjects,face.additionalObjects);
     }
 
     public async Render(){
@@ -59,6 +67,11 @@ export class CustomFaceObject{
         }
         if (this.tears){
             list.push(await this.tears.toMergeInfo({x: 150, y: 142 + (this.eyes?.getOffset_y() ?? 0)}, this.category));
+        }
+        if (this.additionalObjects){
+            list.push(...(await CustomEmojiItemObject.getListedMergeInfo(
+                this.additionalObjects.map(value => {return {item : value};})
+            )));
         }
         return await mergeImagesCustom(list);
     }
