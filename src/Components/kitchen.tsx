@@ -266,6 +266,13 @@ export default function Kitchen() {
         combined_lr.render();
         renderLR = true;
       }
+      else{
+        combined_lr = leftEmoji.inherit_traits(rightEmoji,true);
+        if (!combined_lr.isEqual(leftEmoji) && !combined_lr.isEqual(rightEmoji)){
+          combined_lr.render();
+          renderLR = true;
+        }
+      }
 
     }
 
