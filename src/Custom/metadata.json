@@ -52,7 +52,6 @@
                     "eyes" : {
                         "url" : "smiling_eyes",
                         "offset_y" : 25,
-                        "isDominant" : true,
                         "proportionate" : true
                     } ,
                     "mouth" : {
@@ -79,7 +78,6 @@
                     "mouth" : {
                         "url" : "grin",
                         "offset_y" : 9,
-                        "isDominant" : true,
                         "auto_scale" : true
                     }
                 }
@@ -96,7 +94,6 @@
                     "eyes" : {
                         "url" : "squinting_eyes",
                         "offset_y" : 21,
-                        "isDominant" : true,
                         "proportionate" : true
                     } ,
                     "mouth" : {
@@ -117,13 +114,11 @@
                     "category": "smileys",
                     "eyes" : {
                         "url" : "smiling_eyes",
-                        "offset_y" : 25,
-                        "always_recessive" : true
+                        "offset_y" : 25
                     } ,
                     "mouth" : {
                         "url" : "open_smile",
-                        "offset_y" : 8,
-                        "always_recessive" : true
+                        "offset_y" : 8
                     }
                 },
                 "additional_parts":[{
@@ -145,7 +140,6 @@
                         "url" : "squinting_eyes",
                         "offset_y" : -5,
                         "proportionate" : true,
-                        "always_recessive" : true,
                         "auto_scale" : true
                     },
                     "tears":{
@@ -175,7 +169,6 @@
                     "eyes" : {
                         "url" : "smiling_eyes",
                         "offset_y" : 25,
-                        "isDominant" : true,
                         "proportionate" : true
                     },
                     "eyebrows":{
@@ -229,8 +222,7 @@
                     "eyes" : {
                         "url" : "wink",
                         "offset_y": 21,
-                        "proportionate" : true,
-                        "isDominant" : true
+                        "proportionate" : true
                     } ,
                     "eyebrows":{
                         "url" : "wink_eyebrows",
@@ -261,8 +253,7 @@
                     } ,
                     "mouth" : {
                         "url" : "long_smile",
-                        "offset_y" : -9,
-                        "always_recessive":true
+                        "offset_y" : -9
                     },
                     "cheeks" : {
                         "url" : "blush",
@@ -282,13 +273,11 @@
                     "eyes" : {
                         "url" : "beaming_closed_eyes",
                         "offset_y" : 26,
-                        "proportionate" : true,
-                        "always_recessive" : true
+                        "proportionate" : true
                     } ,
                     "mouth" : {
                         "url" : "long_smile",
-                        "offset_y" : -1,
-                        "always_recessive":true
+                        "offset_y" : -1
                     }
                 },
                 "additional_parts_back":[
@@ -319,13 +308,11 @@
                     "eyes" : {
                         "url" : "beaming_closed_eyes",
                         "offset_y" : 26,
-                        "proportionate" : true,
-                        "always_recessive" : true
+                        "proportionate" : true
                     } ,
                     "mouth" : {
                         "url" : "long_smile",
-                        "offset_y" : -1,
-                        "always_recessive":true
+                        "offset_y" : -1
                     }
                 },
                 "additional_parts":[
@@ -347,14 +334,12 @@
                     "eyes" : {
                         "url" : "heart_eyes",
                         "offset_y" : -45,
-                        "isDominant" : true,
                         "proportionate" : true,
                         "auto_scale":true
                     } ,
                     "mouth" : {
                         "url" : "open_mouth_no_teeth",
-                        "auto_scale" : true,
-                        "always_recessive" : true
+                        "auto_scale" : true
                     }
                 }
             }
@@ -370,13 +355,11 @@
                     "eyes" : {
                         "url" : "stars",
                         "offset_y" : -35,
-                        "isDominant" : true,
                         "proportionate" : true,
                         "auto_scale":true
                     } ,
                     "mouth" : {
-                        "url" : "open_smile",
-                        "always_recessive" : true
+                        "url" : "open_smile"
                     }
                 }
             }
@@ -428,7 +411,6 @@
                     "mouth" : {
                         "url" : "kiss_mouth",
                         "auto_scale" : true,
-                        "isDominant" : true,
                         "offset_y" : 10
                     }
                 }
@@ -468,8 +450,7 @@
                     "eyes" : {
                         "url" : "smirk_eyes",
                         "offset_y": 37,
-                        "proportionate" : true,
-                        "isDominant" : true
+                        "proportionate" : true
                     } ,
                     "eyebrows":{
                         "url" : "smirk_eyebrows",
@@ -480,7 +461,6 @@
                     },
                     "mouth" : {
                         "url" : "smirk_mouth",
-                        "always_recessive":true,
                         "auto_scale" : true
                     }
                 }
@@ -534,8 +514,7 @@
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "wink_large_eye",
-                        "isDominant":true
+                        "url" : "wink_large_eye"
                     },
                     "mouth" : {
                         "url" : "mouth_tongue",
@@ -555,7 +534,6 @@
                     "category": "smileys",
                     "eyes" : {
                         "url" : "zany_eyes",
-                        "isDominant":true,
                         "auto_scale":true,
                         "offset_y":-10
                     },
@@ -583,7 +561,6 @@
                     } ,
                     "mouth" : {
                         "url" : "mouth_tongue",
-                        "isDominant":true,
                         "offset_y" : 22,
                         "auto_scale":true
                     }

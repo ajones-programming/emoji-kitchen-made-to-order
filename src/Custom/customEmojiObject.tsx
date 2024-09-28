@@ -52,10 +52,10 @@ export class CustomEmojiObject{
         }
     }
 
-    public inherit_traits( emoji : CustomEmojiObject, ignoreTags : boolean = false) : CustomEmojiObject{
-        var combined = new CustomEmojiObject(this.id() + emoji.id());
+    public inherit_traits( emoji : CustomEmojiObject, ignoreTags : boolean = false, swap : boolean = true) : CustomEmojiObject{
+        var combined = new CustomEmojiObject(this.id() + (swap ? "" : "(" + this.id() + ")")+ emoji.id());
         if (this._emoji || emoji._emoji){
-            combined._emoji = (this._emoji ?? "") + (emoji._emoji ?? "");
+            combined._emoji = (this._emoji ?? "") + (swap ? "" :"(" + (this._emoji??"") + ")" ) + (emoji._emoji ?? "");
         }
         combined.base_url = this.base_url;
         combined.resize = this.resize;
@@ -73,7 +73,7 @@ export class CustomEmojiObject{
             combined.face = this.face ?? emoji.face;
         }
         else{
-            combined.face =  this.face.inheritTraits(emoji.face,ignoreTags);
+            combined.face =  this.face.inheritTraits(emoji.face,ignoreTags, swap);
         }
         combined.additionalObjects = CustomEmojiItemObject.mergeItemLists(this.additionalObjects, emoji.additionalObjects);
         combined.additionalObjects_back = CustomEmojiItemObject.mergeItemLists(this.additionalObjects_back, emoji.additionalObjects_back);

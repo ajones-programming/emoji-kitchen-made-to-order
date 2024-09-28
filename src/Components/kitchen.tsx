@@ -254,48 +254,47 @@ export default function Kitchen() {
     const rightEmojiURL = getNotoEmojiUrl(selectedRightEmoji);
 
     var renderLR = false;
+    var renderLLR = false;
     var renderRL = false;
+    var renderRRL = false;
 
-    // leftEmoji.render();
-    // rightEmoji.render();
-
+    leftEmoji.render();
+    rightEmoji.render();
     var combined_lr : CustomEmojiObject | undefined;
+    var combined_llr : CustomEmojiObject | undefined;
+    var combined_rl : CustomEmojiObject | undefined;
+    var combined_rrl : CustomEmojiObject | undefined;
     if (leftEmoji != undefined && rightEmoji != undefined){
       combined_lr = leftEmoji.inherit_traits(rightEmoji);
-      if (!combined_lr.isEqual(leftEmoji) && !combined_lr.isEqual(rightEmoji)){
-        combined_lr.render();
-        renderLR = true;
-      }
-      else{
-        combined_lr = leftEmoji.inherit_traits(rightEmoji,true);
-        if (!combined_lr.isEqual(leftEmoji) && !combined_lr.isEqual(rightEmoji)){
-          combined_lr.render();
-          renderLR = true;
-        }
-      }
-
-    }
-
-    var combined_rl : CustomEmojiObject | undefined;
-    if (leftEmoji != undefined && rightEmoji != undefined && selectedLeftEmoji != selectedRightEmoji){
+      combined_llr = leftEmoji.inherit_traits(rightEmoji,false,false);
       combined_rl = rightEmoji.inherit_traits(leftEmoji);
-      if (!combined_rl.isEqual(leftEmoji) && !combined_rl.isEqual(rightEmoji) && (combined_lr ? !combined_lr.isEqual(combined_rl) : true)){
-        combined_rl.render();
-        renderRL = true;
+      combined_rrl = rightEmoji.inherit_traits(leftEmoji,false,false);
+
+      renderLR = !combined_lr.isEqual(leftEmoji) && !combined_lr.isEqual(rightEmoji);
+      renderLLR = !combined_llr.isEqual(leftEmoji) && !combined_llr.isEqual(rightEmoji) && !combined_llr.isEqual(combined_lr);
+      renderRL = !combined_rl.isEqual(leftEmoji) && !combined_rl.isEqual(rightEmoji)
+            && !combined_rl.isEqual(combined_lr) && !combined_rl.isEqual(combined_llr);
+      renderRRL = !combined_rrl.isEqual(leftEmoji) && !combined_rrl.isEqual(rightEmoji)
+            && !combined_rrl.isEqual(combined_lr) && !combined_rrl.isEqual(combined_llr) && !combined_rrl.isEqual(combined_rl);
+
+      if (!renderLR && !renderLLR && !renderRL && !renderRRL){
+        combined_lr = leftEmoji.inherit_traits(rightEmoji,true);
+        combined_llr = leftEmoji.inherit_traits(rightEmoji,true,false);
+        combined_rl = rightEmoji.inherit_traits(leftEmoji,true);
+        combined_rrl = rightEmoji.inherit_traits(leftEmoji,true,false);
+
+        renderLR = !combined_lr.isEqual(leftEmoji) && !combined_lr.isEqual(rightEmoji);
+        renderLLR = !combined_llr.isEqual(leftEmoji) && !combined_llr.isEqual(rightEmoji) && !combined_llr.isEqual(combined_lr);
+        renderRL = !combined_rl.isEqual(leftEmoji) && !combined_rl.isEqual(rightEmoji)
+              && !combined_rl.isEqual(combined_lr) && !combined_rl.isEqual(combined_llr);
+        renderRRL = !combined_rrl.isEqual(leftEmoji) && !combined_rrl.isEqual(rightEmoji)
+              && !combined_rrl.isEqual(combined_lr) && !combined_rrl.isEqual(combined_llr) && !combined_rrl.isEqual(combined_rl);
       }
-    }
-    //go crazy go stupid
-    if (!renderLR && !renderRL){
-      combined_lr = leftEmoji.inherit_traits(rightEmoji, true);
-      combined_rl = rightEmoji.inherit_traits(leftEmoji, true);
-      if (!combined_lr.isEqual(leftEmoji) && !combined_lr.isEqual(rightEmoji)){
-        combined_lr.render();
-        renderLR = true;
-      }
-      if (!combined_rl.isEqual(leftEmoji) && !combined_rl.isEqual(rightEmoji) && (combined_lr ? !combined_lr.isEqual(combined_rl) : true)){
-        combined_rl.render();
-        renderRL = true;
-      }
+
+      if (renderLR){combined_lr?.render();}
+      if (renderLLR){combined_llr?.render();}
+      if (renderRL){combined_rl?.render();}
+      if (renderRRL){combined_rrl?.render();}
 
     }
 
@@ -328,8 +327,14 @@ export default function Kitchen() {
             {renderLR && combined_lr != undefined &&
               <img alt={combined_lr.id()} id={combined_lr.id()} width="150px" height="150px" style={imgStyle}/>
             }
+            {renderLLR && combined_llr != undefined &&
+              <img alt={combined_llr.id()} id={combined_llr.id()} width="150px" height="150px" style={imgStyle}/>
+            }
             {renderRL && combined_rl != undefined &&
               <img alt={combined_rl.id()} id={combined_rl?.id()} width="150px" height="150px" style={imgStyle}/>
+            }
+            {renderRRL && combined_rrl != undefined &&
+              <img alt={combined_rrl.id()} id={combined_rrl.id()} width="150px" height="150px" style={imgStyle}/>
             }
             {!renderRL && !renderLR &&
               <div>

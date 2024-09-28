@@ -156,7 +156,7 @@ async function TransformCanvas(transformInfo : transformInfo, canvas : HTMLCanva
 }
 
 //cant i just do this to merge images without a dependency lmao
-export async function mergeImagesCustom(data : (mergeInfo | transformInfo)[], crop : boolean = false) : Promise<string>{
+export async function mergeImagesCustom(data : (mergeInfo | transformInfo)[], crop : boolean = false, crop_using_angle : boolean = false) : Promise<string>{
   //create images
   //add urls
   //await canvas lmao
@@ -182,7 +182,11 @@ export async function mergeImagesCustom(data : (mergeInfo | transformInfo)[], cr
       return undefined;
   }));
   if (crop){
-    return await cropImage(canvas.toDataURL(), postCropSize(), postCropSize(), preCropSize(), preCropSize());
+    var size = postCropSize();
+    if (crop_using_angle){
+      size *= Math.SQRT2;
+    }
+    return await cropImage(canvas.toDataURL(), size, size, preCropSize(), preCropSize());
 
   }
   return canvas.toDataURL();

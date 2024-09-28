@@ -84,12 +84,16 @@ export class CustomEmojiItemObject{
         return (item1 && item2) ? item1.isEqual(item2) : (!item1 && !item2);
     }
 
+    private significantDiff(x : number,y : number,boundary:number){
+        return Math.abs(x-y) > boundary;
+    }
+
     private isEqual(item : CustomEmojiItemObject, includeCopies = true): boolean{
         return this.url == item.url &&
-        this.offset_x == item.offset_x &&
-        this.offset_y == item.offset_y &&
-        this.scale_x == item.scale_x &&
-        this.scale_y == item.scale_y &&
+        !this.significantDiff(this.offset_x ?? 0, item.offset_x ?? 0, 18) &&
+        !this.significantDiff(this.offset_y ?? 0, item.offset_y ?? 0, 18) &&
+        !this.significantDiff(this.scale_x ?? 1, item.scale_x ?? 1, 0.05) &&
+        !this.significantDiff(this.scale_y ?? 1, item.scale_y ?? 1, 0.05) &&
         (includeCopies ? this.numOfCopies == item.numOfCopies : true) &&
         (includeCopies ? this.copy_vertically == item.copy_vertically : true) &&
         (includeCopies ? this.set_copy_offset == item.set_copy_offset : true);

@@ -29,11 +29,12 @@ export class CustomFaceObject{
 
     }
 
-    public inheritTraits(face : CustomFaceObject, ignoreTags : boolean = false) : CustomFaceObject{
+    public inheritTraits(face : CustomFaceObject, ignoreTags : boolean = false, swap : boolean = true) : CustomFaceObject{
         const newFace : CustomFaceObject = new CustomFaceObject();
         newFace.category = this.category;
         newFace.eyebrows = CustomEmojiItemObject.InheritTraits(this.eyebrows, face.eyebrows, ignoreTags);
-        newFace.eyes = CustomEmojiItemObject.InheritTraits(this.eyes, face.eyes, ignoreTags);
+        //swap for eyes?
+        newFace.eyes = CustomEmojiItemObject.InheritTraits(swap? face.eyes : this.eyes, swap? this.eyes : face.eyes, ignoreTags);
         newFace.mouth = CustomEmojiItemObject.InheritTraits(this.mouth, face.mouth, ignoreTags);
         newFace.tears = CustomEmojiItemObject.InheritTraits(this.tears, face.tears, ignoreTags);
         newFace.cheeks = CustomEmojiItemObject.InheritTraits(this.cheeks, face.cheeks, ignoreTags);
