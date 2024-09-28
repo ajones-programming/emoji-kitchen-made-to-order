@@ -404,8 +404,6 @@
                     "mouth" : {
                         "url" : "kiss_mouth",
                         "auto_scale" : true,
-                        "isDominant" : true,
-                        "offset_x" : 15,
                         "offset_y" : 10
                     }
                 },
@@ -414,6 +412,182 @@
                     "offset_x" : 210,
                     "offset_y" : 170
                 }]
+            }
+        },
+        {
+            "twemoji_name" : "kissing-face",
+            "char": "😗",
+            "emojiCodepoint":"1f617",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "default_eyes"
+                    } ,
+                    "mouth" : {
+                        "url" : "kiss_mouth",
+                        "auto_scale" : true,
+                        "isDominant" : true,
+                        "offset_y" : 10
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "smiling-face-with-tear",
+            "char": "🥲",
+            "emojiCodepoint":"1f972",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "default_eyes"
+                    } ,
+                    "mouth" : {
+                        "url" : "long_smile",
+                        "auto_scale" : true
+                    },
+                    "additional_parts":[{
+                        "url": "smileys/sweat_droplet",
+                        "offset_x" : 165,
+                        "offset_y" : 144
+                    }]
+                }
+            }
+        },
+        {
+            "twemoji_name" : "smirking-face",
+            "char": "😏",
+            "emojiCodepoint":"1f60f",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "smirk_eyes",
+                        "offset_y": 37,
+                        "proportionate" : true,
+                        "isDominant" : true
+                    } ,
+                    "eyebrows":{
+                        "url" : "smirk_eyebrows",
+                        "offset_y" : -10,
+                        "proportionate" : true,
+                        "auto_scale" : true
+
+                    },
+                    "mouth" : {
+                        "url" : "smirk_mouth",
+                        "always_recessive":true,
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-savoring-food",
+            "char": "😋",
+            "emojiCodepoint":"1f60b",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "smiling_eyes_uniform",
+                        "offset_y" : 15
+                    } ,
+                    "mouth" : {
+                        "url" : "lick_lips",
+                        "offset_y" : 22
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-with-tongue",
+            "char": "😛",
+            "emojiCodepoint":"1f61b",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "default_eyes",
+                        "offset_y" : 5
+                    },
+                    "mouth" : {
+                        "url" : "mouth_tongue",
+                        "offset_y" : 22,
+                        "auto_scale":true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "winking-face-with-tongue",
+            "char": "😜",
+            "emojiCodepoint":"1f61c",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "wink_large_eye",
+                        "isDominant":true
+                    },
+                    "mouth" : {
+                        "url" : "mouth_tongue",
+                        "offset_y" : 22,
+                        "auto_scale":true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "zany-face",
+            "char": "🤪",
+            "emojiCodepoint":"1f92a",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "zany_eyes",
+                        "isDominant":true,
+                        "auto_scale":true,
+                        "offset_y":-10
+                    },
+                    "mouth" : {
+                        "url" : "tongue_side",
+                        "offset_y" : 22,
+                        "auto_scale":true
+                    }
+                },
+                "rotation": -12
+            }
+        },
+        {
+            "twemoji_name" : "squinting-face-with-tongue",
+            "char": "😝",
+            "emojiCodepoint":"1f61d",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "squinting_eyes",
+                        "offset_y" : 21,
+                        "proportionate" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "mouth_tongue",
+                        "isDominant":true,
+                        "offset_y" : 22,
+                        "auto_scale":true
+                    }
+                }
             }
         },
         {
@@ -426,7 +600,7 @@
                     "category": "smileys",
                     "eyes" : {
                         "url" : "default_eyes"
-                    } ,
+                    },
                     "mouth" : {
                         "url" : "slight_frown",
                         "auto_scale" : true
