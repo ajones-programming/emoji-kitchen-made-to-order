@@ -1,7 +1,8 @@
 import emojiMetadata from "./metadata.json";
-import { EmojiData, EmojiMetadata } from "./types";
+import { EmojiData, EmojiMetadata, FaceObjectPlacement } from "./types";
 
 var map : Map<string, EmojiData> | undefined;
+var facemap : Map<string, FaceObjectPlacement> | undefined;
 var supportedEmoji : Array<string> | undefined;
 
 function createEmojiData(){
@@ -17,6 +18,14 @@ function createEmojiData(){
     map?.set(value.emojiCodepoint??"",value);
   });
   // Object.entries((emojiMetadata as EmojiMetadata).data).forEach(value => {map?.set(value[0],value[1]);});
+}
+
+function createFaceData(){
+  if (facemap){
+    return;
+  }
+  facemap = new Map<string, FaceObjectPlacement>();
+  ((emojiMetadata as EmojiMetadata).faceObjectInformation).forEach(value => facemap?.set(value.name,value));
 }
 
 /**
@@ -45,4 +54,9 @@ export function getEmojiData(emojiCodepoint: string): EmojiData  | undefined{
 export function getSupportedEmoji(): Array<string> {
   createEmojiData();
   return supportedEmoji ?? new Array<string>();
+}
+
+export function getFaceObjectPlacement(name : string){
+  createFaceData();
+  return facemap?.get(name);
 }

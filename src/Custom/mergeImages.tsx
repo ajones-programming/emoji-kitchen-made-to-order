@@ -1,6 +1,7 @@
 //somehow use this for faces? no source?
 
 import { cropImage, resizeImage, rotate } from "./transformImages";
+import { ItemScale } from "./types";
 
 function preCropSize(){return 500;}
 export function postCropSize(){return 300;}
@@ -16,6 +17,21 @@ export class mergeInfo{
   set_copy_offset?:number;
   ignoreOffset ? : boolean;
   allowCropArea? : boolean;
+
+  constructor(src : string, resize? : ItemScale){
+    this.src = src;
+    if (resize){
+      this.addResize(resize);
+    }
+  }
+
+  public addResize(resize : ItemScale)
+  {
+    this.x = resize.x;
+    this.y = resize.y;
+    this.width = resize.width;
+    this.height = resize.height;
+  }
 };
 
 export class transformInfo{

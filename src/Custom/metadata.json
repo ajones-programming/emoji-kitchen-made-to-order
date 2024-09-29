@@ -539,7 +539,8 @@
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "wink_large_eye"
+                        "url" : "wink_large_eye",
+                        "proportionate" : true
                     },
                     "mouth" : {
                         "url" : "mouth_tongue",
@@ -560,7 +561,8 @@
                     "eyes" : {
                         "url" : "zany_eyes",
                         "auto_scale":true,
-                        "offset_y":-10
+                        "offset_y":-10,
+                        "proportionate" : true
                     },
                     "mouth" : {
                         "url" : "tongue_side",
@@ -588,6 +590,69 @@
                         "url" : "mouth_tongue",
                         "offset_y" : 22,
                         "auto_scale":true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "hugging-face",
+            "char": "🤗",
+            "emojiCodepoint":"1f917",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "smiling_eyes",
+                        "offset_y" : -20,
+                        "proportionate" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "long_smile",
+                        "offset_y" : -35,
+                        "scale_x": 0.9,
+                        "scale_y":1.1
+                    }
+                },
+                "hands":{
+                    "leftHand" : {
+                        "url": "open_hands_left",
+                        "offset_y" : 166
+                    },
+                    "rightHand":{
+                        "url": "open_hands_right",
+                        "offset_x" : 157,
+                        "offset_y" : 166
+                    },
+                    "edgeRatio":{
+                        "bottom": 0.1
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-with-hand-over-mouth",
+            "char": "🤭",
+            "emojiCodepoint":"1f92d",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "smiling_eyes",
+                        "offset_y" : 10,
+                        "scale_x" : 1.1,
+                        "scale_y": 1.1
+                    }
+                },
+                "hands":{
+                    "leftHand" : {
+                        "url": "left_hand_back",
+                        "offset_x" : 62,
+                        "offset_y" : 132
+                    },
+                    "edgeRatio":{
+                        "bottom": 0.1
                     }
                 }
             }

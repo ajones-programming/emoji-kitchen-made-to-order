@@ -1,6 +1,19 @@
 export interface EmojiMetadata {
+    faceObjectInformation : FaceObjectPlacement[];
     data: EmojiData[];
   }
+
+export interface Vector2{
+  x : number;
+  y : number;
+}
+
+export interface EdgeRatios{
+  left : number;
+  right : number;
+  top : number;
+  bottom : number;
+}
 
 export interface EmojiData{
     twemoji_name: string;
@@ -14,9 +27,11 @@ export interface CustomEmojiData{
     inherited_details_url?: string;
     additional_details_rect? : ItemScale;
     face? : FaceData;
+    hands? : HandsData;
     unique_face_rect? : ItemScale;
     additional_parts_back?:EmojiItem[];
     additional_parts?:EmojiItem[];
+    allFace? : boolean;
     rotation?: number;
   }
 
@@ -30,6 +45,13 @@ export interface FaceData{
   cheeks? : EmojiItem;
   additional_parts?:EmojiItem[];
 }
+
+export interface HandsData{
+  leftHand? : EmojiItem;
+  rightHand? : EmojiItem;
+  edgeRatio? : EdgeRatios;
+}
+
 export interface FaceObjectPlacement{
   name : string;
   eyes : Vector2;
