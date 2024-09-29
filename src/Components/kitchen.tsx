@@ -336,7 +336,7 @@ export default function Kitchen() {
             {renderRRL && combined_rrl != undefined &&
               <img alt={combined_rrl.id()} id={combined_rrl.id()} width="150px" height="150px" style={imgStyle}/>
             }
-            {!renderRL && !renderLR &&
+            {!renderRL && !renderLR && !renderLLR && !renderRRL &&
               <div>
                 Cannot render, result is same as a source emoji
               </div>

@@ -30,6 +30,14 @@ export interface FaceData{
   cheeks? : EmojiItem;
   additional_parts?:EmojiItem[];
 }
+export interface FaceObjectPlacement{
+  name : string;
+  eyes : Vector2;
+  mouth : Vector2;
+  eyebrows : Vector2;
+  cheeks : Vector2;
+  tears : Vector2;
+}
 
 export class ItemScale{
   x : number = 0;

@@ -90,8 +90,8 @@ export class CustomEmojiItemObject{
 
     private isEqual(item : CustomEmojiItemObject, includeCopies = true): boolean{
         return this.url == item.url &&
-        !this.significantDiff(this.offset_x ?? 0, item.offset_x ?? 0, 18) &&
-        !this.significantDiff(this.offset_y ?? 0, item.offset_y ?? 0, 18) &&
+        !this.significantDiff(this.offset_x ?? 0, item.offset_x ?? 0, 30) &&
+        !this.significantDiff(this.offset_y ?? 0, item.offset_y ?? 0, 30) &&
         !this.significantDiff(this.scale_x ?? 1, item.scale_x ?? 1, 0.05) &&
         !this.significantDiff(this.scale_y ?? 1, item.scale_y ?? 1, 0.05) &&
         (includeCopies ? this.numOfCopies == item.numOfCopies : true) &&

@@ -1,6 +1,7 @@
 import { mergeImagesCustom, mergeInfo } from "./mergeImages";
 import { FaceData} from "./types";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
+import { getFaceObjectPlacement } from "./utils";
 
 //also put this into a class or something
 export class CustomFaceObject{
@@ -54,19 +55,25 @@ export class CustomFaceObject{
 
     public async Render(){
         const list : mergeInfo[] = [];
+        const faceAnchor = getFaceObjectPlacement(this.category);
         if (this.cheeks){
-            list.push(await this.cheeks.toMergeInfo({x: 150, y: 151}, this.category));
+            const anchor = faceAnchor?.cheeks ?? {x : 0, y : 0};
+            list.push(await this.cheeks.toMergeInfo(anchor, this.category));
         }
         if (this.eyes){
-            list.push(await this.eyes.toMergeInfo({x: 150, y: 112}, this.category));
+            const anchor = faceAnchor?.eyes ?? {x : 0, y : 0};
+            list.push(await this.eyes.toMergeInfo(anchor, this.category));
         }
         if (this.eyebrows){
-            list.push(await this.eyebrows.toMergeInfo({x: 150, y: 82 + (this.eyes?.getOffset_y() ?? 0)}, this.category));
+            const anchor = {x :faceAnchor?.eyebrows.x ?? 0, y : (faceAnchor?.eyebrows.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
+            list.push(await this.eyebrows.toMergeInfo(anchor, this.category));
         }
         if (this.mouth){
-            list.push(await this.mouth.toMergeInfo({x : 150, y: 213}, this.category));
+            const anchor = faceAnchor?.mouth ?? {x : 0, y : 0};
+            list.push(await this.mouth.toMergeInfo(anchor, this.category));
         }
         if (this.tears){
+            const anchor = {x :faceAnchor?.tears.x ?? 0, y : (faceAnchor?.tears.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
             list.push(await this.tears.toMergeInfo({x: 150, y: 142 + (this.eyes?.getOffset_y() ?? 0)}, this.category));
         }
         if (this.additionalObjects){

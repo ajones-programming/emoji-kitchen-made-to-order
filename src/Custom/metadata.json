@@ -1,4 +1,29 @@
 {
+    "faceObjectInformation" : [
+        {
+            "name" : "smileys",
+            "eyes" : {
+                "x" : 150,
+                "y" : 112
+            },
+            "mouth" : {
+                "x" : 150,
+                "y" : 213
+            },
+            "eyebrows" : {
+                "x" : 150,
+                "y" : 82
+            },
+            "cheeks" : {
+                "x" : 150,
+                "y" : 151
+            },
+            "tears" : {
+                "x" : 150,
+                "y" : 142
+            }
+        }
+    ],
     "data" :
     [
         {
