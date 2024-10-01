@@ -119,7 +119,7 @@ export class CustomEmojiObject{
                 allInstructions.push(image);
             }
         }
-        const finishedFaceAndBase = new mergeInfo(await mergeImagesCustom(allInstructions,true));
+        const finishedFaceAndBase = new mergeInfo(await mergeImagesCustom(allInstructions));
         if (this._is_just_face && this._hands){
             const resize = this._hands.getBaseResize();
             if (resize.hasEffect()){
