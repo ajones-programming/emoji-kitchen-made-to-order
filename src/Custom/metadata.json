@@ -237,6 +237,53 @@
             }
         },
         {
+            "twemoji_name" : "upside-down-face",
+            "char": "🙃",
+            "emoji_codepoint":"1f643",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "default_eyes"
+                    } ,
+                    "mouth" : {
+                        "url" : "long_smile",
+                        "auto_scale" : true
+                    }
+                },
+                "rotation":180
+            }
+        },
+        {
+            "twemoji_name" : "melting-face",
+            "char": "🫠",
+            "emoji_codepoint":"1fae0",
+            "data" : {
+                "base_url": "smileys/melting_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "melting_eyes",
+                        "offset_y" : 10
+                    } ,
+                    "mouth" : {
+                        "url" : "wonky_smile",
+                        "offset_x" : 12,
+                        "offset_y" : -11,
+                        "auto_scale" : true
+                    },
+                    "rotation" : 12
+                },
+                "face_rect" : {
+                    "x" : 16,
+                    "y" : 0,
+                    "width" : 258,
+                    "height" : 258
+                }
+            }
+        },
+        {
             "twemoji_name" : "winking-face",
             "char": "😉",
             "emoji_codepoint":"1f609",
@@ -599,6 +646,28 @@
             }
         },
         {
+            "twemoji_name" : "money-mouth-face",
+            "char": "🤑",
+            "emoji_codepoint":"1f911",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "money_eyes",
+                        "offset_y" : 0,
+                        "proportionate" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "money_tongue",
+                        "ignore_properties" : true,
+                        "offset_y" : 27,
+                        "auto_scale":true
+                    }
+                }
+            }
+        },
+        {
             "twemoji_name" : "hugging-face",
             "char": "🤗",
             "emoji_codepoint":"1f917",
@@ -657,6 +726,113 @@
                     },
                     "edge_ratio":{
                         "bottom": 0.1
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-with-open-eyes-and-hand-over-mouth",
+            "char": "🫢",
+            "emoji_codepoint":"1fae2",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "default_eyes",
+                        "scale_x" : 1.0,
+                        "scale_y": 1.0
+                    }
+                },
+                "hands":{
+                    "left_hand" : {
+                        "url": "left_hand_back",
+                        "offset_x" : 62,
+                        "offset_y" : 132
+                    },
+                    "edge_ratio":{
+                        "bottom": 0.1
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-with-peeking-eye",
+            "char": "🫣",
+            "emoji_codepoint":"1fae3",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "peeking_eye",
+                        "offset_y" : 18,
+                        "proportionate" : true
+                    } ,
+                    "eyebrows":{
+                        "url" : "surprised_eyebrows",
+                        "offset_y" : -21,
+                        "proportionate" : true,
+                        "auto_scale" : true
+
+                    },
+                    "mouth" : {
+                        "url" : "shocked_mouth",
+                        "offset_y": 24,
+                        "auto_scale":true
+                    }
+                },
+                "hands":{
+                    "left_hand" : {
+                        "url": "left_hand_back_fingers_together",
+                        "offset_y" : 93
+                    },
+                    "right_hand":{
+                        "url": "right_hand_peeking",
+                        "offset_x" : 145,
+                        "offset_y" : 108
+                    },
+                    "edge_ratio":{
+                        "bottom": 0.03,
+                        "top" : 0.03,
+                        "left" : 0.03,
+                        "right" : 0.03
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "shushing-face",
+            "char": "🤫",
+            "emoji_codepoint":"1f92b",
+            "data" : {
+                "base_url": "smileys/default_body",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "small_eyes",
+                        "offset_y" : 10
+                    },
+                    "eyebrows" : {
+                        "url" : "brows_raised",
+                        "offset_y" : -20
+                    },
+                    "mouth" : {
+                        "url" : "shocked_mouth",
+                        "offset_y": -10,
+                        "scale_y":0.7,
+                        "auto_scale":true,
+                        "ignore_properties":true
+                    }
+                },
+                "hands":{
+                    "left_hand" : {
+                        "url": "shush_finger",
+                        "offset_x" : 114,
+                        "offset_y" : 141
+                    },
+                    "edge_ratio":{
+                        "bottom": 0.05
                     }
                 }
             }
