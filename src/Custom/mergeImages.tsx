@@ -194,9 +194,9 @@ export async function mergeImagesCustom(data : (mergeInfo | transformInfo)[], cr
   }));
   if (crop){
     var size = postCropSize();
-    // if (crop_using_angle){
-    //   size *= Math.SQRT2;
-    // }
+    if (crop_using_angle){
+      size *= Math.SQRT2;
+    }
     return await cropImage(canvas.toDataURL(), size, size, preCropSize(), preCropSize());
 
   }

@@ -124,8 +124,15 @@ export class CustomEmojiObject{
             const resize = this._hands.getBaseResize();
             if (resize.hasEffect()){
                 finishedFaceAndBase.addResize(resize.getRect(postCropSize()));
+                finishedFaceAndBase.allowCropArea = true;
+
             }
         }
+        else{
+            finishedFaceAndBase.ignoreOffset = true;
+        }
+
+
         return finishedFaceAndBase;
     }
 
