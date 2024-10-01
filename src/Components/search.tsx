@@ -188,7 +188,7 @@ export default function Search({
               width="24px"
               height="24px"
               alt={getEmojiData(selectedEmoji)?.twemoji_name}
-              src={getNotoEmojiUrl(getEmojiData(selectedEmoji)?.emojiCodepoint ?? "")}
+              src={getNotoEmojiUrl(getEmojiData(selectedEmoji)?.emoji_codepoint ?? "")}
             />
           ) : (
             <Typography
@@ -257,7 +257,7 @@ export default function Search({
             width="24px"
             height="24px"
             alt={getEmojiData(selectedEmoji)?.twemoji_name}
-            src={getNotoEmojiUrl(getEmojiData(selectedEmoji)?.emojiCodepoint ?? "")}
+            src={getNotoEmojiUrl(getEmojiData(selectedEmoji)?.emoji_codepoint ?? "")}
           />
         ) : (
           <Typography

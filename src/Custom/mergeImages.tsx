@@ -1,7 +1,7 @@
 //somehow use this for faces? no source?
 
 import { cropImage, resizeImage, rotate } from "./transformImages";
-import { ItemScale } from "./types";
+import { Rect } from "./types";
 
 function preCropSize(){return 500;}
 export function postCropSize(){return 300;}
@@ -18,14 +18,14 @@ export class mergeInfo{
   ignoreOffset ? : boolean;
   allowCropArea? : boolean;
 
-  constructor(src : string, resize? : ItemScale){
+  constructor(src : string, resize? : Rect){
     this.src = src;
     if (resize){
       this.addResize(resize);
     }
   }
 
-  public addResize(resize : ItemScale)
+  public addResize(resize : Rect)
   {
     this.x = resize.x;
     this.y = resize.y;
@@ -109,20 +109,17 @@ async function addImage(value : mergeInfo) : Promise<imageObject>{
   }
 
 
-function Draw(imgdata : imageObject, context : CanvasRenderingContext2D){
-  if (imgdata.img != undefined)
+function Draw(imgdata : imageObject, context : CanvasRenderingContext2D)
     {
 
       const offset = imgdata.ignoreOffset ? 0 :((preCropSize() - postCropSize())/2);
       //simplify this bit
       if (imgdata.copies <= 1){
         context.drawImage(imgdata.img, imgdata.x + offset, imgdata.y + offset);
+    return;
       }
       //draw side by side
-      else{
-        console.log("multiple copies of item");
         if (imgdata.copy_vertically){
-          console.log("copying vertically");
           const copy_offset =  imgdata.set_copy_offset ?? imgdata.img.height;
           var startingPoint = imgdata.y - (copy_offset/2) *(imgdata.copies - 1);
           if (startingPoint + copy_offset*imgdata.copies > postCropSize()){
@@ -141,10 +138,6 @@ function Draw(imgdata : imageObject, context : CanvasRenderingContext2D){
           for (var i : number = 0; i < imgdata.copies; i++){
             context.drawImage(imgdata.img, startingPoint + (copy_offset * i) + offset, imgdata.y + offset);
           }
-        }
-
-      }
-
     }
 }
 
@@ -157,7 +150,7 @@ async function TransformCanvas(transformInfo : transformInfo, canvas : HTMLCanva
       return;
     }
     context.clearRect(0, 0, canvas.width, canvas.height);
-    if (transformInfo.rotate != undefined){
+    if (transformInfo.rotate){
       const val = await rotate(dataURL,transformInfo.rotate,preCropSize(),preCropSize());
       const imgObj= new Image();
       return new Promise<undefined>((resolve, reject)=>{

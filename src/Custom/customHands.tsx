@@ -1,59 +1,58 @@
 import { BaseResizeObject } from "./baseResizeObject";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
 import { mergeInfo } from "./mergeImages";
-import { EmojiItem, HandsData } from "./types";
+import { RawEmojiItem, RawHands } from "./types";
 
 export class CustomHands{
     //default category
     private category : string = "smileys";
-    private leftHand ? : CustomEmojiItemObject;
-    private rightHand? : CustomEmojiItemObject;
-    private baseResize : BaseResizeObject = new BaseResizeObject();
+    private left_hand ? : CustomEmojiItemObject;
+    private right_hand? : CustomEmojiItemObject;
+    private base_resize : BaseResizeObject = new BaseResizeObject();
 
-    constructor(hands? : HandsData, category? : string){
+    constructor(hands? : RawHands, category? : string){
         if (category){
             this.category = category;
         }
-        if (hands?.leftHand){
-            this.leftHand = new CustomEmojiItemObject(hands.leftHand);
+        if (hands?.left_hand){
+            this.left_hand = new CustomEmojiItemObject(hands.left_hand);
         }
-        if (hands?.rightHand){
-            this.rightHand = new CustomEmojiItemObject(hands.rightHand);
+        if (hands?.right_hand){
+            this.right_hand = new CustomEmojiItemObject(hands.right_hand);
         }
-        this.baseResize = new BaseResizeObject(hands?.edgeRatio?.left,hands?.edgeRatio?.right,
-            hands?.edgeRatio?.top,hands?.edgeRatio?.bottom);
+        this.base_resize = new BaseResizeObject(hands?.edge_ratio);
     }
 
     public inheritTraits(hands : CustomHands, swap : boolean = true){
         const combined = new CustomHands();
         combined.category = this.category;
-        combined.leftHand = swap ? (this.leftHand ?? hands.leftHand) : (hands.leftHand ?? this.leftHand);
-        combined.rightHand = hands.rightHand ?? hands.rightHand;
-        combined.baseResize = this.baseResize.createMax(this.baseResize,hands.baseResize);
+        combined.left_hand = swap ? (this.left_hand ?? hands.left_hand) : (hands.left_hand ?? this.left_hand);
+        combined.right_hand = hands.right_hand ?? this.right_hand;
+        combined.base_resize = this.base_resize.createMax(this.base_resize,hands.base_resize);
         return combined;
     }
 
     //runs under the assumption that ratio will not change unless hands change
     public isEqual(hands : CustomHands){
         return this.category == hands.category &&
-        CustomEmojiItemObject.IsEqual(this.leftHand, hands.leftHand) &&
-        CustomEmojiItemObject.IsEqual(this.rightHand, hands.rightHand);
+        CustomEmojiItemObject.IsEqual(this.left_hand, hands.left_hand) &&
+        CustomEmojiItemObject.IsEqual(this.right_hand, hands.right_hand);
     }
 
     //this will have to change somehow?
     public async toMergeDetails(){
         const mergeInfoList : mergeInfo[] = [];
-        if (this.leftHand){
-            mergeInfoList.push(await this.leftHand.toMergeInfo(undefined,this.category));
+        if (this.left_hand){
+            mergeInfoList.push(await this.left_hand.toMergeInfo(undefined,this.category));
         }
-        if (this.rightHand){
-            mergeInfoList.push(await this.rightHand.toMergeInfo(undefined, this.category));
+        if (this.right_hand){
+            mergeInfoList.push(await this.right_hand.toMergeInfo(undefined, this.category));
         }
         return mergeInfoList;
     }
 
-    public getResize(){
-        return this.baseResize;
+    public getBaseResize(){
+        return this.base_resize;
     }
 
 }

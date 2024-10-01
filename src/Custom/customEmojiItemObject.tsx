@@ -1,6 +1,6 @@
 import { GetDimensions } from "./image";
 import { mergeInfo } from "./mergeImages";
-import { EmojiItem, ItemAnchor } from "./types";
+import { RawEmojiItem, ItemAnchor } from "./types";
 
 
 export class CustomEmojiItemObject{
@@ -12,37 +12,35 @@ export class CustomEmojiItemObject{
     private scale_y : number = 1.0;
     private auto_scale : boolean = false;
     private proportionate : boolean = false;
-    private always_recessive : boolean = false;
-    private numOfCopies : number = 1;
+    private ignore_properties : boolean = false;
+    private num_of_copies : number = 1;
     private copy_vertically : boolean = false;
     private set_copy_offset?:number;
 
-    constructor(item? : EmojiItem, copy? : CustomEmojiItemObject){
+    constructor(item? : RawEmojiItem, copy? : CustomEmojiItemObject){
         if (item){
             this.url = item.url;
-            this.isDominant = item.isDominant ?? false;
             this.offset_x = item.offset_x ?? 0;
             this.offset_y = item.offset_y ?? 0;
             this.scale_x = item.scale_x ?? 1.0;
             this.scale_y = item.scale_y ?? 1.0;
             this.auto_scale = item.auto_scale ?? false;
             this.proportionate = item.proportionate ?? false;
-            this.always_recessive = item.always_recessive ?? false;
+            this.ignore_properties = item.ignore_properties ?? false;
             this.copy_vertically = item.copy_vertically ?? false;
             this.set_copy_offset = item.copy_set_offset;
 
         }
         if (copy){
             this.url = copy.url;
-            this.isDominant = copy.isDominant;
             this.offset_x = copy.offset_x;
             this.offset_y = copy.offset_y;
             this.scale_x = copy.scale_x;
             this.scale_y = copy.scale_y;
             this.auto_scale = copy.auto_scale;
             this.proportionate = copy.proportionate;
-            this.always_recessive = copy.always_recessive;
-            this.numOfCopies = copy.numOfCopies;
+            this.ignore_properties = copy.ignore_properties;
+            this.num_of_copies = copy.num_of_copies;
             this.copy_vertically = copy.copy_vertically;
             this.set_copy_offset = copy.set_copy_offset;
         }
@@ -56,21 +54,20 @@ export class CustomEmojiItemObject{
 
         var newItem : CustomEmojiItemObject = new CustomEmojiItemObject();
         const itemURLEqual = this.url == item.url;
-        const thisDominant = (item.always_recessive && !ignoreTags) || (this.isDominant && !item.isDominant);
-        const dominantItem = thisDominant ? this : item ;
-        const nonDominantItem = thisDominant ? item : this;
-        newItem.url = dominantItem.url;
-        newItem.offset_x = dominantItem.offset_x + (nonDominantItem.always_recessive&&!ignoreTags ? 0 : nonDominantItem.offset_x);//this.offset_x + (item.ignore_maths ? 0 : item.offset_x );
-        newItem.offset_y = dominantItem.offset_y + (nonDominantItem.always_recessive&&!ignoreTags ? 0 : nonDominantItem.offset_y);
-        newItem.scale_x = dominantItem.scale_x * (nonDominantItem.always_recessive&&!ignoreTags ? 1.0 : nonDominantItem.scale_x);
-        newItem.scale_y = dominantItem.scale_y * (nonDominantItem.always_recessive&&!ignoreTags ? 1.0 : nonDominantItem.scale_y);
+        const ignoreProperty = item.ignore_properties&&!ignoreTags;
+
+        newItem.url = this.url;
+        newItem.offset_x = this.offset_x + (ignoreProperty ? 0 :item.offset_x);
+        newItem.offset_y = this.offset_y + (ignoreProperty ? 0 : item.offset_y);
+        newItem.scale_x = this.scale_x * (ignoreProperty ? 1.0 : item.scale_x);
+        newItem.scale_y = this.scale_y * (ignoreProperty ? 1.0 : item.scale_y);
         //this is not correct, it should be able to scale more somehow, but idk how
         if (itemURLEqual && newItem.scale_x == 1.0 && newItem.scale_y == 1.0 && ((this.auto_scale && item.auto_scale) || ignoreTags) ){
             newItem.scale_x *= 1.25;
             newItem.scale_y *= 1.25;
         }
 
-        if (dominantItem.proportionate){
+        if (this.proportionate){
             const minimum = newItem.scale_x < newItem.scale_y ? newItem.scale_x : newItem.scale_y;
             newItem.scale_x = minimum;
             newItem.scale_y = minimum;
@@ -94,7 +91,7 @@ export class CustomEmojiItemObject{
         !this.significantDiff(this.offset_y ?? 0, item.offset_y ?? 0, 30) &&
         !this.significantDiff(this.scale_x ?? 1, item.scale_x ?? 1, 0.05) &&
         !this.significantDiff(this.scale_y ?? 1, item.scale_y ?? 1, 0.05) &&
-        (includeCopies ? this.numOfCopies == item.numOfCopies : true) &&
+        (includeCopies ? this.num_of_copies == item.num_of_copies : true) &&
         (includeCopies ? this.copy_vertically == item.copy_vertically : true) &&
         (includeCopies ? this.set_copy_offset == item.set_copy_offset : true);
     }
@@ -128,18 +125,18 @@ export class CustomEmojiItemObject{
         info.y = y;
         info.width = width;
         info.height = height;
-        info.copies = this.numOfCopies;
+        info.copies = this.num_of_copies;
         info.copy_vertically = this.copy_vertically;
         info.set_copy_offset = this.set_copy_offset;
         return info;
     }
 
-    private static async method (value : {item : CustomEmojiItemObject, anchor? : ItemAnchor, category ? : string}) : Promise<mergeInfo>{
+    private static async toMergeInfo (value : itemMergeDetails) : Promise<mergeInfo>{
         return value.item.toMergeInfo(value.anchor,value.category);
     }
 
-    public static async getListedMergeInfo(itemList: {item : CustomEmojiItemObject, anchor? : ItemAnchor, category ? : string}[]){
-        return await Promise.all(itemList.map(this.method));
+    public static async getListedMergeInfo(itemList: itemMergeDetails[]){
+        return await Promise.all(itemList.map(this.toMergeInfo));
     }
 
     public static mergeItemLists(itemList1 : CustomEmojiItemObject[], itemList2 : CustomEmojiItemObject[]){
@@ -151,7 +148,7 @@ export class CustomEmojiItemObject{
             const copy = list2.findIndex(val2 => val2 ? value.isEqual(val2,false) : false);
             if (copy > -1){
                 list2[copy] = undefined;
-                value.numOfCopies++;
+                value.num_of_copies++;
             }
             newList.push(value);
         });
@@ -162,9 +159,6 @@ export class CustomEmojiItemObject{
             }
         }
         );
-        if (newList.length > 0){
-            console.log("num copies: " + newList[0].numOfCopies);
-        }
         return newList;
     }
 

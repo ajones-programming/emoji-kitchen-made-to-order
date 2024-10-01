@@ -1,9 +1,9 @@
 //put all this into a class
 import { postCropSize } from "./mergeImages";
-import { ItemScale} from "./types";
+import { Rect} from "./types";
 
 
-export function isResizeEqual(resize1 : ItemScale | undefined, resize2 : ItemScale | undefined){
+export function isResizeEqual(resize1 : Rect | undefined, resize2 : Rect | undefined){
     if (resize1 == undefined || resize2 == undefined){
         return (resize1 == undefined && resize2 == undefined);
     }

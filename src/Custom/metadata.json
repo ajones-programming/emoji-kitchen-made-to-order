@@ -1,5 +1,5 @@
 {
-    "faceObjectInformation" : [
+    "face_category_information" : [
         {
             "name" : "smileys",
             "eyes" : {
@@ -12,7 +12,7 @@
             },
             "eyebrows" : {
                 "x" : 150,
-                "y" : 82
+                "y" : 72
             },
             "cheeks" : {
                 "x" : 150,
@@ -29,7 +29,7 @@
         {
             "twemoji_name": "grinning-face",
             "char": "😀",
-            "emojiCodepoint": "1f600",
+            "emoji_codepoint": "1f600",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -47,7 +47,7 @@
         {
             "twemoji_name" : "grinning-face-with-big-eyes",
             "char": "😃",
-            "emojiCodepoint":"1f603",
+            "emoji_codepoint":"1f603",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -69,7 +69,7 @@
         {
             "twemoji_name" : "grinning-face-with-smiling-eyes",
             "char": "😄",
-            "emojiCodepoint":"1f604",
+            "emoji_codepoint":"1f604",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -90,7 +90,7 @@
         {
             "twemoji_name" : "beaming-face-with-smiling-eyes",
             "char": "😁",
-            "emojiCodepoint": "1f601",
+            "emoji_codepoint": "1f601",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -110,7 +110,7 @@
         },
         {
             "twemoji_name" : "grinning-squinting-face",
-            "emojiCodepoint":"1f606",
+            "emoji_codepoint":"1f606",
             "char": "😆",
             "data" : {
                 "base_url": "smileys/default_body",
@@ -132,22 +132,24 @@
         {
             "twemoji_name" : "grinning-face-with-sweat",
             "char": "😅",
-            "emojiCodepoint":"1f605",
+            "emoji_codepoint":"1f605",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
                         "url" : "smiling_eyes",
-                        "offset_y" : 25
+                        "offset_y" : 25,
+                        "ignore_properties" : true
                     } ,
                     "mouth" : {
                         "url" : "open_smile",
-                        "offset_y" : 8
+                        "offset_y" : 8,
+                        "ignore_properties" : true
                     }
                 },
                 "additional_parts":[{
-                    "url": "smileys/sweat_droplet",
+                    "url": "additional/droplet",
                     "offset_x" : 207,
                     "offset_y" : 9
                 }]
@@ -156,7 +158,7 @@
         {
             "twemoji_name" : "rolling-on-the-floor-laughing",
             "char": "🤣",
-            "emojiCodepoint":"1f923",
+            "emoji_codepoint":"1f923",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -186,7 +188,7 @@
         {
             "twemoji_name" : "face-with-tears-of-joy",
             "char": "😂",
-            "emojiCodepoint":"1f602",
+            "emoji_codepoint":"1f602",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -198,8 +200,6 @@
                     },
                     "eyebrows":{
                         "url" : "laughing_crying_eyebrows",
-                        "offset_y" : -10,
-                        "isDominant" : true,
                         "proportionate" : true,
                         "auto_scale" : true
 
@@ -221,7 +221,7 @@
         {
             "twemoji_name" : "slightly-smiling-face",
             "char": "🙂",
-            "emojiCodepoint":"1f642",
+            "emoji_codepoint":"1f642",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -239,7 +239,7 @@
         {
             "twemoji_name" : "winking-face",
             "char": "😉",
-            "emojiCodepoint":"1f609",
+            "emoji_codepoint":"1f609",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -251,8 +251,7 @@
                     } ,
                     "eyebrows":{
                         "url" : "wink_eyebrows",
-                        "offset_y" : -20,
-                        "isDominant" : true,
+                        "offset_y" : -10,
                         "proportionate" : true,
                         "auto_scale" : true
 
@@ -267,7 +266,7 @@
         {
             "twemoji_name" : "smiling-face-with-smiling-eyes",
             "char": "😊",
-            "emojiCodepoint":"1f60a",
+            "emoji_codepoint":"1f60a",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -290,7 +289,7 @@
         {
             "twemoji_name" : "smiling-face-with-halo",
             "char": "😇",
-            "emojiCodepoint": "1f607",
+            "emoji_codepoint": "1f607",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -307,14 +306,14 @@
                 },
                 "additional_parts_back":[
                     {
-                        "url": "smileys/halo-back",
+                        "url": "additional/halo-back",
                         "copy_vertically" : true,
                         "copy_set_offset" : 30
                     }
                 ],
                 "additional_parts":[
                     {
-                        "url": "smileys/halo-front",
+                        "url": "additional/halo-front",
                         "offset_y":40,
                         "copy_vertically":true,
                         "copy_set_offset" : 30
@@ -325,7 +324,7 @@
         {
             "twemoji_name" : "smiling-face-with-hearts",
             "char": "🥰",
-            "emojiCodepoint": "1f970",
+            "emoji_codepoint": "1f970",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -342,7 +341,7 @@
                 },
                 "additional_parts":[
                     {
-                        "url": "smileys/many_hearts",
+                        "url": "additional/many_hearts",
                         "copy_set_offset" : 100
                     }
                 ]
@@ -351,7 +350,7 @@
         {
             "twemoji_name" : "smiling-face-with-heart-eyes",
             "char": "😍",
-            "emojiCodepoint":"1f60d",
+            "emoji_codepoint":"1f60d",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -360,7 +359,8 @@
                         "url" : "heart_eyes",
                         "offset_y" : -45,
                         "proportionate" : true,
-                        "auto_scale":true
+                        "auto_scale":true,
+                        "ignore_properties" : true
                     } ,
                     "mouth" : {
                         "url" : "open_mouth_no_teeth",
@@ -372,7 +372,7 @@
         {
             "twemoji_name" : "star-struck",
             "char": "🤩",
-            "emojiCodepoint":"1f929",
+            "emoji_codepoint":"1f929",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -381,7 +381,8 @@
                         "url" : "stars",
                         "offset_y" : -35,
                         "proportionate" : true,
-                        "auto_scale":true
+                        "auto_scale":true,
+                        "ignore_properties" : true
                     } ,
                     "mouth" : {
                         "url" : "open_smile"
@@ -392,7 +393,7 @@
         {
             "twemoji_name" : "face-blowing-a-kiss",
             "char": "😘",
-            "emojiCodepoint":"1f618",
+            "emoji_codepoint":"1f618",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -404,7 +405,7 @@
                     } ,
                     "eyebrows":{
                         "url" : "wink_eyebrows",
-                        "offset_y" : -20,
+                        "offset_y" : -10,
                         "proportionate" : true,
                         "auto_scale" : true
 
@@ -416,7 +417,7 @@
                     }
                 },
                 "additional_parts":[{
-                    "url": "smileys/kiss_heart",
+                    "url": "additional/kiss_heart",
                     "offset_x" : 210,
                     "offset_y" : 170
                 }]
@@ -425,7 +426,7 @@
         {
             "twemoji_name" : "kissing-face",
             "char": "😗",
-            "emojiCodepoint":"1f617",
+            "emoji_codepoint":"1f617",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -444,7 +445,7 @@
         {
             "twemoji_name" : "smiling-face-with-tear",
             "char": "🥲",
-            "emojiCodepoint":"1f972",
+            "emoji_codepoint":"1f972",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -457,7 +458,7 @@
                         "auto_scale" : true
                     },
                     "additional_parts":[{
-                        "url": "smileys/sweat_droplet",
+                        "url": "additional/droplet",
                         "offset_x" : 165,
                         "offset_y" : 144
                     }]
@@ -467,7 +468,7 @@
         {
             "twemoji_name" : "smirking-face",
             "char": "😏",
-            "emojiCodepoint":"1f60f",
+            "emoji_codepoint":"1f60f",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -479,7 +480,6 @@
                     } ,
                     "eyebrows":{
                         "url" : "smirk_eyebrows",
-                        "offset_y" : -10,
                         "proportionate" : true,
                         "auto_scale" : true
 
@@ -494,7 +494,7 @@
         {
             "twemoji_name" : "face-savoring-food",
             "char": "😋",
-            "emojiCodepoint":"1f60b",
+            "emoji_codepoint":"1f60b",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -513,7 +513,7 @@
         {
             "twemoji_name" : "face-with-tongue",
             "char": "😛",
-            "emojiCodepoint":"1f61b",
+            "emoji_codepoint":"1f61b",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -524,6 +524,7 @@
                     },
                     "mouth" : {
                         "url" : "mouth_tongue",
+                        "ignore_properties" : true,
                         "offset_y" : 22,
                         "auto_scale":true
                     }
@@ -533,7 +534,7 @@
         {
             "twemoji_name" : "winking-face-with-tongue",
             "char": "😜",
-            "emojiCodepoint":"1f61c",
+            "emoji_codepoint":"1f61c",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -544,6 +545,7 @@
                     },
                     "mouth" : {
                         "url" : "mouth_tongue",
+                        "ignore_properties" : true,
                         "offset_y" : 22,
                         "auto_scale":true
                     }
@@ -553,7 +555,7 @@
         {
             "twemoji_name" : "zany-face",
             "char": "🤪",
-            "emojiCodepoint":"1f92a",
+            "emoji_codepoint":"1f92a",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -566,6 +568,7 @@
                     },
                     "mouth" : {
                         "url" : "tongue_side",
+                        "ignore_properties" : true,
                         "offset_y" : 22,
                         "auto_scale":true
                     }
@@ -576,7 +579,7 @@
         {
             "twemoji_name" : "squinting-face-with-tongue",
             "char": "😝",
-            "emojiCodepoint":"1f61d",
+            "emoji_codepoint":"1f61d",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -588,6 +591,7 @@
                     } ,
                     "mouth" : {
                         "url" : "mouth_tongue",
+                        "ignore_properties" : true,
                         "offset_y" : 22,
                         "auto_scale":true
                     }
@@ -597,7 +601,7 @@
         {
             "twemoji_name" : "hugging-face",
             "char": "🤗",
-            "emojiCodepoint":"1f917",
+            "emoji_codepoint":"1f917",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -615,16 +619,16 @@
                     }
                 },
                 "hands":{
-                    "leftHand" : {
+                    "left_hand" : {
                         "url": "open_hands_left",
                         "offset_y" : 166
                     },
-                    "rightHand":{
+                    "right_hand":{
                         "url": "open_hands_right",
                         "offset_x" : 157,
                         "offset_y" : 166
                     },
-                    "edgeRatio":{
+                    "edge_ratio":{
                         "bottom": 0.1
                     }
                 }
@@ -633,7 +637,7 @@
         {
             "twemoji_name" : "face-with-hand-over-mouth",
             "char": "🤭",
-            "emojiCodepoint":"1f92d",
+            "emoji_codepoint":"1f92d",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -646,12 +650,12 @@
                     }
                 },
                 "hands":{
-                    "leftHand" : {
+                    "left_hand" : {
                         "url": "left_hand_back",
                         "offset_x" : 62,
                         "offset_y" : 132
                     },
-                    "edgeRatio":{
+                    "edge_ratio":{
                         "bottom": 0.1
                     }
                 }
@@ -660,7 +664,7 @@
         {
             "twemoji_name" : "slightly-frowning-face",
             "char": "🙁",
-            "emojiCodepoint":"1f641",
+            "emoji_codepoint":"1f641",
             "data" : {
                 "base_url": "smileys/default_body",
                 "face":{
@@ -678,17 +682,17 @@
         {
             "twemoji_name" : "bread",
             "char": "🍞",
-            "emojiCodepoint":"1f35e",
+            "emoji_codepoint":"1f35e",
             "data" : {
                 "base_url" :"food/bread",
                 "inherited_details_url" :"food/bread-middle",
-                "additional_details_rect":{
+                "inherited_details_rect":{
                     "x" : 32,
                     "y" : 80,
                     "width" : 127,
                     "height" : 195
                 },
-                "unique_face_rect" : {
+                "face_rect" : {
                     "x" : 32,
                     "y" : 80,
                     "width" : 127,
@@ -699,17 +703,17 @@
         {
             "twemoji_name" : "derelict-house",
             "char": "🏚️",
-            "emojiCodepoint":"1f3da-fe0f",
+            "emoji_codepoint":"1f3da-fe0f",
             "data" : {
                 "base_url" :"travel_and_places/derelict-house",
                 "inherited_details_url" : "travel_and_places/derelict-house-windows",
-                "additional_details_rect":{
+                "inherited_details_rect":{
                     "x" : 125,
                     "y" : 205,
                     "width" : 55,
                     "height" : 55
                 },
-                "unique_face_rect" : {
+                "face_rect" : {
                     "x" : 125,
                     "y" : 201,
                     "width" : 55,

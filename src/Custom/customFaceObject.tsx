@@ -13,7 +13,7 @@ export class CustomFaceObject{
     private cheeks? : CustomEmojiItemObject;
     private additionalObjects : CustomEmojiItemObject[] = [];
 
-    constructor(face? : FaceData){
+    constructor(face? : RawFace){
         if (face){
             this.category = face.category;
             this.eyes = face.eyes ? new CustomEmojiItemObject(face.eyes) : undefined;

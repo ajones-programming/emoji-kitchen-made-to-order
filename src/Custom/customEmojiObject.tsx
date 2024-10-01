@@ -8,106 +8,109 @@ import { CustomHands } from './customHands';
 //figure out how hands are meant to work? Hands are dependent on the base, which makes this complicated
 
 export class CustomEmojiObject{
-    private base_url? : string;
-    private base_details_url? : string;
-    private additional_base_details? : EmojiFlatDetail;
-    private face? : CustomFaceObject;
-    private allFace = true;
-    private hands? : CustomHands;
     private _id? : string;
     private _emoji? : string;
-    private faceResize? : ItemScale;
-    private additionalObjects : CustomEmojiItemObject[] = [];
-    private additionalObjects_back : CustomEmojiItemObject[] = [];
-    private rotation? : number;
 
-    constructor(id? : string, data?:  CustomEmojiData, emoji? : string) {
-        if (data){
-            this.base_url =  "./assets/custom/" + (data.base_url ?? "") + ".png";
+    private _base_url? : string;
+    private _inherited_details_url? : string;
+    private _inherited_details? : EmojiFlatDetail;
 
-            if (data.inherited_details_url){
-                this.base_details_url = "./assets/custom/" + data.inherited_details_url + ".png";
-            }
-            if (data.additional_details_rect){
-                this.additional_base_details = {resize: data.additional_details_rect};
-            }
-            this.face = data.face ? new CustomFaceObject(data.face) : undefined;
-            this.hands = data.hands ? new CustomHands(data.hands, data.face?.category) : undefined;
-            this.faceResize = data.unique_face_rect;
-            this.rotation = data.rotation;
-            this.allFace = (data.allFace == undefined || data.allFace);
-            if (this.rotation){
-                this.rotation = (this.rotation + 360)%360;
-            }
-            if (data.additional_parts){
-                data.additional_parts.forEach(item =>{
-                    this.additionalObjects?.push(new CustomEmojiItemObject(item));
-                });
-            }
-            if (data.additional_parts_back){
-                data.additional_parts_back.forEach(item =>{
-                    this.additionalObjects_back?.push(new CustomEmojiItemObject(item));
-                });
-            }
-        }
+    private _face? : CustomFaceObject;
+    private _is_just_face = true;
+    private _face_rect? : Rect;
+
+    private _hands? : CustomHands;
+
+    private _additional_objects : CustomEmojiItemObject[] = [];
+    private _additional_objects_back : CustomEmojiItemObject[] = [];
+
+    private _rotation? : number;
+
+    constructor(id? : string, data?:  RawEmojiContent, emoji? : string) {
         if (id){
             this._id = id;
         }
         if (emoji){
             this._emoji = emoji;
         }
+        if (data){
+            this._base_url =  "./assets/custom/" + (data.base_url ?? "") + ".png";
+            if (data.inherited_details_url){
+                this._inherited_details_url = "./assets/custom/" + data.inherited_details_url + ".png";
+            }
+            if (data.inherited_details_rect){
+                this._inherited_details = {rect: data.inherited_details_rect};
+            }
+
+            this._face = data.face ? new CustomFaceObject(data.face) : undefined;
+            this._is_just_face = (data.is_only_face == undefined || data.is_only_face);
+            this._face_rect = data.face_rect;
+
+            this._hands = data.hands ? new CustomHands(data.hands, data.face?.category) : undefined;
+
+            if (data.additional_parts){
+                data.additional_parts.forEach(item =>{
+                    this._additional_objects.push(new CustomEmojiItemObject(item));
+                });
+            }
+            if (data.additional_parts_back){
+                data.additional_parts_back.forEach(item =>{
+                    this._additional_objects_back.push(new CustomEmojiItemObject(item));
+                });
+            }
+
+            if (data.rotation){
+                this._rotation = (data.rotation + 360)%360;
+        }
+    }
     }
 
-    public inherit_traits( emoji : CustomEmojiObject, ignoreTags : boolean = false, swap : boolean = true) : CustomEmojiObject{
-        var combined = new CustomEmojiObject(this.id() + (swap ? "" : "(" + this.id() + ")")+ emoji.id());
-        if (this._emoji || emoji._emoji){
-            combined._emoji = (this._emoji ?? "") + (swap ? "" :"(" + (this._emoji??"") + ")" ) + (emoji._emoji ?? "");
+    public inherit_traits( emoji : CustomEmojiObject, ignoreTags : boolean = false, swap : boolean = true) : CustomEmojiObject
+    {
+        const id = this.id() + (swap ? "" : "(" + this.id() + ")")+ emoji.id();
+        const emoji_char = (this._emoji ?? "") + (swap ? "" :"(" + (this._emoji??"") + ")" ) + (emoji._emoji ?? "");
+
+        var combined = new CustomEmojiObject(id, undefined, emoji_char);
+
+        combined._base_url = this._base_url;
+        combined._inherited_details_url = this._inherited_details_url;
+        if (this._inherited_details?.rect && emoji._inherited_details_url){
+            combined._inherited_details = {url: emoji._inherited_details_url, rect: this._inherited_details.rect};
         }
-        combined.base_url = this.base_url;
-        combined.faceResize = this.faceResize;
-        combined.allFace = this.allFace;
-        combined.base_details_url = this.base_details_url;
-        if (this.additional_base_details && this.additional_base_details.resize && emoji.base_details_url){
-            combined.additional_base_details = {url: emoji.base_details_url, resize: this.additional_base_details.resize};
-        }
-        if (this.rotation || emoji.rotation){
-            combined.rotation = ((this.rotation ?? 0) + (emoji.rotation ?? 0)+360)%360;
-            if (combined.rotation == 0){
-                combined.rotation = undefined;
+
+        combined._face = (this._face && emoji._face) ? this._face.inheritTraits(emoji._face,ignoreTags, swap) : (this._face ?? emoji._face);
+        combined._face_rect = this._face_rect;
+        combined._is_just_face = this._is_just_face;
+
+        combined._hands = (this._hands && emoji._hands) ? this._hands.inheritTraits(emoji._hands, swap) : (this._hands ?? emoji._hands);
+
+        combined._additional_objects = CustomEmojiItemObject.mergeItemLists(this._additional_objects, emoji._additional_objects);
+        combined._additional_objects_back = CustomEmojiItemObject.mergeItemLists(this._additional_objects_back, emoji._additional_objects_back);
+
+        if (this._rotation || emoji._rotation){
+            combined._rotation = ((this._rotation ?? 0) + (emoji._rotation ?? 0)+360)%360;
+            if (combined._rotation == 0){
+                combined._rotation = undefined;
             }
         }
-        if (!this.face || !emoji.face){
-            combined.face = this.face ?? emoji.face;
-        }
-        else{
-            combined.face =  this.face.inheritTraits(emoji.face,ignoreTags, swap);
-        }
-        if (!this.hands || !emoji.hands){
-            combined.hands = this.hands ?? emoji.hands;
-        }
-        else{
-            combined.hands =  this.hands.inheritTraits(emoji.hands, swap);
-        }
-        combined.additionalObjects = CustomEmojiItemObject.mergeItemLists(this.additionalObjects, emoji.additionalObjects);
-        combined.additionalObjects_back = CustomEmojiItemObject.mergeItemLists(this.additionalObjects_back, emoji.additionalObjects_back);
+
         return combined;
     }
 
     private async renderBaseAndFace(){
         const allInstructions : (mergeInfo | transformInfo) [] = [];
-        if (this.base_url != undefined){
-            allInstructions.push(new mergeInfo(this.base_url));
+        if (this._base_url != undefined){
+            allInstructions.push(new mergeInfo(this._base_url));
         }
-        if (this.additional_base_details != undefined && this.additional_base_details.url){
-            const baseMergeDetails = new mergeInfo(this.additional_base_details.url,this.additional_base_details.resize);
-            allInstructions.push(baseMergeDetails);
+        if (this._inherited_details?.url){
+            allInstructions.push(new mergeInfo(this._inherited_details.url,this._inherited_details.rect));
         }
-        if (this.face != undefined){
+        if (this._face){
             //see if we can somehow put this into one command
-            const faceString = await this.face.Render();
+            const faceString = await this._face.Render();
             if (faceString){
-                const image = new mergeInfo(faceString, this.faceResize);
-                if (this.faceResize){
+                const image = new mergeInfo(faceString, this._face_rect);
+                if (this._face_rect){
                     image.allowCropArea = true;
                 }
                 else{
@@ -129,27 +132,29 @@ export class CustomEmojiObject{
 
     public async render(){
         const allInstructions : (mergeInfo | transformInfo) [] = [];
-        if (this.additionalObjects_back){
+        if (this._additional_objects_back){
+            //sort this later
             allInstructions.push(...(await CustomEmojiItemObject.getListedMergeInfo(
-                this.additionalObjects_back.map(value => {return {item : value};})
+                this._additional_objects_back.map(value => {return {item : value};})
             )));
         }
-        if (this.base_url || this.additional_base_details || this.face)
+        if (this._base_url || this._inherited_details || this._face)
         {
             allInstructions.push(await this.renderBaseAndFace());
         }
-        if (this.hands){
-            allInstructions.push(...await this.hands.toMergeDetails());
+        if (this._hands){
+            allInstructions.push(...await this._hands.toMergeDetails());
         }
-        if (this.additionalObjects){
+        if (this._additional_objects){
+            //same as aboce
             allInstructions.push(...(await CustomEmojiItemObject.getListedMergeInfo(
-                this.additionalObjects.map(value => {return {item : value};})
+                this._additional_objects.map(value => {return {item : value};})
             )));
         }
 
-        if (this.rotation){
+        if (this._rotation){
             const rotation = new transformInfo();
-            rotation.rotate = this.rotation;
+            rotation.rotate = this._rotation;
             allInstructions.push(rotation);
         }
 
@@ -168,23 +173,20 @@ export class CustomEmojiObject{
         if (!flat1?.url && !flat2?.url){
             return true;
         }
-        return flat1?.url == flat2?.url && isResizeEqual(flat1?.resize, flat2?.resize);
+        return flat1?.url == flat2?.url && isRectEqual(flat1?.rect, flat2?.rect);
     }
 
     public isEqual(emoji : CustomEmojiObject) : boolean{
-        if (this.face && emoji.face ){
-            console.log("BOTH FACES ARE DEFINED");
-        }
-        const facesEqual = (this.face && emoji.face ) ? this.face.isEqual(emoji.face) : (!this.face && !emoji.face);
-        const handsEqual = (this.hands && emoji.hands) ? this.hands.isEqual(emoji.hands) : (!this.hands && !emoji.hands);
-        const isEqual = this.base_url == emoji.base_url &&
-        this.flatDetailsEqual(this.additional_base_details, emoji.additional_base_details) &&
-        facesEqual &&
-        handsEqual &&
-        ((this.face != undefined && emoji.face != undefined) ? isResizeEqual(this.faceResize, emoji.faceResize) : true) &&
-        CustomEmojiItemObject.itemListsEqual(this.additionalObjects,emoji.additionalObjects) &&
-        CustomEmojiItemObject.itemListsEqual(this.additionalObjects_back,emoji.additionalObjects_back) &&
-        this.rotation == emoji.rotation;
+
+        const inherited_details_equal = this.flatDetailsEqual(this._inherited_details, emoji._inherited_details);
+        const facesEqual = (this._face && emoji._face ) ? this._face.isEqual(emoji._face) : (!this._face && !emoji._face);
+        const faceRectEqual = (this._face && emoji._face) ? isRectEqual(this._face_rect, emoji._face_rect) : true;
+        const handsEqual = (this._hands && emoji._hands) ? this._hands.isEqual(emoji._hands) : (!this._hands && !emoji._hands);
+
+        const isEqual = this._base_url == emoji._base_url && inherited_details_equal && facesEqual && handsEqual && faceRectEqual &&
+        CustomEmojiItemObject.itemListsEqual(this._additional_objects,emoji._additional_objects) &&
+        CustomEmojiItemObject.itemListsEqual(this._additional_objects_back,emoji._additional_objects_back) &&
+        this._rotation == emoji._rotation;
         return isEqual;
     }
 }
