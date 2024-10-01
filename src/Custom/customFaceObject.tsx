@@ -12,6 +12,7 @@ export class CustomFaceObject{
     private mouth? : CustomEmojiItemObject;
     private cheeks? : CustomEmojiItemObject;
     private additionalObjects : CustomEmojiItemObject[] = [];
+    private rotation? : number;
 
     constructor(face? : RawFace){
         if (face){
@@ -25,6 +26,9 @@ export class CustomFaceObject{
                 face.additional_parts.forEach(item =>{
                     this.additionalObjects.push(new CustomEmojiItemObject(item));
                 });
+            }
+            if (face.rotation){
+                this.rotation = (face.rotation + 360)%360;
             }
         }
 
@@ -40,6 +44,12 @@ export class CustomFaceObject{
         newFace.tears = CustomEmojiItemObject.InheritTraits(this.tears, face.tears, ignoreTags);
         newFace.cheeks = CustomEmojiItemObject.InheritTraits(this.cheeks, face.cheeks, ignoreTags);
         newFace.additionalObjects = CustomEmojiItemObject.mergeItemLists(this.additionalObjects, face.additionalObjects);
+        if (this.rotation || face.rotation){
+            newFace.rotation = ((this.rotation ?? 0) + (face.rotation ?? 0)+ 360)%360;
+            if (newFace.rotation == 0){
+                newFace.rotation = undefined;
+            }
+        }
         return newFace;
     }
 
@@ -50,11 +60,12 @@ export class CustomFaceObject{
         CustomEmojiItemObject.IsEqual(this.mouth, face.mouth) &&
         CustomEmojiItemObject.IsEqual(this.cheeks, face.cheeks) &&
         CustomEmojiItemObject.IsEqual(this.tears, face.tears) &&
-        CustomEmojiItemObject.itemListsEqual(this.additionalObjects,face.additionalObjects);
+        CustomEmojiItemObject.itemListsEqual(this.additionalObjects,face.additionalObjects) &&
+        this.rotation == face.rotation;
     }
 
     public async Render(){
-        const list : mergeInfo[] = [];
+        const list : (mergeInfo | transformInfo)[] = [];
         const faceAnchor = getFaceObjectPlacement(this.category);
         if (this.cheeks){
             const anchor = faceAnchor?.cheeks ?? {x : 0, y : 0};
@@ -80,6 +91,11 @@ export class CustomFaceObject{
             list.push(...(await CustomEmojiItemObject.getListedMergeInfo(
                 this.additionalObjects.map(value => {return {item : value};})
             )));
+        }
+        if (this.rotation){
+            const transform = new transformInfo();
+            transform.rotate = this.rotation;
+            list.push(transform);
         }
         return await mergeImagesCustom(list);
     }

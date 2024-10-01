@@ -55,6 +55,7 @@ export interface RawFace{
   mouth? : RawEmojiItem;
   cheeks? : RawEmojiItem;
   additional_parts?:RawEmojiItem[];
+  rotation? : number;
 }
 
 export interface RawHands{

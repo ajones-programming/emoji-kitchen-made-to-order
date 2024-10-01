@@ -1,8 +1,8 @@
 import emojiMetadata from "./metadata.json";
-import { EmojiData, EmojiMetadata, FaceObjectPlacement } from "./types";
+import { EmojiData, EmojiMetadata, FaceCategoryPlacement } from "./types";
 
 var map : Map<string, EmojiData> | undefined;
-var facemap : Map<string, FaceObjectPlacement> | undefined;
+var facemap : Map<string, FaceCategoryPlacement> | undefined;
 var supportedEmoji : Array<string> | undefined;
 
 function createEmojiData(){
@@ -14,8 +14,8 @@ function createEmojiData(){
 
   // Object.keys((emojiMetadata as EmojiMetadata).data).forEach(element => supportedEmoji?.push(element));
   Object.values((emojiMetadata as EmojiMetadata).data).forEach(value => {
-    supportedEmoji?.push(value.emojiCodepoint ?? "");
-    map?.set(value.emojiCodepoint??"",value);
+    supportedEmoji?.push(value.emoji_codepoint ?? "");
+    map?.set(value.emoji_codepoint??"",value);
   });
   // Object.entries((emojiMetadata as EmojiMetadata).data).forEach(value => {map?.set(value[0],value[1]);});
 }
@@ -24,8 +24,8 @@ function createFaceData(){
   if (facemap){
     return;
   }
-  facemap = new Map<string, FaceObjectPlacement>();
-  ((emojiMetadata as EmojiMetadata).faceObjectInformation).forEach(value => facemap?.set(value.name,value));
+  facemap = new Map<string, FaceCategoryPlacement>();
+  ((emojiMetadata as EmojiMetadata).face_category_information).forEach(value => facemap?.set(value.name,value));
 }
 
 /**
@@ -42,7 +42,7 @@ export function toPrintableEmoji(emojiCodepoint: string): string {
  */
 export function getNotoEmojiUrl(emojiCodepoint: string): string {
     const data = getEmojiData(emojiCodepoint);
-    const url =  data?.twemoji_name + "_" + (data?.emojiCodepoint ?? "");
+    const url =  data?.twemoji_name + "_" + (data?.emoji_codepoint ?? "");
     return  "https://em-content.zobj.net/source/twitter/376/" + url + ".png";
 }
 
