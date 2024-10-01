@@ -1,5 +1,5 @@
-import { mergeImagesCustom, mergeInfo } from "./mergeImages";
-import { FaceData} from "./types";
+import { mergeImagesCustom, mergeInfo, transformInfo } from "./mergeImages";
+import { RawFace} from "./types";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
 import { getFaceObjectPlacement } from "./utils";
 
@@ -33,10 +33,10 @@ export class CustomFaceObject{
     public inheritTraits(face : CustomFaceObject, ignoreTags : boolean = false, swap : boolean = true) : CustomFaceObject{
         const newFace : CustomFaceObject = new CustomFaceObject();
         newFace.category = this.category;
-        newFace.eyebrows = CustomEmojiItemObject.InheritTraits(this.eyebrows, face.eyebrows, ignoreTags);
+        newFace.eyebrows = CustomEmojiItemObject.InheritTraits(this.eyebrows,face.eyebrows, ignoreTags);
         //swap for eyes?
-        newFace.eyes = CustomEmojiItemObject.InheritTraits(swap? face.eyes : this.eyes, swap? this.eyes : face.eyes, ignoreTags);
-        newFace.mouth = CustomEmojiItemObject.InheritTraits(this.mouth, face.mouth, ignoreTags);
+        newFace.eyes = CustomEmojiItemObject.InheritTraits(face.eyes , this.eyes, ignoreTags);
+        newFace.mouth = CustomEmojiItemObject.InheritTraits(swap ? this.mouth : face.mouth, swap ? face.mouth : this.mouth, ignoreTags);
         newFace.tears = CustomEmojiItemObject.InheritTraits(this.tears, face.tears, ignoreTags);
         newFace.cheeks = CustomEmojiItemObject.InheritTraits(this.cheeks, face.cheeks, ignoreTags);
         newFace.additionalObjects = CustomEmojiItemObject.mergeItemLists(this.additionalObjects, face.additionalObjects);
@@ -74,7 +74,7 @@ export class CustomFaceObject{
         }
         if (this.tears){
             const anchor = {x :faceAnchor?.tears.x ?? 0, y : (faceAnchor?.tears.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
-            list.push(await this.tears.toMergeInfo({x: 150, y: 142 + (this.eyes?.getOffset_y() ?? 0)}, this.category));
+            list.push(await this.tears.toMergeInfo(anchor, this.category));
         }
         if (this.additionalObjects){
             list.push(...(await CustomEmojiItemObject.getListedMergeInfo(

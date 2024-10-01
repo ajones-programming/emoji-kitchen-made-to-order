@@ -110,35 +110,37 @@ async function addImage(value : mergeInfo) : Promise<imageObject>{
 
 
 function Draw(imgdata : imageObject, context : CanvasRenderingContext2D)
-    {
-
-      const offset = imgdata.ignoreOffset ? 0 :((preCropSize() - postCropSize())/2);
-      //simplify this bit
-      if (imgdata.copies <= 1){
-        context.drawImage(imgdata.img, imgdata.x + offset, imgdata.y + offset);
+{
+  if (!imgdata.img){
     return;
-      }
-      //draw side by side
-        if (imgdata.copy_vertically){
-          const copy_offset =  imgdata.set_copy_offset ?? imgdata.img.height;
-          var startingPoint = imgdata.y - (copy_offset/2) *(imgdata.copies - 1);
-          if (startingPoint + copy_offset*imgdata.copies > postCropSize()){
-            startingPoint = postCropSize() - copy_offset*imgdata.copies;
-          }
-          for (var i : number = 0; i < imgdata.copies; i++){
-            context.drawImage(imgdata.img, imgdata.x + offset,startingPoint + (copy_offset * i) + offset);
-          }
-        }
-        else{
-          const copy_offset = imgdata.set_copy_offset ?? imgdata.img.width;
-          var startingPoint = imgdata.x - (copy_offset/2) *(imgdata.copies - 1);
-          if (startingPoint + copy_offset*imgdata.copies > postCropSize()){
-            startingPoint = postCropSize() - copy_offset*imgdata.copies;
-          }
-          for (var i : number = 0; i < imgdata.copies; i++){
-            context.drawImage(imgdata.img, startingPoint + (copy_offset * i) + offset, imgdata.y + offset);
-          }
+  }
+  const offset = imgdata.ignoreOffset ? 0 :((preCropSize() - postCropSize())/2);
+  //simplify this bit
+  if (imgdata.copies <= 1){
+    context.drawImage(imgdata.img, imgdata.x + offset, imgdata.y + offset);
+    return;
+  }
+  //draw side by side
+  if (imgdata.copy_vertically){
+    const copy_offset =  imgdata.set_copy_offset ?? imgdata.img.height;
+    var startingPoint = imgdata.y - (copy_offset/2) *(imgdata.copies - 1);
+    if (startingPoint + copy_offset*imgdata.copies > postCropSize()){
+      startingPoint = postCropSize() - copy_offset*imgdata.copies;
     }
+    for (var i : number = 0; i < imgdata.copies; i++){
+      context.drawImage(imgdata.img, imgdata.x + offset,startingPoint + (copy_offset * i) + offset);
+    }
+  }
+  else{
+    const copy_offset = imgdata.set_copy_offset ?? imgdata.img.width;
+    var startingPoint = imgdata.x - (copy_offset/2) *(imgdata.copies - 1);
+    if (startingPoint + copy_offset*imgdata.copies > postCropSize()){
+      startingPoint = postCropSize() - copy_offset*imgdata.copies;
+    }
+    for (var i : number = 0; i < imgdata.copies; i++){
+      context.drawImage(imgdata.img, startingPoint + (copy_offset * i) + offset, imgdata.y + offset);
+    }
+  }
 }
 
 async function TransformCanvas(transformInfo : transformInfo, canvas : HTMLCanvasElement)

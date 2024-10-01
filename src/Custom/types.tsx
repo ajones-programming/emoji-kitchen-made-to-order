@@ -1,11 +1,18 @@
 export interface EmojiMetadata {
-    faceObjectInformation : FaceObjectPlacement[];
+    face_category_information : FaceCategoryPlacement[];
     data: EmojiData[];
   }
 
 export interface Vector2{
   x : number;
   y : number;
+}
+
+export class Rect{
+  x : number = 0;
+  y : number = 0;
+  width : number = 300;
+  height : number = 300;
 }
 
 export interface EdgeRatios{
@@ -18,41 +25,45 @@ export interface EdgeRatios{
 export interface EmojiData{
     twemoji_name: string;
     char : string;
-    emojiCodepoint : string;
-    data : CustomEmojiData;
+    emoji_codepoint : string;
+    data : RawEmojiContent;
   }
 
-export interface CustomEmojiData{
+export interface RawEmojiContent{
     base_url? : string;
     inherited_details_url?: string;
-    additional_details_rect? : ItemScale;
-    face? : FaceData;
-    hands? : HandsData;
-    unique_face_rect? : ItemScale;
-    additional_parts_back?:EmojiItem[];
-    additional_parts?:EmojiItem[];
-    allFace? : boolean;
+    inherited_details_rect? : Rect;
+
+    face? : RawFace;
+    is_only_face? : boolean;
+    face_rect? : Rect;
+
+    hands? : RawHands;
+
+    additional_parts_back?:RawEmojiItem[];
+    additional_parts?:RawEmojiItem[];
+
     rotation?: number;
   }
 
-export interface FaceData{
+export interface RawFace{
   //split url into type and base, then get items to inherit?
   category : string;
-  eyes? : EmojiItem;
-  tears? : EmojiItem;
-  eyebrows?: EmojiItem;
-  mouth? : EmojiItem;
-  cheeks? : EmojiItem;
-  additional_parts?:EmojiItem[];
+  eyes? : RawEmojiItem;
+  tears? : RawEmojiItem;
+  eyebrows?: RawEmojiItem;
+  mouth? : RawEmojiItem;
+  cheeks? : RawEmojiItem;
+  additional_parts?:RawEmojiItem[];
 }
 
-export interface HandsData{
-  leftHand? : EmojiItem;
-  rightHand? : EmojiItem;
-  edgeRatio? : EdgeRatios;
+export interface RawHands{
+  left_hand? : RawEmojiItem;
+  right_hand? : RawEmojiItem;
+  edge_ratio? : EdgeRatios;
 }
 
-export interface FaceObjectPlacement{
+export interface FaceCategoryPlacement{
   name : string;
   eyes : Vector2;
   mouth : Vector2;
@@ -61,29 +72,23 @@ export interface FaceObjectPlacement{
   tears : Vector2;
 }
 
-export class ItemScale{
-  x : number = 0;
-  y : number = 0;
-  width : number = 300;
-  height : number = 300;
-}
+
 
 export interface EmojiFlatDetail{
   url? : string;
-  resize ? : ItemScale;
+  rect ? : Rect;
 }
 
-export interface EmojiItem{
+export interface RawEmojiItem{
   custom? : boolean;
   url : string;
-  isDominant? : boolean ;
   offset_x? : number;
   offset_y? : number;
   scale_x? : number;
   scale_y? : number;
   auto_scale? : boolean;
   proportionate? : boolean;
-  always_recessive?: boolean;
+  ignore_properties?: boolean;
   copy_vertically?:boolean;
   copy_set_offset?:number;
 }

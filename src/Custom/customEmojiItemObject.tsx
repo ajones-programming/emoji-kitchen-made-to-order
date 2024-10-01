@@ -2,10 +2,15 @@ import { GetDimensions } from "./image";
 import { mergeInfo } from "./mergeImages";
 import { RawEmojiItem, ItemAnchor } from "./types";
 
+export interface itemMergeDetails{
+    item : CustomEmojiItemObject;
+    anchor? : ItemAnchor;
+    category? : string;
+}
+
 
 export class CustomEmojiItemObject{
     private url : string = "";
-    private isDominant : boolean = false;
     private offset_x : number = 0;
     private offset_y : number = 0;
     private scale_x : number = 1.0;
@@ -119,8 +124,7 @@ export class CustomEmojiItemObject{
                 y += anchor.y - (dimensions.height / 2);
             }
         }
-        const info : mergeInfo = new mergeInfo();
-        info.src = this.getFullURL(category);
+        const info : mergeInfo = new mergeInfo(this.getFullURL(category));
         info.x = x;
         info.y = y;
         info.width = width;

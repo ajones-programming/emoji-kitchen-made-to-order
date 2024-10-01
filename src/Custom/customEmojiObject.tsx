@@ -1,6 +1,6 @@
 import { mergeImagesCustom, mergeInfo, postCropSize, transformInfo } from './mergeImages';
-import { CustomEmojiData, EmojiFlatDetail, ItemScale } from './types';
-import { isResizeEqual} from './ResizeFunctions';
+import { RawEmojiContent, EmojiFlatDetail, Rect } from './types';
+import { isResizeEqual as isRectEqual} from './ResizeFunctions';
 import { CustomFaceObject } from './customFaceObject';
 import { CustomEmojiItemObject } from './customEmojiItemObject';
 import { CustomHands } from './customHands';
@@ -61,8 +61,8 @@ export class CustomEmojiObject{
 
             if (data.rotation){
                 this._rotation = (data.rotation + 360)%360;
+            }
         }
-    }
     }
 
     public inherit_traits( emoji : CustomEmojiObject, ignoreTags : boolean = false, swap : boolean = true) : CustomEmojiObject
@@ -120,12 +120,11 @@ export class CustomEmojiObject{
             }
         }
         const finishedFaceAndBase = new mergeInfo(await mergeImagesCustom(allInstructions,true));
-        if (this.allFace && this.hands){
-            const handsResize = this.hands.getResize().getRatios();
-            finishedFaceAndBase.height = postCropSize() * (1.0 - (handsResize.top + handsResize.bottom));
-            finishedFaceAndBase.width = postCropSize() * (1.0 - (handsResize.left + handsResize.right));
-            finishedFaceAndBase.x = postCropSize() * handsResize.left;
-            finishedFaceAndBase.y = postCropSize() * handsResize.top;
+        if (this._is_just_face && this._hands){
+            const resize = this._hands.getBaseResize();
+            if (resize.hasEffect()){
+                finishedFaceAndBase.addResize(resize.getRect(postCropSize()));
+            }
         }
         return finishedFaceAndBase;
     }
