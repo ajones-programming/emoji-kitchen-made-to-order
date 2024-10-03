@@ -31,14 +31,14 @@
             "char": "😀",
             "emoji_codepoint": "1f600",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes"
+                        "url" : "eyes/default"
                     } ,
                     "mouth" : {
-                        "url" : "open_smile",
+                        "url" : "mouth/open_smile",
                         "auto_scale" : true
                     }
                 }
@@ -49,17 +49,17 @@
             "char": "😃",
             "emoji_codepoint":"1f603",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes",
+                        "url" : "eyes/default",
                         "offset_y" : -8,
                         "scale_x" : 1.08,
                         "scale_y" : 1.57
                     } ,
                     "mouth" : {
-                        "url" : "open_smile",
+                        "url" : "mouth/open_smile",
                         "offset_y" : 8,
                         "auto_scale" : true
                     }
@@ -71,16 +71,17 @@
             "char": "😄",
             "emoji_codepoint":"1f604",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "smiling_eyes",
+                        "url" : "eyes/smiling_eyes",
                         "offset_y" : 25,
-                        "proportionate" : true
+                        "proportionate" : true,
+                        "ignore_properties":true
                     } ,
                     "mouth" : {
-                        "url" : "open_smile",
+                        "url" : "mouth/open_smile",
                         "offset_y" : 8,
                         "auto_scale" : true
                     }
@@ -92,16 +93,17 @@
             "char": "😁",
             "emoji_codepoint": "1f601",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "beaming_closed_eyes",
+                        "url" : "eyes/beaming_closed_eyes",
                         "offset_y" : 20,
-                        "proportionate" : true
+                        "proportionate" : true,
+                        "ignore_properties" : true
                     } ,
                     "mouth" : {
-                        "url" : "grin",
+                        "url" : "mouth/grin",
                         "offset_y" : 9,
                         "auto_scale" : true
                     }
@@ -113,16 +115,16 @@
             "emoji_codepoint":"1f606",
             "char": "😆",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "squinting_eyes",
+                        "url" : "eyes/squinting",
                         "offset_y" : 21,
                         "proportionate" : true
                     } ,
                     "mouth" : {
-                        "url" : "open_smile",
+                        "url" : "mouth/open_smile",
                         "offset_y" : 9,
                         "auto_scale" : true
                     }
@@ -134,16 +136,16 @@
             "char": "😅",
             "emoji_codepoint":"1f605",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "smiling_eyes",
+                        "url" : "eyes/smiling_eyes",
                         "offset_y" : 25,
                         "ignore_properties" : true
                     } ,
                     "mouth" : {
-                        "url" : "open_smile",
+                        "url" : "mouth/open_smile",
                         "offset_y" : 8,
                         "ignore_properties" : true
                     }
@@ -160,23 +162,23 @@
             "char": "🤣",
             "emoji_codepoint":"1f923",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "squinting_eyes",
+                        "url" : "eyes/squinting",
                         "offset_y" : -5,
                         "proportionate" : true,
                         "auto_scale" : true
                     },
                     "tears":{
-                        "url": "laugh_tears",
+                        "url": "tears/laugh",
                         "offset_y": 17,
                         "proportionate" : true,
                         "auto_scale" : true
                     },
                     "mouth" : {
-                        "url" : "open_smile",
+                        "url" : "mouth/open_smile",
                         "offset_y" : 5,
                         "scale_x" : 1.3,
                         "scale_y" : 1.3
@@ -190,28 +192,28 @@
             "char": "😂",
             "emoji_codepoint":"1f602",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "smiling_eyes",
+                        "url" : "eyes/smiling_eyes",
                         "offset_y" : 25,
                         "proportionate" : true
                     },
                     "eyebrows":{
-                        "url" : "laughing_crying_eyebrows",
+                        "url" : "eyebrows/wide_raised",
                         "proportionate" : true,
                         "auto_scale" : true
 
                     },
                     "tears":{
-                        "url": "laughing_crying_tears",
+                        "url": "tears/laughing_crying",
                         "offset_y": 35,
                         "proportionate" : true,
                         "auto_scale" : true
                     },
                     "mouth" : {
-                        "url" : "open_smile",
+                        "url" : "mouth/open_smile",
                         "offset_y" : 8,
                         "auto_scale" : true
                     }
@@ -223,14 +225,14 @@
             "char": "🙂",
             "emoji_codepoint":"1f642",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes"
+                        "url" : "eyes/default"
                     } ,
                     "mouth" : {
-                        "url" : "slight_smile",
+                        "url" : "mouth/slight_smile",
                         "auto_scale" : true
                     }
                 }
@@ -241,14 +243,14 @@
             "char": "🙃",
             "emoji_codepoint":"1f643",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes"
+                        "url" : "eyes/default"
                     } ,
                     "mouth" : {
-                        "url" : "long_smile",
+                        "url" : "mouth/long_smile",
                         "auto_scale" : true
                     }
                 },
@@ -260,15 +262,15 @@
             "char": "🫠",
             "emoji_codepoint":"1fae0",
             "data" : {
-                "base_url": "smileys/melting_body",
+                "base_url": "smileys/body/melting_body",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "melting_eyes",
+                        "url" : "eyes/melting",
                         "offset_y" : 10
                     } ,
                     "mouth" : {
-                        "url" : "wonky_smile",
+                        "url" : "mouth/wonky_smile",
                         "offset_x" : 12,
                         "offset_y" : -11,
                         "auto_scale" : true
@@ -288,23 +290,23 @@
             "char": "😉",
             "emoji_codepoint":"1f609",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "wink",
+                        "url" : "eyes/wink",
                         "offset_y": 21,
                         "proportionate" : true
                     } ,
                     "eyebrows":{
-                        "url" : "wink_eyebrows",
+                        "url" : "eyebrows/one_brow_raised",
                         "offset_y" : -10,
                         "proportionate" : true,
                         "auto_scale" : true
 
                     },
                     "mouth" : {
-                        "url" : "small_smile",
+                        "url" : "mouth/small_smile",
                         "auto_scale" : true
                     }
                 }
@@ -315,19 +317,19 @@
             "char": "😊",
             "emoji_codepoint":"1f60a",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "smiling_eyes_uniform",
+                        "url" : "eyes/smiling_eyes_uniform",
                         "offset_y" : -4
                     } ,
                     "mouth" : {
-                        "url" : "long_smile",
+                        "url" : "mouth/long_smile",
                         "offset_y" : -9
                     },
                     "cheeks" : {
-                        "url" : "blush",
+                        "url" : "cheeks/blush",
                         "auto_scale":true
                     }
                 }
@@ -338,16 +340,16 @@
             "char": "😇",
             "emoji_codepoint": "1f607",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "beaming_closed_eyes",
+                        "url" : "eyes/beaming_closed_eyes",
                         "offset_y" : 26,
                         "proportionate" : true
                     } ,
                     "mouth" : {
-                        "url" : "long_smile",
+                        "url" : "mouth/long_smile",
                         "offset_y" : -1
                     }
                 },
@@ -373,16 +375,16 @@
             "char": "🥰",
             "emoji_codepoint": "1f970",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "beaming_closed_eyes",
+                        "url" : "eyes/beaming_closed_eyes",
                         "offset_y" : 26,
                         "proportionate" : true
                     } ,
                     "mouth" : {
-                        "url" : "long_smile",
+                        "url" : "mouth/long_smile",
                         "offset_y" : -1
                     }
                 },
@@ -399,18 +401,18 @@
             "char": "😍",
             "emoji_codepoint":"1f60d",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "heart_eyes",
+                        "url" : "eyes/hearts",
                         "offset_y" : -45,
                         "proportionate" : true,
                         "auto_scale":true,
                         "ignore_properties" : true
                     } ,
                     "mouth" : {
-                        "url" : "open_mouth_no_teeth",
+                        "url" : "mouth/open_mouth_no_teeth",
                         "auto_scale" : true
                     }
                 }
@@ -421,18 +423,18 @@
             "char": "🤩",
             "emoji_codepoint":"1f929",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "stars",
+                        "url" : "eyes/stars",
                         "offset_y" : -35,
                         "proportionate" : true,
                         "auto_scale":true,
                         "ignore_properties" : true
                     } ,
                     "mouth" : {
-                        "url" : "open_smile"
+                        "url" : "mouth/open_smile"
                     }
                 }
             }
@@ -442,23 +444,23 @@
             "char": "😘",
             "emoji_codepoint":"1f618",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "wink",
+                        "url" : "eyes/wink",
                         "offset_y": 21,
                         "proportionate" : true
                     } ,
                     "eyebrows":{
-                        "url" : "wink_eyebrows",
+                        "url" : "eyebrows/one_brow_raised",
                         "offset_y" : -10,
                         "proportionate" : true,
                         "auto_scale" : true
 
                     },
                     "mouth" : {
-                        "url" : "kiss_mouth",
+                        "url" : "mouth/kiss",
                         "auto_scale" : true,
                         "offset_y" : 10
                     }
@@ -475,16 +477,101 @@
             "char": "😗",
             "emoji_codepoint":"1f617",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes"
+                        "url" : "eyes/default"
                     } ,
                     "mouth" : {
-                        "url" : "kiss_mouth",
+                        "url" : "mouth/kiss",
                         "auto_scale" : true,
                         "offset_y" : 10
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "smiling-face",
+            "char": "☺️",
+            "emoji_codepoint":"263a-fe0f",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/smiling_eyes_uniform_2",
+                        "offset_y" : 32
+                    } ,
+                    "eyebrows" : {
+                        "url" : "eyebrows/smile",
+                        "offset_y" : -4
+                    } ,
+                    "mouth" : {
+                        "url" : "mouth/small_smile",
+                        "offset_y" : 11
+                    },
+                    "cheeks" : {
+                        "url" : "cheeks/blush",
+                        "offset_y" : 33,
+                        "auto_scale":true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "kissing-face-with-closed-eyes",
+            "char": "😚",
+            "emoji_codepoint":"1f61a",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/smiling_eyes",
+                        "offset_y" : 32,
+                        "scale_y": 0.8,
+                        "ignore_properties":true
+                    } ,
+                    "eyebrows" : {
+                        "url" : "eyebrows/middle_wide",
+                        "offset_y" : 4
+                    } ,
+                    "mouth" : {
+                        "url" : "mouth/kiss",
+                        "auto_scale" : true,
+                        "offset_y" : 12,
+                        "offset_x" : 16,
+                        "ignore_properties" : true
+
+                    },
+                    "cheeks" : {
+                        "url" : "cheeks/blush",
+                        "offset_y" : 23,
+                        "auto_scale":true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "kissing-face-with-smiling-eyes",
+            "char": "😙",
+            "emoji_codepoint":"1f619",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/beaming_closed_eyes",
+                        "offset_y" : 26,
+                        "proportionate" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "mouth/kiss",
+                        "auto_scale" : true,
+                        "offset_y" : 20,
+                        "offset_x" : 7,
+                        "ignore_properties" : true
                     }
                 }
             }
@@ -494,14 +581,14 @@
             "char": "🥲",
             "emoji_codepoint":"1f972",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes"
+                        "url" : "eyes/default"
                     } ,
                     "mouth" : {
-                        "url" : "long_smile",
+                        "url" : "mouth/long_smile",
                         "auto_scale" : true
                     },
                     "additional_parts":[{
@@ -513,45 +600,19 @@
             }
         },
         {
-            "twemoji_name" : "smirking-face",
-            "char": "😏",
-            "emoji_codepoint":"1f60f",
-            "data" : {
-                "base_url": "smileys/default_body",
-                "face":{
-                    "category": "smileys",
-                    "eyes" : {
-                        "url" : "smirk_eyes",
-                        "offset_y": 37,
-                        "proportionate" : true
-                    } ,
-                    "eyebrows":{
-                        "url" : "smirk_eyebrows",
-                        "proportionate" : true,
-                        "auto_scale" : true
-
-                    },
-                    "mouth" : {
-                        "url" : "smirk_mouth",
-                        "auto_scale" : true
-                    }
-                }
-            }
-        },
-        {
             "twemoji_name" : "face-savoring-food",
             "char": "😋",
             "emoji_codepoint":"1f60b",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "smiling_eyes_uniform",
+                        "url" : "eyes/smiling_eyes_uniform",
                         "offset_y" : 15
                     } ,
                     "mouth" : {
-                        "url" : "lick_lips",
+                        "url" : "mouth/lick_lips",
                         "offset_y" : 22
                     }
                 }
@@ -562,15 +623,15 @@
             "char": "😛",
             "emoji_codepoint":"1f61b",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes",
+                        "url" : "eyes/default",
                         "offset_y" : 5
                     },
                     "mouth" : {
-                        "url" : "mouth_tongue",
+                        "url" : "mouth/tongue",
                         "ignore_properties" : true,
                         "offset_y" : 22,
                         "auto_scale":true
@@ -583,15 +644,15 @@
             "char": "😜",
             "emoji_codepoint":"1f61c",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "wink_large_eye",
+                        "url" : "eyes/wink_large_eye",
                         "proportionate" : true
                     },
                     "mouth" : {
-                        "url" : "mouth_tongue",
+                        "url" : "mouth/tongue",
                         "ignore_properties" : true,
                         "offset_y" : 22,
                         "auto_scale":true
@@ -604,17 +665,17 @@
             "char": "🤪",
             "emoji_codepoint":"1f92a",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "zany_eyes",
+                        "url" : "eyes/zany",
                         "auto_scale":true,
                         "offset_y":-10,
                         "proportionate" : true
                     },
                     "mouth" : {
-                        "url" : "tongue_side",
+                        "url" : "mouth/tongue_side",
                         "ignore_properties" : true,
                         "offset_y" : 22,
                         "auto_scale":true
@@ -628,16 +689,16 @@
             "char": "😝",
             "emoji_codepoint":"1f61d",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "squinting_eyes",
+                        "url" : "eyes/squinting",
                         "offset_y" : 21,
                         "proportionate" : true
                     } ,
                     "mouth" : {
-                        "url" : "mouth_tongue",
+                        "url" : "mouth/tongue",
                         "ignore_properties" : true,
                         "offset_y" : 22,
                         "auto_scale":true
@@ -650,16 +711,16 @@
             "char": "🤑",
             "emoji_codepoint":"1f911",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "money_eyes",
+                        "url" : "eyes/dollars",
                         "offset_y" : 0,
                         "proportionate" : true
                     } ,
                     "mouth" : {
-                        "url" : "money_tongue",
+                        "url" : "mouth/money_tongue",
                         "ignore_properties" : true,
                         "offset_y" : 27,
                         "auto_scale":true
@@ -672,16 +733,16 @@
             "char": "🤗",
             "emoji_codepoint":"1f917",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "smiling_eyes",
+                        "url" : "eyes/smiling_eyes",
                         "offset_y" : -20,
                         "proportionate" : true
                     } ,
                     "mouth" : {
-                        "url" : "long_smile",
+                        "url" : "mouth/long_smile",
                         "offset_y" : -35,
                         "scale_x": 0.9,
                         "scale_y":1.1
@@ -689,11 +750,11 @@
                 },
                 "hands":{
                     "left_hand" : {
-                        "url": "open_hands_left",
+                        "url": "hands/open_left",
                         "offset_y" : 166
                     },
                     "right_hand":{
-                        "url": "open_hands_right",
+                        "url": "hands/open_right",
                         "offset_x" : 157,
                         "offset_y" : 166
                     },
@@ -708,11 +769,11 @@
             "char": "🤭",
             "emoji_codepoint":"1f92d",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "smiling_eyes",
+                        "url" : "eyes/smiling_eyes",
                         "offset_y" : 10,
                         "scale_x" : 1.1,
                         "scale_y": 1.1
@@ -720,7 +781,7 @@
                 },
                 "hands":{
                     "left_hand" : {
-                        "url": "left_hand_back",
+                        "url": "hands/left_back",
                         "offset_x" : 62,
                         "offset_y" : 132
                     },
@@ -735,18 +796,18 @@
             "char": "🫢",
             "emoji_codepoint":"1fae2",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes",
+                        "url" : "eyes/default",
                         "scale_x" : 1.0,
                         "scale_y": 1.0
                     }
                 },
                 "hands":{
                     "left_hand" : {
-                        "url": "left_hand_back",
+                        "url": "hands/left_back",
                         "offset_x" : 62,
                         "offset_y" : 132
                     },
@@ -761,34 +822,34 @@
             "char": "🫣",
             "emoji_codepoint":"1fae3",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "peeking_eye",
+                        "url" : "eyes/peeking_eye",
                         "offset_y" : 18,
                         "proportionate" : true
                     } ,
                     "eyebrows":{
-                        "url" : "surprised_eyebrows",
+                        "url" : "eyebrows/surprised",
                         "offset_y" : -21,
                         "proportionate" : true,
                         "auto_scale" : true
 
                     },
                     "mouth" : {
-                        "url" : "shocked_mouth",
+                        "url" : "mouth/shocked",
                         "offset_y": 24,
                         "auto_scale":true
                     }
                 },
                 "hands":{
                     "left_hand" : {
-                        "url": "left_hand_back_fingers_together",
+                        "url": "hands/left_back_fingers_together",
                         "offset_y" : 93
                     },
                     "right_hand":{
-                        "url": "right_hand_peeking",
+                        "url": "hands/right_hand_peeking",
                         "offset_x" : 145,
                         "offset_y" : 108
                     },
@@ -806,19 +867,19 @@
             "char": "🤫",
             "emoji_codepoint":"1f92b",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "small_eyes",
+                        "url" : "eyes/small",
                         "offset_y" : 10
                     },
                     "eyebrows" : {
-                        "url" : "brows_raised",
+                        "url" : "eyebrows/raised",
                         "offset_y" : -20
                     },
                     "mouth" : {
-                        "url" : "shocked_mouth",
+                        "url" : "mouth/shocked",
                         "offset_y": -10,
                         "scale_y":0.7,
                         "auto_scale":true,
@@ -827,7 +888,7 @@
                 },
                 "hands":{
                     "left_hand" : {
-                        "url": "shush_finger",
+                        "url": "hands/shush_finger",
                         "offset_x" : 114,
                         "offset_y" : 141
                     },
@@ -838,18 +899,80 @@
             }
         },
         {
+            "twemoji_name" : "thinking-face",
+            "char": "🤔",
+            "emoji_codepoint":"1f914",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/slanted",
+                        "offset_y" : -9,
+                        "offset_x" : 7
+                    },
+                    "eyebrows" : {
+                        "url" : "eyebrows/thinking",
+                        "offset_x" : 8
+                    },
+                    "mouth" : {
+                        "url" : "mouth/thinking",
+                        "offset_y": -30,
+                        "offset_x" : 4,
+                        "auto_scale":true
+                    }
+                },
+                "hands":{
+                    "left_hand" : {
+                        "url": "hands/thinking",
+                        "offset_x" : 48,
+                        "offset_y" : 149
+                    },
+                    "edge_ratio":{
+                        "bottom": 0.05
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "smirking-face",
+            "char": "😏",
+            "emoji_codepoint":"1f60f",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/smirk",
+                        "offset_y": 37,
+                        "proportionate" : true
+                    } ,
+                    "eyebrows":{
+                        "url" : "eyebrows/middle_wide",
+                        "proportionate" : true,
+                        "auto_scale" : true
+
+                    },
+                    "mouth" : {
+                        "url" : "mouth/smirk",
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        {
             "twemoji_name" : "slightly-frowning-face",
             "char": "🙁",
             "emoji_codepoint":"1f641",
             "data" : {
-                "base_url": "smileys/default_body",
+                "base_url": "smileys/body/default",
                 "face":{
                     "category": "smileys",
                     "eyes" : {
-                        "url" : "default_eyes"
+                        "url" : "eyes/default"
                     },
                     "mouth" : {
-                        "url" : "slight_frown",
+                        "url" : "mouth/slight_frown",
                         "auto_scale" : true
                     }
                 }
