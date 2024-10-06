@@ -1,7 +1,7 @@
 import { BaseResizeObject } from "./baseResizeObject";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
 import { mergeImagesCustom, mergeInfo } from "./mergeImages";
-import { RawEmojiItem, RawHands } from "./types";
+import { RawHands } from "./types";
 
 export class CustomHands{
     //default category

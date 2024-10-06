@@ -49,6 +49,7 @@ export class CustomEmojiItemObject{
             this.num_of_copies = copy.num_of_copies;
             this.copy_vertically = copy.copy_vertically;
             this.set_copy_offset = copy.set_copy_offset;
+            this.can_copy = copy.can_copy;
         }
     }
     public static InheritTraits(base : CustomEmojiItemObject | undefined, toBeInherited : CustomEmojiItemObject | undefined,

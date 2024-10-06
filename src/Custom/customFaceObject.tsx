@@ -67,23 +67,23 @@ export class CustomFaceObject{
     public async Render(){
         const list : (mergeInfo | transformInfo)[] = [];
         const faceAnchor = getFaceObjectPlacement(this.category);
-        if (this.cheeks){
+        if (this.cheeks?.can_render()){
             const anchor = faceAnchor?.cheeks ?? {x : 0, y : 0};
             list.push(await this.cheeks.toMergeInfo(anchor, this.category));
         }
-        if (this.eyes){
+        if (this.eyes?.can_render()){
             const anchor = faceAnchor?.eyes ?? {x : 0, y : 0};
             list.push(await this.eyes.toMergeInfo(anchor, this.category));
         }
-        if (this.eyebrows){
+        if (this.eyebrows?.can_render()){
             const anchor = {x :faceAnchor?.eyebrows.x ?? 0, y : (faceAnchor?.eyebrows.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
             list.push(await this.eyebrows.toMergeInfo(anchor, this.category));
         }
-        if (this.mouth){
+        if (this.mouth?.can_render()){
             const anchor = faceAnchor?.mouth ?? {x : 0, y : 0};
             list.push(await this.mouth.toMergeInfo(anchor, this.category));
         }
-        if (this.tears){
+        if (this.tears?.can_render()){
             const anchor = {x :faceAnchor?.tears.x ?? 0, y : (faceAnchor?.tears.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
             list.push(await this.tears.toMergeInfo(anchor, this.category));
         }

@@ -4,6 +4,8 @@ import { isResizeEqual as isRectEqual} from './ResizeFunctions';
 import { CustomFaceObject } from './customFaceObject';
 import { CustomEmojiItemObject } from './customEmojiItemObject';
 import { CustomHands } from './customHands';
+import { BaseResizeObject } from './baseResizeObject';
+import { CustomLayer } from './customLayerObject';
 
 //figure out how hands are meant to work? Hands are dependent on the base, which makes this complicated
 
@@ -20,6 +22,7 @@ export class CustomEmojiObject{
     private _face_rect? : Rect;
 
     private _hands? : CustomHands;
+    private _foreground_layer ? : CustomLayer;
 
     private _additional_objects : CustomEmojiItemObject[] = [];
     private _additional_objects_back : CustomEmojiItemObject[] = [];
@@ -47,6 +50,7 @@ export class CustomEmojiObject{
             this._face_rect = data.face_rect;
 
             this._hands = data.hands ? new CustomHands(data.hands, data.face?.category) : undefined;
+            this._foreground_layer = data.foreground_layer ? new CustomLayer(data.foreground_layer) : undefined;
 
             if (data.additional_parts){
                 data.additional_parts.forEach(item =>{
@@ -83,6 +87,7 @@ export class CustomEmojiObject{
         combined._is_just_face = this._is_just_face;
 
         combined._hands = (this._hands && emoji._hands) ? this._hands.inheritTraits(emoji._hands, swap) : (this._hands ?? emoji._hands);
+        combined._foreground_layer = this._foreground_layer ?? emoji._foreground_layer;
 
         combined._additional_objects = CustomEmojiItemObject.mergeItemLists(this._additional_objects, emoji._additional_objects);
         combined._additional_objects_back = CustomEmojiItemObject.mergeItemLists(this._additional_objects_back, emoji._additional_objects_back);
@@ -120,13 +125,20 @@ export class CustomEmojiObject{
             }
         }
         const finishedFaceAndBase = new mergeInfo(await mergeImagesCustom(allInstructions));
-        if (this._is_just_face && this._hands && !this._face_rect){
-            const resize = this._hands.getBaseResize();
-            if (resize.hasEffect()){
-                finishedFaceAndBase.addAreaRect(resize.getRect(postCropSize()));
-                finishedFaceAndBase.allowCropArea = true;
+        var rect : BaseResizeObject | undefined;
 
+        if (this._is_just_face && !this._face_rect){
+            if (this._hands){
+                rect = this._hands.getBaseResize();
             }
+            if (this._foreground_layer){
+                rect = this._foreground_layer.getBaseResize();
+            }
+        }
+
+        if (rect && rect.hasEffect()){
+            finishedFaceAndBase.addAreaRect(rect.getRect(postCropSize()));
+            finishedFaceAndBase.allowCropArea = true;
         }
         else{
             finishedFaceAndBase.ignoreOffset = true;
@@ -147,6 +159,16 @@ export class CustomEmojiObject{
         if (this._base_url || this._inherited_details || this._face)
         {
             allInstructions.push(await this.renderBaseAndFace());
+        }
+        if (this._foreground_layer){
+            const mergeInfo = await this._foreground_layer.toMergeDetails();
+            if (mergeInfo){
+                const resize = this._foreground_layer.getBaseResize();
+                if (resize && this._face_rect){
+                    mergeInfo.addAreaRect(resize.getInverseRect(this._face_rect));
+                }
+                allInstructions.push(mergeInfo);
+            }
         }
         if (this._hands){
             const mergeInfo = await this._hands.render();
@@ -198,11 +220,13 @@ export class CustomEmojiObject{
         const facesEqual = (this._face && emoji._face ) ? this._face.isEqual(emoji._face) : (!this._face && !emoji._face);
         const faceRectEqual = (this._face && emoji._face) ? isRectEqual(this._face_rect, emoji._face_rect) : true;
         const handsEqual = (this._hands && emoji._hands) ? this._hands.isEqual(emoji._hands) : (!this._hands && !emoji._hands);
+        const foregroundEqual = (this._foreground_layer && emoji._foreground_layer) ? this._foreground_layer.isEqual(emoji._foreground_layer) : (!this._foreground_layer && !emoji._foreground_layer);
 
         const isEqual = this._base_url == emoji._base_url && inherited_details_equal && facesEqual && handsEqual && faceRectEqual &&
         CustomEmojiItemObject.itemListsEqual(this._additional_objects,emoji._additional_objects) &&
         CustomEmojiItemObject.itemListsEqual(this._additional_objects_back,emoji._additional_objects_back) &&
-        this._rotation == emoji._rotation;
+        this._rotation == emoji._rotation &&
+        foregroundEqual;
         return isEqual;
     }
 }

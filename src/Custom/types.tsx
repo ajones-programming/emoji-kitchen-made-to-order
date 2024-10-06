@@ -40,6 +40,8 @@ export interface RawEmojiContent{
 
     hands? : RawHands;
 
+    foreground_layer? : RawLayer;
+
     additional_parts_back?:RawEmojiItem[];
     additional_parts?:RawEmojiItem[];
 
@@ -61,6 +63,11 @@ export interface RawFace{
 export interface RawHands{
   left_hand? : RawEmojiItem;
   right_hand? : RawEmojiItem;
+  edge_ratio? : EdgeRatios;
+}
+
+export interface RawLayer{
+  item? : RawEmojiItem;
   edge_ratio? : EdgeRatios;
 }
 
@@ -92,6 +99,7 @@ export interface RawEmojiItem{
   ignore_properties?: boolean;
   copy_vertically?:boolean;
   copy_set_offset?:number;
+  can_copy? : boolean;
 }
 
 export class ItemAnchor{
