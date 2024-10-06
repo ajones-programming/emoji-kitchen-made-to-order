@@ -78,6 +78,9 @@ export class CustomEmojiItemObject{
             newItem.scale_y = minimum;
             newItem.proportionate = true;
         }
+        if (!ignoreTags){
+            newItem.capOffsets(-20,20,-45,40);
+        }
 
         return newItem;
     }
@@ -103,6 +106,21 @@ export class CustomEmojiItemObject{
 
     private getFullURL(category? : string){
         return "./assets/custom/" + (category ? (category + "/") : "") + this.url + ".png";
+    }
+
+    public capOffsets(min_x : number, max_x : number, min_y : number, max_y : number){
+        if (this.offset_x < min_x){
+            this.offset_x = min_x;
+        }
+        else if (this.offset_x > max_x){
+            this.offset_x = max_x;
+        }
+        if (this.offset_y < min_y){
+            this.offset_y = min_y;
+        }
+        if (this.offset_y > max_y){
+            this.offset_y = max_y;
+        }
     }
 
     public async toMergeInfo(anchor? : ItemAnchor, category? : string){
