@@ -21,6 +21,7 @@ export class CustomEmojiItemObject{
     private num_of_copies : number = 1;
     private copy_vertically : boolean = false;
     private set_copy_offset?:number;
+    private can_copy : boolean = false;
 
     constructor(item? : RawEmojiItem, copy? : CustomEmojiItemObject){
         if (item){
@@ -34,7 +35,7 @@ export class CustomEmojiItemObject{
             this.ignore_properties = item.ignore_properties ?? false;
             this.copy_vertically = item.copy_vertically ?? false;
             this.set_copy_offset = item.copy_set_offset;
-
+            this.can_copy = item.can_copy ?? false;
         }
         if (copy){
             this.url = copy.url;
@@ -62,6 +63,9 @@ export class CustomEmojiItemObject{
         const ignoreProperty = item.ignore_properties&&!ignoreTags;
 
         newItem.url = this.url;
+        if (!newItem.can_render()){
+            return newItem;
+        }
         newItem.offset_x = this.offset_x + (ignoreProperty ? 0 :item.offset_x);
         newItem.offset_y = this.offset_y + (ignoreProperty ? 0 : item.offset_y);
         newItem.scale_x = this.scale_x * (ignoreProperty ? 1.0 : item.scale_x);
@@ -123,6 +127,10 @@ export class CustomEmojiItemObject{
         }
     }
 
+    public can_render() {
+        return this.url != "";
+    }
+
     public async toMergeInfo(anchor? : ItemAnchor, category? : string){
         var x = this.offset_x;
         var y = this.offset_y;
@@ -170,7 +178,9 @@ export class CustomEmojiItemObject{
             const copy = list2.findIndex(val2 => val2 ? value.isEqual(val2,false) : false);
             if (copy > -1){
                 list2[copy] = undefined;
-                value.num_of_copies++;
+                if (value.can_copy){
+                    value.num_of_copies++;
+                }
             }
             newList.push(value);
         });

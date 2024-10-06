@@ -152,6 +152,7 @@
                 },
                 "additional_parts":[{
                     "url": "additional/droplet",
+                    "can_copy" : true,
                     "offset_x" : 207,
                     "offset_y" : 9
                 }]
@@ -359,6 +360,7 @@
                     {
                         "url": "additional/halo-back",
                         "copy_vertically" : true,
+                        "can_copy" : true,
                         "copy_set_offset" : 30
                     }
                 ],
@@ -366,6 +368,7 @@
                     {
                         "url": "additional/halo-front",
                         "offset_y":40,
+                        "can_copy" : true,
                         "copy_vertically":true,
                         "copy_set_offset" : 30
                     }
@@ -470,6 +473,7 @@
                 },
                 "additional_parts":[{
                     "url": "additional/kiss_heart",
+                    "can_copy" : true,
                     "offset_x" : 210,
                     "offset_y" : 170
                 }]
@@ -597,6 +601,7 @@
                     },
                     "additional_parts":[{
                         "url": "additional/droplet",
+                        "can_copy" : true,
                         "offset_x" : 165,
                         "offset_y" : 144
                     }]
@@ -1064,6 +1069,76 @@
                         "offset_y":-5,
                         "auto_scale" : true
                     }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-without-mouth",
+            "char": "😶",
+            "emoji_codepoint":"1f636",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/default",
+                        "offset_y" : 26,
+                        "ignore_properties":true
+                    },
+                    "mouth":{
+                        "url" : ""
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "dotted-line-face",
+            "char": "🫥",
+            "emoji_codepoint":"1fae5",
+            "data" : {
+                "base_url": "smileys/body/dotted_line",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/default",
+                        "offset_y" : 26,
+                        "ignore_properties":true
+                    },
+                    "mouth" : {
+                        "url" : "mouth/straight_line",
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-in-clouds",
+            "char": "😶‍🌫️",
+            "emoji_codepoint":"1f636-200d-1f32b-fe0f",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/default",
+                        "offset_y" : 26,
+                        "ignore_properties":true
+                    },
+                    "mouth":{
+                        "url" : ""
+                    }
+                },
+                "foreground_layer": {
+                    "item" : {
+                        "url" : "additional/clouds"
+                    },
+                    "edge_ratio":{
+                        "bottom": 0.0567,
+                        "left":0.0567,
+                        "right" : 0.0567,
+                        "top" : 0.0567
+                    }
+
                 }
             }
         },
