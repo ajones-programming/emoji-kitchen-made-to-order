@@ -21,11 +21,11 @@ export class mergeInfo{
   constructor(src : string, resize? : Rect){
     this.src = src;
     if (resize){
-      this.addResize(resize);
+      this.addAreaRect(resize);
     }
   }
 
-  public addResize(resize : Rect)
+  public addAreaRect(resize : Rect)
   {
     this.x = resize.x;
     this.y = resize.y;

@@ -120,10 +120,10 @@ export class CustomEmojiObject{
             }
         }
         const finishedFaceAndBase = new mergeInfo(await mergeImagesCustom(allInstructions));
-        if (this._is_just_face && this._hands){
+        if (this._is_just_face && this._hands && !this._face_rect){
             const resize = this._hands.getBaseResize();
             if (resize.hasEffect()){
-                finishedFaceAndBase.addResize(resize.getRect(postCropSize()));
+                finishedFaceAndBase.addAreaRect(resize.getRect(postCropSize()));
                 finishedFaceAndBase.allowCropArea = true;
 
             }
@@ -149,7 +149,17 @@ export class CustomEmojiObject{
             allInstructions.push(await this.renderBaseAndFace());
         }
         if (this._hands){
-            allInstructions.push(...await this._hands.toMergeDetails());
+            const mergeInfo = await this._hands.render();
+            if (this._face_rect){
+                const resize = this._hands.getBaseResize();
+                mergeInfo.addAreaRect(resize.getInverseRect(this._face_rect) );
+                mergeInfo.allowCropArea = true;
+            }
+            else{
+                mergeInfo.ignoreOffset = true;
+            }
+
+            allInstructions.push(mergeInfo);
         }
         if (this._additional_objects){
             //same as aboce

@@ -1,6 +1,6 @@
 import { BaseResizeObject } from "./baseResizeObject";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
-import { mergeInfo } from "./mergeImages";
+import { mergeImagesCustom, mergeInfo } from "./mergeImages";
 import { RawEmojiItem, RawHands } from "./types";
 
 export class CustomHands{
@@ -49,6 +49,10 @@ export class CustomHands{
             mergeInfoList.push(await this.right_hand.toMergeInfo(undefined, this.category));
         }
         return mergeInfoList;
+    }
+
+    public async render(){
+        return new mergeInfo(await mergeImagesCustom(await this.toMergeDetails()));
     }
 
     public getBaseResize(){

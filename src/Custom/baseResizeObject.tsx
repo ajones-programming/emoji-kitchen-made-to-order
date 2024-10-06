@@ -44,15 +44,28 @@ export class BaseResizeObject{
 
     }
 
-    public getRect(edgeSize : number = 1) : Rect{
+    public getRect(width : number = 1, height? : number) : Rect{
         const edgeRatios = this.getRatios();
+
         console.log(edgeRatios);
         return {
-            x: edgeSize * (edgeRatios.left ?? 0),
-            y: edgeSize * (edgeRatios.top ?? 0),
-            width: edgeSize * (1.0 - ((edgeRatios.left ?? 0) + (edgeRatios.right ?? 0))),
-            height: edgeSize * (1.0 - ((edgeRatios.top ?? 0) + (edgeRatios.bottom ?? 0)))
+            x: width * (edgeRatios.left ?? 0),
+            y: (height??width) * (edgeRatios.top ?? 0),
+            width: width * (1.0 - ((edgeRatios.left ?? 0) + (edgeRatios.right ?? 0))),
+            height: (height??width) * (1.0 - ((edgeRatios.top ?? 0) + (edgeRatios.bottom ?? 0)))
         };
+    }
+
+    public getInverseRect(rect : Rect){
+        const ratios = this.getRatios();
+        const factor = 1.0 - (ratios.left + ratios.right);
+        const width = rect.width / factor;
+        const height = rect.height/ factor;
+        const x = rect.x - ratios.left * width;
+        const y = rect.y - ratios.top * height;
+        return {x : x, y : y, width : width, height:height};
+
+        //assume the rect above has already been applied?
     }
 
 }
