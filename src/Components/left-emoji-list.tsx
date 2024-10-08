@@ -1,6 +1,7 @@
 import React, { Dispatch } from "react";
 import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "../Custom/utils";
 import { ImageListItem } from "@mui/material";
+import { additionalEmojiInUse } from "../Custom/generate-emojis";
 
 export default function LeftEmojiList({
   leftSearchResults,
@@ -21,6 +22,7 @@ export default function LeftEmojiList({
       leftSearchResults.includes(emoji)
     );
   }
+  const canSelect = !additionalEmojiInUse();
 
   return knownSupportedEmoji.map((emojiCodepoint) => {
     const data = getEmojiData(emojiCodepoint);
@@ -35,10 +37,13 @@ export default function LeftEmojiList({
         }
       >
         <ImageListItem
-          onClick={(event) => handleLeftEmojiClicked(emojiCodepoint)}
+          onClick={(event) => canSelect ? handleLeftEmojiClicked(emojiCodepoint) : null}
           sx={{
             p: 0.5,
             borderRadius: 2,
+            opacity: (theme) => {
+              return canSelect ? 1 : 0.1;
+            },
             backgroundColor: (theme) =>
               selectedLeftEmoji === data?.emoji_codepoint
                 ? theme.palette.action.selected

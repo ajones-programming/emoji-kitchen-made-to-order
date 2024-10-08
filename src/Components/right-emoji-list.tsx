@@ -14,7 +14,6 @@ export default function RightEmojiList({
   handleRightEmojiClicked: Dispatch<string>;
 }) {
   var knownSupportedEmoji = getSupportedEmoji();
-  var hasSelectedLeftEmoji = selectedLeftEmoji !== "";
 
   // If we have search results, filter the top-level items down
   if (rightSearchResults.length > 0) {
@@ -22,28 +21,20 @@ export default function RightEmojiList({
       rightSearchResults.includes(emoji)
     );
   }
+  const canSelect = true;
 
   // If we have a selectedLeftEmoji, save the valid combinations for that emoji
-  var possibleEmoji: Array<string> = [];
-  if (hasSelectedLeftEmoji) {
-    const data = getEmojiData(selectedLeftEmoji);
-    possibleEmoji = getSupportedEmoji();
-  }
-
   return knownSupportedEmoji.map((emojiCodepoint) => {
     const data = getEmojiData(emojiCodepoint);
     // Every right-hand emoji is valid unless we have a selected left-hand emoji
     // In which case, we need to explicitly check if it's a valid combination
-    var isValidCombo = true;
-    if (hasSelectedLeftEmoji) {
-      isValidCombo = possibleEmoji.includes(emojiCodepoint);
-    }
+    //remove this!
 
     return (
       <div key={data?.twemoji_name}>
         <ImageListItem
           onClick={(event) =>
-            hasSelectedLeftEmoji && isValidCombo
+            canSelect
               ? handleRightEmojiClicked(emojiCodepoint)
               : null
           }
@@ -51,11 +42,7 @@ export default function RightEmojiList({
             p: 0.5,
             borderRadius: 2,
             opacity: (theme) => {
-              if (!hasSelectedLeftEmoji) {
-                return 0.1;
-              }
-
-              return isValidCombo ? 1 : 0.1;
+              return canSelect ? 1 : 0.1;
             },
             backgroundColor: (theme) =>
               selectedRightEmoji === emojiCodepoint
@@ -63,9 +50,7 @@ export default function RightEmojiList({
                 : theme.palette.background.default,
             "&:hover": {
               backgroundColor: (theme) => {
-                if (hasSelectedLeftEmoji) {
-                  return theme.palette.action.hover;
-                }
+                return theme.palette.action.hover;
               },
             },
           }}

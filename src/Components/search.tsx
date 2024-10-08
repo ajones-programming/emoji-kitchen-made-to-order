@@ -248,8 +248,7 @@ export default function Search({
       <IconButton
         color="primary"
         sx={{ p: "10px" }}
-        disabled={hasSearchValue || disabled}
-        onClick={hasSearchValue ? () => null : handleRandomize}
+        onClick={handleRandomize}
       >
         {selectedEmoji !== "" ? (
           <img

@@ -15,11 +15,12 @@ import JSZip from "jszip";
 import saveAs from "file-saver";
 import { v4 as uuidv4 } from "uuid";
 import { MouseCoordinates } from "../Custom/types";
-import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "../Custom/utils";
+import { getSupportedEmoji } from "../Custom/utils";
 import Search from "./search";
 import RightEmojiList from "./right-emoji-list";
 import LeftEmojiList from "./left-emoji-list";
-import { CustomEmojiObject} from "../Custom/customEmojiObject";
+import { createMiddleList } from "./kitchen-display-generated-emojis";
+import { additionalEmojiInUse } from "../Custom/generate-emojis";
 
 export default function Kitchen() {
   // Selection helpers
@@ -60,11 +61,20 @@ export default function Kitchen() {
     }
   };
 
+  const clearSelectedEmoji = () => {
+    setSelectedLeftEmoji("");
+    setSelectedRightEmoji("");
+  };
+
   /**
    * 🎲 Handler when left-hand randomize button clicked
    */
   const handleLeftEmojiRandomize = () => {
     var possibleEmoji: Array<string>;
+    if (additionalEmojiInUse()){
+      possibleEmoji = [];
+      return;
+    }
 
     // Pick a random emoji from all possible emoji
     possibleEmoji = getSupportedEmoji().filter(
@@ -97,8 +107,10 @@ export default function Kitchen() {
     //   (codepoint) =>
     //     codepoint !== selectedLeftEmoji && codepoint !== selectedRightEmoji
     // );
-    const possibleEmoji = getSupportedEmoji().filter(
-      (codepoint) => codepoint !== selectedLeftEmoji && codepoint !== selectedRightEmoji
+    var possibleEmoji: Array<string>;
+    // Pick a random emoji from all possible emoji
+    possibleEmoji = getSupportedEmoji().filter(
+      (codepoint) => codepoint !== selectedLeftEmoji
     );
 
     const randomEmoji =
@@ -236,116 +248,10 @@ export default function Kitchen() {
   // See: https://caniuse.com/async-clipboard
   var hasClipboardSupport = "write" in navigator.clipboard;
   //THIS IS WHAT WE NEED TO CHANGE
-  var middleList;
-  var showOneCombo = false;
 
-  // Neither are selected, show left list, empty middle list, and disable right list
-  if (selectedLeftEmoji === "" || selectedRightEmoji === "") {
-    middleList = <div></div>;
-  }
-  else {
-    showOneCombo = true;
-
-    const leftEmojiData = getEmojiData(selectedLeftEmoji);
-    const rightEmojiData = getEmojiData(selectedRightEmoji);
-    const leftEmoji = new CustomEmojiObject(selectedLeftEmoji,leftEmojiData?.data,leftEmojiData?.char);
-    const rightEmoji = new CustomEmojiObject(selectedRightEmoji,rightEmojiData?.data,rightEmojiData?.char);
-    const leftEmojiURL = getNotoEmojiUrl(selectedLeftEmoji);
-    const rightEmojiURL = getNotoEmojiUrl(selectedRightEmoji);
-
-    var renderLR = false;
-    var renderLLR = false;
-    var renderRL = false;
-    var renderRRL = false;
-
-    leftEmoji.render();
-    rightEmoji.render();
-    var combined_lr : CustomEmojiObject | undefined;
-    var combined_llr : CustomEmojiObject | undefined;
-    var combined_rl : CustomEmojiObject | undefined;
-    var combined_rrl : CustomEmojiObject | undefined;
-    if (leftEmoji != undefined && rightEmoji != undefined){
-      combined_lr = leftEmoji.inherit_traits(rightEmoji);
-      combined_llr = leftEmoji.inherit_traits(rightEmoji,false,false);
-      combined_rl = rightEmoji.inherit_traits(leftEmoji);
-      combined_rrl = rightEmoji.inherit_traits(leftEmoji,false,false);
-
-      renderLR = !combined_lr.isEqual(leftEmoji) && !combined_lr.isEqual(rightEmoji);
-      renderLLR = !combined_llr.isEqual(leftEmoji) && !combined_llr.isEqual(rightEmoji) && !combined_llr.isEqual(combined_lr);
-      renderRL = !combined_rl.isEqual(leftEmoji) && !combined_rl.isEqual(rightEmoji)
-            && !combined_rl.isEqual(combined_lr) && !combined_rl.isEqual(combined_llr);
-      renderRRL = !combined_rrl.isEqual(leftEmoji) && !combined_rrl.isEqual(rightEmoji)
-            && !combined_rrl.isEqual(combined_lr) && !combined_rrl.isEqual(combined_llr) && !combined_rrl.isEqual(combined_rl);
-
-      if (!renderLR && !renderLLR && !renderRL && !renderRRL){
-        combined_lr = leftEmoji.inherit_traits(rightEmoji,true);
-        combined_llr = leftEmoji.inherit_traits(rightEmoji,true,false);
-        combined_rl = rightEmoji.inherit_traits(leftEmoji,true);
-        combined_rrl = rightEmoji.inherit_traits(leftEmoji,true,false);
-
-        renderLR = !combined_lr.isEqual(leftEmoji) && !combined_lr.isEqual(rightEmoji);
-        renderLLR = !combined_llr.isEqual(leftEmoji) && !combined_llr.isEqual(rightEmoji) && !combined_llr.isEqual(combined_lr);
-        renderRL = !combined_rl.isEqual(leftEmoji) && !combined_rl.isEqual(rightEmoji)
-              && !combined_rl.isEqual(combined_lr) && !combined_rl.isEqual(combined_llr);
-        renderRRL = !combined_rrl.isEqual(leftEmoji) && !combined_rrl.isEqual(rightEmoji)
-              && !combined_rrl.isEqual(combined_lr) && !combined_rrl.isEqual(combined_llr) && !combined_rrl.isEqual(combined_rl);
-      }
-
-      if (renderLR){combined_lr?.render();}
-      if (renderLLR){combined_llr?.render();}
-      if (renderRL){combined_rl?.render();}
-      if (renderRRL){combined_rrl?.render();}
-
-    }
-
-    const style1 = {
-        margin: "20px",
-        fontSize : "200%",
-        "text-align" : "center",
-        backgroundColor : "coral"
-    };
-    const style2 = {
-      margin: "20px",
-      fontSize : "200%",
-      "text-align" : "center",
-      backgroundColor : "pink"
-  };
-
-
-    const imgStyle = {
-      margin: "20px"
-    }
-
-    middleList = (
-      <div>
-        <div dir="horizontal" style={style1}>
-          <img alt={leftEmojiData?.twemoji_name} id={leftEmoji.id()} src={leftEmojiURL} width="100px" height="100px" style={imgStyle}/>
-          +
-          <img alt={rightEmojiData?.twemoji_name} id={rightEmoji.id()} src={rightEmojiURL} width="100px" height="100px" style={imgStyle}/>
-        </div>
-        <div dir="horizontal" style={style2}>
-            {renderLR && combined_lr != undefined &&
-              <img alt={combined_lr.id()} id={combined_lr.id()} width="150px" height="150px" style={imgStyle}/>
-            }
-            {renderLLR && combined_llr != undefined &&
-              <img alt={combined_llr.id()} id={combined_llr.id()} width="150px" height="150px" style={imgStyle}/>
-            }
-            {renderRL && combined_rl != undefined &&
-              <img alt={combined_rl.id()} id={combined_rl?.id()} width="150px" height="150px" style={imgStyle}/>
-            }
-            {renderRRL && combined_rrl != undefined &&
-              <img alt={combined_rrl.id()} id={combined_rrl.id()} width="150px" height="150px" style={imgStyle}/>
-            }
-            {!renderRL && !renderLR && !renderLLR && !renderRRL &&
-              <div>
-                Cannot render, result is same as a source emoji
-              </div>
-            }
-        </div>
-      </div>
-
-    );
-  }
+  var middleList : JSX.Element = createMiddleList(selectedLeftEmoji, selectedRightEmoji, clearSelectedEmoji);
+  // var middleList;
+  var showOneCombo = !(selectedLeftEmoji === "" || selectedRightEmoji === "");
 
   return (
     <Container
@@ -481,9 +387,9 @@ export default function Kitchen() {
             <Container
               sx={{ display: "flex", justifyContent: "center", pt: 2 }}
             >
-              <IconButton onClick={handleImageCopy}>
+              {/* <IconButton onClick={handleImageCopy}>
                 <ContentCopy />
-              </IconButton>
+              </IconButton> */}
             </Container>
           ) : null}
 

@@ -46,8 +46,6 @@ export class BaseResizeObject{
 
     public getRect(width : number = 1, height? : number) : Rect{
         const edgeRatios = this.getRatios();
-
-        console.log(edgeRatios);
         return {
             x: width * (edgeRatios.left ?? 0),
             y: (height??width) * (edgeRatios.top ?? 0),
