@@ -206,6 +206,10 @@ export class CustomEmojiObject{
         return this._id ?? "";
     }
 
+    public emoji(){
+        return this._emoji ?? "";
+    }
+
     private flatDetailsEqual(flat1 : EmojiFlatDetail | undefined, flat2 : EmojiFlatDetail | undefined){
 
         if (!flat1?.url && !flat2?.url){

@@ -1170,6 +1170,107 @@
             }
         },
         {
+            "twemoji_name" : "unamused-face",
+            "char": "😒",
+            "emoji_codepoint":"1f612",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/unamused",
+                        "offset_y": 25,
+                        "proportionate" : true,
+                        "ignore_properties" : true
+                    } ,
+                    "eyebrows":{
+                        "url" : "eyebrows/curved",
+                        "proportionate" : true,
+                        "auto_scale" : true
+
+                    },
+                    "mouth" : {
+                        "url" : "mouth/slight_frown",
+                        "auto_scale" : true,
+                        "offset_y": 6
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-with-rolling-eyes",
+            "char": "😒",
+            "emoji_codepoint":"1f644",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/rolling",
+                        "proportionate" : true,
+                        "auto_scale" : true
+                    },
+                    "mouth" : {
+                        "url" : "mouth/sideways_annoyed",
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "grimacing-face",
+            "char": "😬",
+            "emoji_codepoint":"1f62c",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/default"
+                    },
+                    "mouth" : {
+                        "url" : "mouth/grimace",
+                        "offset_y": -4,
+                        "auto_scale" : true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-exhaling",
+            "char": "😮‍💨",
+            "emoji_codepoint":"1f62e-200d-1f4a8",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/closed",
+                        "offset_x" : -10,
+                        "offset_y" : 41,
+                        "ignore_properties" : true
+                    },
+                    "mouth" : {
+                        "url" : "mouth/small_frown",
+                        "offset_x" : -8,
+                        "offset_y": 8,
+                        "auto_scale" : true,
+                        "ignore_properties" : true
+                    },
+                    "eyebrows":{
+                        "url" : "eyebrows/middle_wide",
+                        "offset_y" : -8
+                    },
+                    "additional_parts":[{
+                        "url": "additional/exhale",
+                        "can_copy" : true,
+                        "offset_x" : 20,
+                        "offset_y" : 211
+                    }]
+                }
+            }
+        },
+        {
             "twemoji_name" : "slightly-frowning-face",
             "char": "🙁",
             "emoji_codepoint":"1f641",
@@ -1216,16 +1317,16 @@
                 "base_url" :"travel_and_places/derelict-house",
                 "inherited_details_url" : "travel_and_places/derelict-house-windows",
                 "inherited_details_rect":{
-                    "x" : 125,
-                    "y" : 205,
-                    "width" : 55,
-                    "height" : 55
+                    "x" : 115,
+                    "y" : 185,
+                    "width" : 75,
+                    "height" : 75
                 },
                 "face_rect" : {
-                    "x" : 125,
-                    "y" : 201,
-                    "width" : 55,
-                    "height" : 55
+                    "x" : 115,
+                    "y" : 185,
+                    "width" : 75,
+                    "height" : 75
                 }
             }
         }
