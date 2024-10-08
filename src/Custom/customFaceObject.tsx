@@ -76,7 +76,7 @@ export class CustomFaceObject{
             list.push(await this.eyes.toMergeInfo(anchor, this.category));
         }
         if (this.eyebrows?.can_render()){
-            const anchor = {x :faceAnchor?.eyebrows.x ?? 0, y : (faceAnchor?.eyebrows.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
+            const anchor = {x : (faceAnchor?.eyebrows.x ?? 0) + (this.eyes?.getOffset_x() ?? 0), y : (faceAnchor?.eyebrows.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
             list.push(await this.eyebrows.toMergeInfo(anchor, this.category));
         }
         if (this.mouth?.can_render()){
@@ -84,7 +84,7 @@ export class CustomFaceObject{
             list.push(await this.mouth.toMergeInfo(anchor, this.category));
         }
         if (this.tears?.can_render()){
-            const anchor = {x :faceAnchor?.tears.x ?? 0, y : (faceAnchor?.tears.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
+            const anchor = {x : (faceAnchor?.tears.x ?? 0) + (this.eyes?.getOffset_x() ?? 0), y : (faceAnchor?.tears.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
             list.push(await this.tears.toMergeInfo(anchor, this.category));
         }
         if (this.additionalObjects){
