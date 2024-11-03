@@ -6,12 +6,14 @@ import { CustomEmojiItemObject } from './customEmojiItemObject';
 import { CustomHands } from './customHands';
 import { BaseResizeObject } from './baseResizeObject';
 import { CustomLayer } from './customLayerObject';
+import { getNotoEmojiUrl } from './utils';
 
 //figure out how hands are meant to work? Hands are dependent on the base, which makes this complicated
 
 export class CustomEmojiObject{
     private _id? : string;
     private _emoji? : string;
+    private _url? : string;
 
     private _base_url? : string;
     private _inherited_details_url? : string;
@@ -37,6 +39,7 @@ export class CustomEmojiObject{
             this._emoji = emoji;
         }
         if (data){
+            this._url = getNotoEmojiUrl(id ?? "");
             this._base_url =  "./assets/custom/" + (data.base_url ?? "") + ".png";
             if (data.inherited_details_url){
                 this._inherited_details_url = "./assets/custom/" + data.inherited_details_url + ".png";
@@ -69,37 +72,74 @@ export class CustomEmojiObject{
         }
     }
 
-    public inherit_traits( emoji : CustomEmojiObject, ignoreTags : boolean = false, swap : boolean = true) : CustomEmojiObject
+    public sameBackground(emoji: CustomEmojiObject){
+        return emoji._base_url == this._base_url && this.flatDetailsEqual(this._inherited_details, emoji._inherited_details);;
+    }
+
+    public createInherited( emoji : CustomEmojiObject, ignoreTags : boolean = false)
     {
-        const id = this.id() + (swap ? "" : "(" + this.id() + ")")+ emoji.id();
-        const emoji_char = (this._emoji ?? "") + (swap ? "" :"(" + (this._emoji??"") + ")" ) + (emoji._emoji ?? "");
-
-        var combined = new CustomEmojiObject(id, undefined, emoji_char);
-
-        combined._base_url = this._base_url;
-        combined._inherited_details_url = this._inherited_details_url;
-        if (this._inherited_details?.rect && emoji._inherited_details_url){
-            combined._inherited_details = {url: emoji._inherited_details_url, rect: this._inherited_details.rect};
+        //now do this again for swapping?
+        const allInherited : CustomEmojiObject[] = [];
+        allInherited.push(new CustomEmojiObject());
+        allInherited.push(new CustomEmojiObject());
+        if (!this.sameBackground(emoji)){
+            allInherited.push(new CustomEmojiObject);
+            allInherited.push(new CustomEmojiObject());
         }
 
-        combined._face = (this._face && emoji._face) ? this._face.inheritTraits(emoji._face,ignoreTags, swap) : (this._face ?? emoji._face);
-        combined._face_rect = this._face_rect;
-        combined._is_just_face = this._is_just_face;
-
-        combined._hands = (this._hands && emoji._hands) ? this._hands.inheritTraits(emoji._hands, swap) : (this._hands ?? emoji._hands);
-        combined._foreground_layer = this._foreground_layer ?? emoji._foreground_layer;
-
-        combined._additional_objects = CustomEmojiItemObject.mergeItemLists(this._additional_objects, emoji._additional_objects);
-        combined._additional_objects_back = CustomEmojiItemObject.mergeItemLists(this._additional_objects_back, emoji._additional_objects_back);
-
-        if (this._rotation || emoji._rotation){
-            combined._rotation = ((this._rotation ?? 0) + (emoji._rotation ?? 0)+360)%360;
-            if (combined._rotation == 0){
-                combined._rotation = undefined;
+        allInherited.forEach((value, index) => {
+            const swapBackground = index > 2;
+            if (swapBackground){
+                const previous = allInherited[index%2];
+                value._id = previous._id + "SB";
+                value._emoji = previous._emoji + "SB";
+                value._face = previous._face;
+                value._hands = previous._hands;
+                value._foreground_layer = previous._foreground_layer;
+                value._additional_objects = previous._additional_objects;
+                value._additional_objects_back = previous._additional_objects_back;
+                value._rotation = previous._rotation;
             }
-        }
+            else{
+                const swap = index % 2 == 1;
+                if (swap){
+                    const previous = allInherited[index - 1];
+                    value._additional_objects = previous._additional_objects;
+                    value._additional_objects_back = previous._additional_objects_back;
+                    value._rotation = previous._rotation;
+                }
+                else{
+                    value._additional_objects = CustomEmojiItemObject.mergeItemLists(this._additional_objects, emoji._additional_objects);
+                    value._additional_objects_back = CustomEmojiItemObject.mergeItemLists(this._additional_objects_back, emoji._additional_objects_back);
+                    if (this._rotation || emoji._rotation)
+                    {
+                        value._rotation = ((this._rotation ?? 0) + (emoji._rotation ?? 0)+360)%360;
+                        if (value._rotation == 0){
+                            value._rotation = undefined;
+                        }
+                    }
+                }
+                value._id = this.id() + (swap ? "" : "(" + this.id() + ")")+ emoji.id();
+                value._emoji = (this._emoji ?? "") + (swap ? "" :"(" + (this._emoji??"") + ")" ) + (emoji._emoji ?? "");
+                value._face = (this._face && emoji._face) ? this._face.inheritTraits(emoji._face,ignoreTags, swap) : (this._face ?? emoji._face);
 
-        return combined;
+                value._hands = (this._hands && emoji._hands) ? this._hands.inheritTraits(emoji._hands, swap) : (this._hands ?? emoji._hands);
+                value._foreground_layer = this._foreground_layer ?? emoji._foreground_layer;
+            }
+
+            const base = (swapBackground ? emoji : this);
+            const inherited = (swapBackground ? this : emoji)._inherited_details_url;
+
+            value._base_url = base._base_url;
+            value._inherited_details_url = base._inherited_details_url;
+            if (base._inherited_details?.rect && inherited){
+                value._inherited_details = {url: inherited, rect: base._inherited_details.rect};
+            }
+            value._face_rect = base._face_rect;
+            value._is_just_face = base._is_just_face;
+
+        });
+        return allInherited;
     }
 
     private async renderBaseAndFace(){
@@ -134,6 +174,10 @@ export class CustomEmojiObject{
             if (this._foreground_layer){
                 rect = this._foreground_layer.getBaseResize();
             }
+            const faceRect = this._face?.getExpansionRect();
+            if (faceRect){
+                rect = new BaseResizeObject(undefined,faceRect);
+            }
         }
 
         if (rect && rect.hasEffect()){
@@ -149,6 +193,13 @@ export class CustomEmojiObject{
     }
 
     public async render(){
+        if (this._url){
+            const item = document.getElementById(this.id()) as HTMLImageElement;
+            if (item != null){
+                item.src = this._url;
+            }
+            return;
+        }
         const allInstructions : (mergeInfo | transformInfo) [] = [];
         if (this._additional_objects_back){
             //sort this later
@@ -196,9 +247,12 @@ export class CustomEmojiObject{
             allInstructions.push(rotation);
         }
 
+
+        this._url = await mergeImagesCustom(allInstructions,true);
+
         const item = document.getElementById(this.id()) as HTMLImageElement;
         if (item != null){
-            item.src = await mergeImagesCustom(allInstructions,true);
+            item.src = this._url ?? "";
         }
     }
 
@@ -208,6 +262,10 @@ export class CustomEmojiObject{
 
     public emoji(){
         return this._emoji ?? "";
+    }
+
+    public url(){
+        return this._url ?? "";
     }
 
     private flatDetailsEqual(flat1 : EmojiFlatDetail | undefined, flat2 : EmojiFlatDetail | undefined){

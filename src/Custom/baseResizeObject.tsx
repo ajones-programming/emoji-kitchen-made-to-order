@@ -1,3 +1,4 @@
+import { postCropSize } from "./mergeImages";
 import { EdgeRatios, Rect } from "./types";
 
 
@@ -8,12 +9,27 @@ export class BaseResizeObject{
     private topGapRatio : number = 0;
     private bottomGapRatio : number = 0;
 
-    constructor(edgeRatio? : EdgeRatios){
+    constructor(edgeRatio? : EdgeRatios, rect? : Rect){
         if (edgeRatio){
             this.leftGapRatio = edgeRatio.left ?? 0;
             this.rightGapRatio = edgeRatio.right ?? 0;
             this.bottomGapRatio = edgeRatio.bottom ?? 0;
             this.topGapRatio = edgeRatio.top ?? 0;
+        }
+        if (rect){
+            const biggestSize = Math.max(rect.width, rect.height);
+            const newRect = new Rect();
+            newRect.x = rect.x / biggestSize;
+            newRect.y = rect.y / biggestSize;
+            newRect.width = rect.width / biggestSize;
+            newRect.height = rect.height / biggestSize;
+            const side = postCropSize()/biggestSize;
+
+            this.leftGapRatio = Math.max(0,-newRect.x);
+            this.topGapRatio = -Math.max(0,-newRect.y);
+            this.rightGapRatio = Math.max(newRect.width + newRect.x - side,0);
+            this.bottomGapRatio = Math.max(newRect.height + newRect.y - side,0);
+
         }
     }
 

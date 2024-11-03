@@ -54,6 +54,7 @@ export interface RawFace{
   eyes? : RawEmojiItem;
   tears? : RawEmojiItem;
   eyebrows?: RawEmojiItem;
+  nose? : RawEmojiItem;
   mouth? : RawEmojiItem;
   cheeks? : RawEmojiItem;
   additional_parts?:RawEmojiItem[];
@@ -74,6 +75,7 @@ export interface RawLayer{
 export interface FaceCategoryPlacement{
   name : string;
   eyes : Vector2;
+  nose : Vector2;
   mouth : Vector2;
   eyebrows : Vector2;
   cheeks : Vector2;
@@ -100,6 +102,12 @@ export interface RawEmojiItem{
   copy_vertically?:boolean;
   copy_set_offset?:number;
   can_copy? : boolean;
+
+  custom_dimensions? : Rect;
+
+  edge_ratio? : EdgeRatios;
+
+
 }
 
 export class ItemAnchor{

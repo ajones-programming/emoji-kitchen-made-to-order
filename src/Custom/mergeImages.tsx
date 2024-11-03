@@ -3,7 +3,7 @@
 import { cropImage, resizeImage, rotate } from "./transformImages";
 import { Rect } from "./types";
 
-function preCropSize(){return 500;}
+function preCropSize(){return 700;}
 export function postCropSize(){return 300;}
 
 export class mergeInfo{

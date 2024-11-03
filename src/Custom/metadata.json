@@ -6,6 +6,10 @@
                 "x" : 150,
                 "y" : 112
             },
+            "nose" : {
+                "x" : 150,
+                "y" : 175
+            },
             "mouth" : {
                 "x" : 150,
                 "y" : 213
@@ -1267,6 +1271,41 @@
                         "offset_x" : 20,
                         "offset_y" : 211
                     }]
+                }
+            }
+        },
+        {
+            "twemoji_name" : "lying-face",
+            "char": "🤥",
+            "emoji_codepoint":"1f925",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/default",
+                        "offset_x" : -10,
+                        "offset_y" : -6,
+                        "ignore_properties" : true
+                    },
+                    "mouth" : {
+                        "url" : "mouth/sideways_annoyed_2",
+                        "offset_x" : -10,
+                        "offset_y": 26,
+                        "ignore_properties" : true
+                    },
+                    "nose" : {
+                        "url" : "nose/lying",
+                        "offset_x" : -10,
+                        "auto_scale" : true,
+                        "ignore_properties" : true,
+                        "custom_dimensions":{
+                            "x" : 8,
+                            "y" : 28,
+                            "width" : 194,
+                            "height" : 57
+                        }
+                    }
                 }
             }
         },

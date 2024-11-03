@@ -33,10 +33,8 @@ export function getSelectedEmojis(selectedLeftEmoji : string, selectedRightEmoji
 export function getRenderList(leftEmoji : CustomEmojiObject, rightEmoji : CustomEmojiObject, ignoreTags = false){
     const toRender : CustomEmojiObject[] = [];
     const allEmojiCombinations : CustomEmojiObject[] = [
-        leftEmoji.inherit_traits(rightEmoji, ignoreTags),
-        leftEmoji.inherit_traits(rightEmoji,ignoreTags,false),
-        rightEmoji.inherit_traits(leftEmoji, ignoreTags),
-        rightEmoji.inherit_traits(leftEmoji,ignoreTags,false)
+        ...leftEmoji.createInherited(rightEmoji,ignoreTags),
+        ...rightEmoji.createInherited(leftEmoji, ignoreTags)
     ];
     allEmojiCombinations.forEach(emoji =>{
         if (!emoji.isEqual(leftEmoji) && !emoji.isEqual(rightEmoji)){

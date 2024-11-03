@@ -3,7 +3,6 @@ import { CustomEmojiObject } from "../Custom/customEmojiObject";
 import { ClearSelected, EmojiSelected, getRenderList, getSelectedEmojis } from "../Custom/generate-emojis";
 
 function selectedEmoji(emoji : CustomEmojiObject | undefined, additional : () => void){
-    console.log(emoji?.emoji() ?? "NO EMOJI DEFINED, TEST DID NOT WORK");
     if (emoji){
         EmojiSelected(emoji);
         additional();
@@ -26,6 +25,7 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
                 {leftEmoji != undefined &&
                     <img
                     id={leftEmoji.id()}
+                    src={leftEmoji.url()}
                     width="100px"
                     height="100px"
                     style={imgStyle}
@@ -34,6 +34,7 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
                 {rightEmoji != undefined}{
                     <img
                     id={rightEmoji?.id()}
+                    src={rightEmoji?.url()}
                     width="100px"
                     height="100px"
                     style={imgStyle}

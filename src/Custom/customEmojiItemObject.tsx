@@ -1,6 +1,6 @@
 import { GetDimensions } from "./image";
-import { mergeInfo } from "./mergeImages";
-import { RawEmojiItem, ItemAnchor } from "./types";
+import { mergeInfo, postCropSize } from "./mergeImages";
+import { RawEmojiItem, ItemAnchor, Rect } from "./types";
 
 export interface itemMergeDetails{
     item : CustomEmojiItemObject;
@@ -23,6 +23,8 @@ export class CustomEmojiItemObject{
     private set_copy_offset?:number;
     private can_copy : boolean = false;
 
+    private custom_dimensions? : Rect;
+
     constructor(item? : RawEmojiItem, copy? : CustomEmojiItemObject){
         if (item){
             this.url = item.url;
@@ -36,6 +38,7 @@ export class CustomEmojiItemObject{
             this.copy_vertically = item.copy_vertically ?? false;
             this.set_copy_offset = item.copy_set_offset;
             this.can_copy = item.can_copy ?? false;
+            this.custom_dimensions = item.custom_dimensions;
         }
         if (copy){
             this.url = copy.url;
@@ -50,11 +53,36 @@ export class CustomEmojiItemObject{
             this.copy_vertically = copy.copy_vertically;
             this.set_copy_offset = copy.set_copy_offset;
             this.can_copy = copy.can_copy;
+            this.custom_dimensions = copy.custom_dimensions;
         }
     }
     public static InheritTraits(base : CustomEmojiItemObject | undefined, toBeInherited : CustomEmojiItemObject | undefined,
         ignoreTags : boolean = false){
         return (base && toBeInherited) ? base.inheritTraits(toBeInherited, ignoreTags) : (base ?? toBeInherited);
+    }
+
+
+    public getRectSize(anchor? : ItemAnchor) : Rect | undefined{
+        if (!this.custom_dimensions){
+            return;
+        }
+
+        const rect = new Rect();
+
+        const x = this.offset_x + (anchor ? anchor.x : 0) - this.custom_dimensions.x*this.scale_x;
+        const y = this.offset_y + (anchor ? anchor.y : 0) - this.custom_dimensions.y*this.scale_y;
+
+        const x_plus_width = x + this.custom_dimensions.width*this.scale_x;
+        const y_plus_height = y + this.custom_dimensions.height*this.scale_y;
+
+        if ((x >= 0) && (y >= 0) && (x_plus_width < postCropSize()) && (y_plus_height < postCropSize())){
+            return;
+        }
+        rect.x = Math.min(x,0);
+        rect.y = Math.min(y,0);
+        rect.width = Math.max(300,x_plus_width);
+        rect.height = Math.max(300,y_plus_height);
+        return rect;
     }
 
     private inheritTraits(item : CustomEmojiItemObject, ignoreTags : boolean = false){
@@ -67,12 +95,18 @@ export class CustomEmojiItemObject{
         if (!newItem.can_render()){
             return newItem;
         }
+
+        newItem.custom_dimensions = this.custom_dimensions;
+
         newItem.offset_x = this.offset_x + (ignoreProperty ? 0 :item.offset_x);
         newItem.offset_y = this.offset_y + (ignoreProperty ? 0 : item.offset_y);
-        newItem.scale_x = this.scale_x * (ignoreProperty ? 1.0 : item.scale_x);
-        newItem.scale_y = this.scale_y * (ignoreProperty ? 1.0 : item.scale_y);
+        newItem.scale_x = this.scale_x * item.scale_x;//(ignoreProperty ? 1.0 : item.scale_x);
+        newItem.scale_y = this.scale_y * item.scale_y;//(ignoreProperty ? 1.0 : item.scale_y);
+        newItem.auto_scale = this.auto_scale;
         //this is not correct, it should be able to scale more somehow, but idk how
-        if (itemURLEqual && newItem.scale_x == 1.0 && newItem.scale_y == 1.0 && ((this.auto_scale && item.auto_scale) || ignoreTags) ){
+        const willAutoScale = ((this.scale_x == 1.0 && this.scale_y == 1.0) || (item.scale_x == 1.0 && item.scale_y == 1.0)) &&
+        ((this.auto_scale && item.auto_scale) || ignoreTags);
+        if (itemURLEqual &&  willAutoScale){
             newItem.scale_x *= 1.25;
             newItem.scale_y *= 1.25;
         }
@@ -137,8 +171,15 @@ export class CustomEmojiItemObject{
         var y = this.offset_y;
         var width : number | undefined;
         var height : number | undefined;
-
-        if (anchor || this.scale_x != 1.0 || this.scale_y != 1.0){
+        if (this.custom_dimensions){
+            x += (anchor ? anchor.x : 0) - this.custom_dimensions.x * this.scale_x;
+            y += (anchor ? anchor.y : 0) - this.custom_dimensions.y * this.scale_y;
+            if (this.scale_x != 1.0 || this.scale_y != 1.0){
+                width = this.custom_dimensions.width * this.scale_x;
+                height = this.custom_dimensions.height * this.scale_y;
+            }
+        }
+        else if (anchor || this.scale_x != 1.0 || this.scale_y != 1.0){
             const dimensions = await GetDimensions(this.getFullURL(category));
             if (this.scale_x != 1.0 || this.scale_y != 1.0){
                 width = dimensions.width * this.scale_x;
