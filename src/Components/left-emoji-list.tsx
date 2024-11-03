@@ -4,15 +4,15 @@ import { ImageListItem } from "@mui/material";
 import { additionalEmojiInUse } from "../Custom/generate-emojis";
 
 export default function LeftEmojiList({
-  leftSearchResults,
-  selectedLeftEmoji,
   handleLeftEmojiClicked,
   handleBulkImageDownloadMenuOpen,
+  leftSearchResults,
+  selectedLeftEmoji,
 }: {
-  leftSearchResults: Array<string>;
-  selectedLeftEmoji: string;
   handleLeftEmojiClicked: Dispatch<string>;
   handleBulkImageDownloadMenuOpen: Dispatch<React.MouseEvent>;
+  leftSearchResults: Array<string>;
+  selectedLeftEmoji: string;
 }) {
   var knownSupportedEmoji = getSupportedEmoji();
 
@@ -49,7 +49,9 @@ export default function LeftEmojiList({
                 ? theme.palette.action.selected
                 : theme.palette.background.default,
             "&:hover": {
-              backgroundColor: (theme) => theme.palette.action.hover,
+              backgroundColor: (theme) => {
+                return theme.palette.action.hover;
+              },
             },
           }}
         >

@@ -3,15 +3,15 @@ import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "../Custom/util
 import { ImageListItem } from "@mui/material";
 
 export default function RightEmojiList({
+  handleRightEmojiClicked,
   rightSearchResults,
   selectedLeftEmoji,
   selectedRightEmoji,
-  handleRightEmojiClicked,
 }: {
+  handleRightEmojiClicked: Dispatch<string>;
   rightSearchResults: Array<string>;
   selectedLeftEmoji: string;
   selectedRightEmoji: string;
-  handleRightEmojiClicked: Dispatch<string>;
 }) {
   var knownSupportedEmoji = getSupportedEmoji();
 
