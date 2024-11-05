@@ -54,14 +54,32 @@ function displayAllEmojis(toRender : CustomEmojiObject[]){
                         alt={emoji.emoji()}
                         id={emoji.id()}
                         loading="lazy"
-                        width="150px"
-                        height="150px"
+                        width={"150px"}
+                        height={"150px"}
                     />
                 </ImageListItem>
             ))}
             </ImageList>
         </Container>;
 }
+
+
+function DisplayAllEmojis_Mobile(toRender : CustomEmojiObject[]){
+    return <ImageList cols={4} rowHeight={"auto"} sx={{ height: "300px", width: "auto" }}>
+            {toRender.map((emoji) => (
+                <ImageListItem>
+                    <img
+                        alt={emoji.emoji()}
+                        id={emoji.id()}
+                        loading="lazy"
+                        width="256px"
+                        height="256px"
+                    />
+                </ImageListItem>
+            ))}
+            </ImageList>
+}
+
 
 function displayCopies(toRender : CustomEmojiObject[], onClick : () => void){
     return <Container>
@@ -91,7 +109,11 @@ function displayCopies(toRender : CustomEmojiObject[], onClick : () => void){
 }
 
 export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji : string,
-    clearSelectedEmoji : () => void) : JSX.Element{
+    clearSelectedEmoji : () => void, isMobile : boolean) : JSX.Element{
+
+    // if (isMobile){
+    //     return <div></div>;
+    // }
     // Neither are selected, show left list, empty middle list, and disable right list
 
     const emojis = getSelectedEmojis(selectedLeftEmoji, selectedRightEmoji);
@@ -114,6 +136,11 @@ export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji 
 
     toRender.forEach(emoji => emoji.render());
 
+    //figure out what the hell to do about mobile?
+
+    if (isMobile){
+        return DisplayAllEmojis_Mobile(toRender);
+    }
 
     return <Container>
         {topEmojis}

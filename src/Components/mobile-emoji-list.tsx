@@ -1,5 +1,5 @@
 import React, { Dispatch } from "react";
-import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "./utils";
+import { getEmojiData, getNotoEmojiUrl, getSupportedEmoji } from "../Custom/utils";
 import { ImageListItem } from "@mui/material";
 
 export default function MobileEmojiList({
@@ -29,8 +29,7 @@ export default function MobileEmojiList({
   }
 
   if (selectedMode === "combine") {
-    const data = getEmojiData(selectedOtherEmoji);
-    var possibleEmoji = Object.keys(data.combinations);
+    var possibleEmoji = getSupportedEmoji();
 
     return knownSupportedEmoji.map((emojiCodepoint) => {
       const data = getEmojiData(emojiCodepoint);
@@ -38,7 +37,7 @@ export default function MobileEmojiList({
       const isValidCombo = possibleEmoji.includes(emojiCodepoint);
 
       return (
-        <div key={data.alt}>
+        <div key={data?.emoji_codepoint}>
           <ImageListItem
             onClick={(_) => {
               // On mobile, only return this if it's a valid combination
@@ -65,7 +64,7 @@ export default function MobileEmojiList({
               loading="lazy"
               width="32px"
               height="32px"
-              alt={data.alt}
+              alt={data?.twemoji_name}
               src={getNotoEmojiUrl(emojiCodepoint)}
             />
           </ImageListItem>
@@ -77,7 +76,7 @@ export default function MobileEmojiList({
       const data = getEmojiData(emojiCodepoint);
 
       return (
-        <div key={data.alt}>
+        <div key={data?.twemoji_name}>
           <ImageListItem
             onClick={(_) => handleEmojiClicked(emojiCodepoint)}
             sx={{
@@ -98,7 +97,7 @@ export default function MobileEmojiList({
               loading="lazy"
               width="32px"
               height="32px"
-              alt={data.alt}
+              alt={data?.emoji_codepoint}
               src={getNotoEmojiUrl(emojiCodepoint)}
             />
           </ImageListItem>
