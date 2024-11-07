@@ -28,7 +28,7 @@ import Search from "./search";
 import RightEmojiList from "./right-emoji-list";
 import LeftEmojiList from "./left-emoji-list";
 import MobileEmojiList from "./mobile-emoji-list";
-import { additionalEmojiInUse } from "../Custom/generate-emojis";
+import { additionalEmojiInUse, getSelectedEmojis } from "../Custom/generate-emojis";
 import { createMiddleList } from "./kitchen-display-generated-emojis";
 import { getSvgIconUtilityClass } from "@mui/material";
 
@@ -139,6 +139,10 @@ export default function Kitchen() {
   const clearSelectedEmoji = () => {
     setSelectedLeftEmoji("");
     setSelectedRightEmoji("");
+    if (isMobile){
+      setLeftEmojiSelected(false);
+      setSelectedMode("combine");
+    }
   };
 
   /**
@@ -312,6 +316,14 @@ export default function Kitchen() {
   // var middleList;
   var showOneCombo = !(selectedLeftEmoji === "" || selectedRightEmoji === "");
 
+  if (isMobile && !additionalEmojiInUse() && selectedLeftEmoji === ""){
+    setSelectedLeftEmoji(getSupportedEmoji()[0]);
+  }
+  if (isMobile && selectedRightEmoji === ""){
+    setSelectedRightEmoji(getSupportedEmoji()[0]);
+  }
+
+  var {left, right} = getSelectedEmojis(selectedLeftEmoji, selectedRightEmoji);
   if (isMobile) {
     return (
       <Container
@@ -361,13 +373,16 @@ export default function Kitchen() {
               </ToggleButtonGroup>
 
               {selectedMode === "combine" ? (
-                <Grid container columns={14} spacing={2}>
+                <div style={{width: "-webkit-fill-available"}}>
+                <Grid container columns={9} spacing={2}>
                   {/* Left Emoji */}
                   <Grid size={4}>
                     <Stack direction="column">
                       <Paper
                         elevation={0}
-                        onClick={() => setLeftEmojiSelected(true)}
+                        onClick={(() => {
+                          if (!additionalEmojiInUse()) { setLeftEmojiSelected(true); }
+                        })}
                         sx={{
                           display: "flex",
                           flexDirection: "column",
@@ -379,21 +394,20 @@ export default function Kitchen() {
                               : theme.palette.background.default,
                           "&:hover": {
                             backgroundColor: (theme) =>
-                              theme.palette.action.hover,
+                              additionalEmojiInUse() ? theme.palette.background.default : theme.palette.action.hover,
                           },
                         }}
                       >
-                        {selectedLeftEmoji !== "" ? (
+                        {left ? (
                           <img
                             style={{
                               aspectRatio: 1,
                               padding: "8px",
                             }}
+                            id={left?.id() ?? ""}
                             loading="lazy"
-                            alt={getEmojiData(selectedLeftEmoji)?.char}
-                            src={getNotoEmojiUrl(
-                              getEmojiData(selectedLeftEmoji)?.emoji_codepoint ?? ""
-                            )}
+                            alt={left.emoji()}
+                            src={left.url()}
                           />
                         ) : null}
                       </Paper>
@@ -451,16 +465,16 @@ export default function Kitchen() {
                           },
                         }}
                       >
-                        {selectedRightEmoji !== "" ? (
+                        {right ? (
                           <img
                             style={{
                               aspectRatio: 1,
                               padding: "8px",
                             }}
                             loading="lazy"
-                            alt={getEmojiData(selectedRightEmoji)?.char}
-                            src={getNotoEmojiUrl(selectedRightEmoji
-                            )}
+                            id={right?.id() ?? ""}
+                            alt={right.emoji()}
+                            src={right.url()}
                           />
                         ) : null}
                       </Paper>
@@ -485,58 +499,8 @@ export default function Kitchen() {
                       </IconButton>
                     </Stack>
                   </Grid>
-
-                  {/* Equal sign */}
-                  <Grid
-                    alignItems="center"
-                    display="flex"
-                    justifyContent="center"
-                    paddingBottom="45px"
-                    size={1}
-                    textAlign="center"
-                  >
-                    <Typography>=</Typography>
-                  </Grid>
-
-                  {/* Result */}
-                  <Grid size={4}>
-                    <Stack direction="column" justifyContent="center">
-                      <Paper
-                        elevation={0}
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          marginBottom: "4px",
-                        }}
-                      >
-                        {/* {showOneCombo ? (
-                          <div style={{ display: "flex", padding: "8px" }}>
-                            <img
-                              style={{
-                                aspectRatio: 1,
-                                maxHeight: "100%",
-                                width: "100%",
-                              }}
-                              loading="lazy"
-                              alt={combination!.alt}
-                              src={combination!.gStaticUrl}
-                            />
-                          </div>
-                        ) : null} */}
-                      </Paper>
-                      <IconButton
-                        onClick={(_) => handleImageCopy()}
-                        sx={{
-                          height: "40px",
-                          width: "40px",
-                          marginX: "auto",
-                        }}
-                      >
-                        <ContentCopy fontSize="small" />
-                      </IconButton>
-                    </Stack>
-                  </Grid>
                 </Grid>
+                </div>
               ) : (
 
                 middleList

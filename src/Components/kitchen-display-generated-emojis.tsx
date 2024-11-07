@@ -65,7 +65,7 @@ function displayAllEmojis(toRender : CustomEmojiObject[]){
 
 
 function DisplayAllEmojis_Mobile(toRender : CustomEmojiObject[]){
-    return <ImageList cols={4} rowHeight={"auto"} sx={{ height: "300px", width: "auto" }}>
+    return <ImageList cols={3} rowHeight={"auto"}>
             {toRender.map((emoji) => (
                 <ImageListItem>
                     <img
@@ -120,8 +120,8 @@ export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji 
     const leftEmoji = emojis.left;
     const rightEmoji = emojis.right;
 
-    leftEmoji?.render();
-    rightEmoji?.render();
+    //leftEmoji?.render();
+    //rightEmoji?.render();
 
     const topEmojis = TopEmojis(leftEmoji, rightEmoji);
 
@@ -139,7 +139,11 @@ export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji 
     //figure out what the hell to do about mobile?
 
     if (isMobile){
-        return DisplayAllEmojis_Mobile(toRender);
+        return(
+            <Container>
+                {DisplayAllEmojis_Mobile(toRender)}
+                {displayCopies(toRender, clearSelectedEmoji)}
+            </Container>);
     }
 
     return <Container>

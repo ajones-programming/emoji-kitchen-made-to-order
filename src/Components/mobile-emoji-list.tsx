@@ -17,9 +17,9 @@ export default function MobileEmojiList({
 }) {
   var knownSupportedEmoji = getSupportedEmoji();
 
-  if (selectedEmoji === "" || selectedOtherEmoji === "") {
-    return;
-  }
+  // if (selectedEmoji === "" || selectedOtherEmoji === "") {
+  //   return;
+  // }
 
   // If we have search results, filter the top-level items down
   if (searchResults.length > 0) {
@@ -78,10 +78,11 @@ export default function MobileEmojiList({
       return (
         <div key={data?.twemoji_name}>
           <ImageListItem
-            onClick={(_) => handleEmojiClicked(emojiCodepoint)}
+            //onClick={(_) => handleEmojiClicked(emojiCodepoint)}
             sx={{
               p: 0.5,
               borderRadius: 2,
+              opacity: 0.1,
               backgroundColor: (theme) =>
                 selectedEmoji === emojiCodepoint
                   ? theme.palette.action.selected

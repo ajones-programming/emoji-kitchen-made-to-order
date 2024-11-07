@@ -46,7 +46,7 @@ export default class Footer extends React.Component {
               </Link>
             </Tooltip>
           </Stack>
-          <Typography sx={{ mt: 2 }} >
+          <Typography sx={{ mt: 6 , fontSize: 10, marginTop: 0}} >
           This is an independent fork of XSalazar's emojikitchen.dev. Please view the original!
           </Typography>
 
