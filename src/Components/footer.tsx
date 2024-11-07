@@ -6,11 +6,11 @@ import {
 } from "@primer/octicons-react";
 import React from "react";
 
-export default class Footer extends React.Component {
+export default class Footer  extends React.Component {
   render() {
     return (
       <div>
-        <Box component="footer" sx={{ py: 4 }}>
+        <Box component="footer" sx={{ py: 4 , paddingTop:0 , paddingBottom:0}}>
         <Stack spacing={4} direction="row" justifyContent="center">
             <Tooltip title="Contact Me - Anna Jones">
               <Link
@@ -46,34 +46,24 @@ export default class Footer extends React.Component {
               </Link>
             </Tooltip>
           </Stack>
-          <Typography sx={{ mt: 6 , fontSize: 10, marginTop: 0}} >
-          This is an independent fork of XSalazar's emojikitchen.dev. Please view the original!
+          <Typography sx={{ mt: 6 , fontSize: 14, marginTop: 0}} >
+          This is an independent fork of <Link
+                href="https://xsalazar.com/"
+                color="textPrimary"
+                aria-label="XSalazar's website"
+                target="_blank"
+                rel="noopener"
+              >XSalazars</Link>
+              's <Link
+                href="https://emojikitchen.dev"
+                color="textPrimary"
+                aria-label="Original Emoji Kitchen"
+                target="_blank"
+                rel="noopener"
+              >
+                emojikitchen.dev
+              </Link>. Please view the original.
           </Typography>
-
-          <Stack spacing={4} direction="row" justifyContent="center">
-            <Tooltip title="Contact Original Developer - XSalazar">
-              <Link
-                href="https://xsalazar.com"
-                color="textPrimary"
-                aria-label="Contact Me"
-                target="_blank"
-                rel="noopener"
-              >
-                <MentionIcon size="small" verticalAlign="middle" />
-              </Link>
-            </Tooltip>
-            <Tooltip title="Original Source Code\nBy XSalazar">
-              <Link
-                href="https://github.com/xsalazar/emoji-kitchen"
-                color="textPrimary"
-                aria-label="Source Code"
-                target="_blank"
-                rel="noopener"
-              >
-                <FileCodeIcon size="small" verticalAlign="middle" />
-              </Link>
-            </Tooltip>
-          </Stack>
         </Box>
       </div>
     );

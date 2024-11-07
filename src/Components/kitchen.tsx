@@ -222,7 +222,10 @@ export default function Kitchen() {
     const randomRightEmoji =
       possibleRightEmoji[Math.floor(Math.random() * possibleRightEmoji.length)];
 
-    setSelectedLeftEmoji(randomLeftEmoji);
+    if (!additionalEmojiInUse()){
+      setSelectedLeftEmoji(randomLeftEmoji);
+    }
+
     setSelectedRightEmoji(randomRightEmoji);
 
     if (isMobile) {
@@ -389,12 +392,12 @@ export default function Kitchen() {
                           flexShrink: 0,
                           marginBottom: "4px",
                           backgroundColor: (theme) =>
-                            leftEmojiSelected
-                              ? theme.palette.action.selected
-                              : theme.palette.background.default,
+                            additionalEmojiInUse()
+                              ? theme.palette.action.disabledBackground
+                              : ( leftEmojiSelected ?theme.palette.action.selected :theme.palette.background.default),
                           "&:hover": {
                             backgroundColor: (theme) =>
-                              additionalEmojiInUse() ? theme.palette.background.default : theme.palette.action.hover,
+                              additionalEmojiInUse() ? theme.palette.action.disabledBackground : theme.palette.action.hover,
                           },
                         }}
                       >
@@ -411,25 +414,28 @@ export default function Kitchen() {
                           />
                         ) : null}
                       </Paper>
-                      <IconButton
-                        onClick={handleLeftEmojiRandomize}
-                        sx={{
-                          width: "fit-content",
-                          marginX: "auto",
-                        }}
-                      >
-                        <Typography
+                      {!additionalEmojiInUse() &&
+                          <IconButton
+                          onClick={handleLeftEmojiRandomize}
                           sx={{
-                            textAlign: "center",
-                            fontFamily:
-                              "Noto Emoji, Apple Color Emoji, sans-serif",
-                            height: "24px",
-                            width: "24px",
+                            width: "fit-content",
+                            marginX: "auto",
                           }}
                         >
-                          🎲
-                        </Typography>
-                      </IconButton>
+                          <Typography
+                            sx={{
+                              textAlign: "center",
+                              fontFamily:
+                                "Noto Emoji, Apple Color Emoji, sans-serif",
+                              height: "24px",
+                              width: "24px",
+                            }}
+                          >
+                            🎲
+                          </Typography>
+                        </IconButton>
+                      }
+
                     </Stack>
                   </Grid>
 
