@@ -46,21 +46,17 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
 }
 
 function displayAllEmojis(toRender : CustomEmojiObject[]){
-    return <Container>
-            <ImageList sx={{ width: 360, height: 360 }} cols={2} rowHeight={164}>
+    return <ImageList sx={{justifyContent: "center", pt: 2 }} cols={3} rowHeight={"auto"}>
             {toRender.map((emoji) => (
                 <ImageListItem>
                     <img
                         alt={emoji.emoji()}
                         id={emoji.id()}
                         loading="lazy"
-                        width={"150px"}
-                        height={"150px"}
                     />
                 </ImageListItem>
             ))}
             </ImageList>
-        </Container>;
 }
 
 
@@ -146,7 +142,7 @@ export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji 
             </Container>);
     }
 
-    return <Container>
+    return <Container sx={{width: "fit-content", paddingTop: 0}}>
         {topEmojis}
         {displayAllEmojis(toRender)}
         {displayCopies(toRender, clearSelectedEmoji)}

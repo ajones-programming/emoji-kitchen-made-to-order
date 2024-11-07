@@ -605,8 +605,7 @@ export default function Kitchen() {
         sx={{
           overflowY: "auto",
           justifyItems: "center",
-          flexGrow: "1",
-          width: "33%",
+          width: "30%",
         }}
       >
         {/* Left Search */}
@@ -697,37 +696,24 @@ export default function Kitchen() {
           overflowY: "auto",
           justifyItems: "center",
           flexGrow: "1",
-          width: "33%",
+          width: "min-content",
           position: "relative",
-          display: showOneCombo ? "flex" : null,
-          alignItems: showOneCombo ? "center" : null,
+          //display: showOneCombo ? "flex" : null,
+          //alignItems: showOneCombo ? "center" : null,
         }}
       >
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "repeat(1, 1fr)",
-              sm: showOneCombo ? "repeat(1, 1fr)" : "repeat(2, 1fr)",
-              md: showOneCombo ? "repeat(1, 1fr)" : "repeat(3, 1fr)",
-            },
-            [`& .${imageListItemClasses.root}`]: {
-              display: "flex",
-            },
-          }}
-        >
           {middleList}
-          {showOneCombo && hasClipboardSupport ? (
+          { /*{showOneCombo && hasClipboardSupport ? (
             <Container
               sx={{ display: "flex", justifyContent: "center", pt: 2 }}
             >
-              {/* <IconButton onClick={handleImageCopy}>
+               <IconButton onClick={handleImageCopy}>
                 <ContentCopy />
-              </IconButton> */}
+              </IconButton>
             </Container>
-          ) : null}
+          ) : null} */}
 
-          {showOneCombo && !hasClipboardSupport ? (
+          {/* {showOneCombo && !hasClipboardSupport ? (
             <Container
               sx={{ display: "flex", justifyContent: "center", pt: 2 }}
             >
@@ -735,8 +721,7 @@ export default function Kitchen() {
                 <Download />
               </IconButton>
             </Container>
-          ) : null}
-        </Box>
+          ) : null} */}
       </Box>
 
 
@@ -746,8 +731,8 @@ export default function Kitchen() {
         sx={{
           overflowY: "auto",
           justifyItems: "center",
-          flexGrow: "1",
-          width: "33%",
+          // flexGrow: "1",
+          width: "30%",
         }}
       >
         {/* Right Search */}

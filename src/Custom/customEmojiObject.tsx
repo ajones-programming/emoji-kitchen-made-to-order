@@ -119,6 +119,8 @@ export class CustomEmojiObject{
                         }
                     }
                 }
+
+                //inherit face and hands?
                 value._id = this.id() + (swap ? "" : "(" + this.id() + ")")+ emoji.id();
                 value._emoji = (this._emoji ?? "") + (swap ? "" :"(" + (this._emoji??"") + ")" ) + (emoji._emoji ?? "");
                 value._face = (this._face && emoji._face) ? this._face.inheritTraits(emoji._face,ignoreTags, swap) : (this._face ?? emoji._face);
