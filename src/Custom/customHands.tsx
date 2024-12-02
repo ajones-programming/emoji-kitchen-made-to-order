@@ -10,6 +10,8 @@ export class CustomHands{
     private right_hand? : CustomEmojiItemObject;
     private base_resize : BaseResizeObject = new BaseResizeObject();
 
+    private _src? : string;
+
     constructor(hands? : RawHands, category? : string){
         if (category){
             this.category = category;
@@ -61,7 +63,10 @@ export class CustomHands{
     }
 
     public async render(){
-        return new mergeInfo(await mergeImagesCustom(await this.toMergeDetails()));
+        if (this._src == undefined){
+            this._src = await mergeImagesCustom(await this.toMergeDetails());
+        }
+        return new mergeInfo(this._src ?? "");
     }
 
     public getBaseResize(){
