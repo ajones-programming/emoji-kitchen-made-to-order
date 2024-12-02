@@ -50,7 +50,7 @@ function displayAllEmojis(toRender : CustomEmojiObject[]){
             {toRender.map((emoji) => (
                 <ImageListItem>
                     <img
-src={emoji.url()}
+                        src={emoji.url()}
                         alt={emoji.emoji()}
                         id={emoji.id()}
                         loading="lazy"
@@ -106,13 +106,17 @@ function displayCopies(toRender : CustomEmojiObject[], onClick : () => void){
     </Container>
 }
 
+
+async function renderEmojiList( emojiList : CustomEmojiObject[]){
+    for (const emoji of emojiList){
+        await emoji.render();
+    }
+    //return await Promise.all(emojiList.map(renderEmoji));
+}
+
 export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji : string,
     clearSelectedEmoji : () => void, isMobile : boolean) : JSX.Element{
 
-    // if (isMobile){
-    //     return <div></div>;
-    // }
-    // Neither are selected, show left list, empty middle list, and disable right list
 
     const emojis = getSelectedEmojis(selectedLeftEmoji, selectedRightEmoji);
     const leftEmoji = emojis.left;
@@ -132,7 +136,6 @@ export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji 
         toRender = getRenderList(leftEmoji, rightEmoji, true);
     }
 
-    toRender.forEach(emoji => emoji.render());
 
     //figure out what the hell to do about mobile?
 
