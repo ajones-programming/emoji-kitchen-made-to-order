@@ -1,27 +1,22 @@
 import { mergeImagesCustom, mergeInfo, postCropSize, transformInfo } from './mergeImages';
-import { RawEmojiContent, EmojiFlatDetail, Rect } from './types';
-import { isResizeEqual as isRectEqual} from './ResizeFunctions';
+import { RawEmojiContent} from './types';
 import { CustomFaceObject } from './customFaceObject';
 import { CustomEmojiItemObject } from './customEmojiItemObject';
 import { CustomHands } from './customHands';
 import { BaseResizeObject } from './baseResizeObject';
 import { CustomLayer } from './customLayerObject';
 import { getNotoEmojiUrl } from './utils';
+import { BaseObject } from './baseObject';
 
-//figure out how hands are meant to work? Hands are dependent on the base, which makes this complicated
 
 export class CustomEmojiObject{
     private _id? : string;
     private _emoji? : string;
     private _url? : string;
 
-    private _base_url? : string;
-    private _inherited_details_url? : string;
-    private _inherited_details? : EmojiFlatDetail;
+    private _base? : BaseObject;
 
     private _face? : CustomFaceObject;
-    private _is_just_face = true;
-    private _face_rect? : Rect;
 
     private _hands? : CustomHands;
     private _foreground_layer ? : CustomLayer;
@@ -40,17 +35,14 @@ export class CustomEmojiObject{
         }
         if (data){
             this._url = getNotoEmojiUrl(id ?? "");
-            this._base_url =  "./assets/custom/" + (data.base_url ?? "") + ".png";
-            if (data.inherited_details_url){
-                this._inherited_details_url = "./assets/custom/" + data.inherited_details_url + ".png";
-            }
-            if (data.inherited_details_rect){
-                this._inherited_details = {rect: data.inherited_details_rect};
-            }
+            this._base = new BaseObject(
+                "./assets/custom/" + (data.base_url ?? "") + ".png",
+                (data.inherited_details_url ? "./assets/custom/" + data.inherited_details_url + ".png" : undefined),
+                data.inherited_details_rect,
+                data.face_rect
+            );
 
             this._face = data.face ? new CustomFaceObject(data.face) : undefined;
-            this._is_just_face = (data.is_only_face == undefined || data.is_only_face);
-            this._face_rect = data.face_rect;
 
             this._hands = data.hands ? new CustomHands(data.hands, data.face?.category) : undefined;
             this._foreground_layer = data.foreground_layer ? new CustomLayer(data.foreground_layer) : undefined;
@@ -146,18 +138,20 @@ export class CustomEmojiObject{
 
     private async renderBaseAndFace(){
         const allInstructions : (mergeInfo | transformInfo) [] = [];
-        if (this._base_url != undefined){
-            allInstructions.push(new mergeInfo(this._base_url));
-        }
-        if (this._inherited_details?.url){
-            allInstructions.push(new mergeInfo(this._inherited_details.url,this._inherited_details.rect));
+        if (this._base){
+            const baseData = await this._base.render();
+            const base = new mergeInfo(baseData.src);
+            base.ignoreOffset = !baseData.cropped;
+            allInstructions.push(base);
         }
         if (this._face){
             //see if we can somehow put this into one command
             const faceString = await this._face.Render();
             if (faceString){
-                const image = new mergeInfo(faceString, this._face_rect);
-                if (this._face_rect){
+                const image = new mergeInfo(faceString, this._base?.GetFaceRect());
+
+                //if face rect
+                if (this._base?.GetFaceRect()){
                     image.allowCropArea = true;
                 }
                 else{
@@ -209,9 +203,9 @@ export class CustomEmojiObject{
                 this._additional_objects_back.map(value => {return {item : value};})
             )));
         }
-        if (this._base_url || this._inherited_details || this._face)
+        if (this._base || this._face)
         {
-            allInstructions.push(await this.renderBaseAndFace());
+            allInstructions.push(...await this.renderBaseAndFace());
         }
         if (this._foreground_layer){
             const mergeInfo = await this._foreground_layer.toMergeDetails();
@@ -225,7 +219,8 @@ export class CustomEmojiObject{
         }
         if (this._hands){
             const mergeInfo = await this._hands.render();
-            if (this._face_rect){
+            const faceRect = this._base?.GetFaceRect();
+            if (faceRect){
                 const resize = this._hands.getBaseResize();
                 mergeInfo.addAreaRect(resize.getInverseRect(this._face_rect) );
                 mergeInfo.allowCropArea = true;
@@ -272,13 +267,12 @@ export class CustomEmojiObject{
 
     public isEqual(emoji : CustomEmojiObject) : boolean{
 
-        const inherited_details_equal = this.flatDetailsEqual(this._inherited_details, emoji._inherited_details);
+        const baseEqual = (this._base && emoji._base ) ? this._base.isEqual(emoji._base) : (!this._base && !emoji._base);
         const facesEqual = (this._face && emoji._face ) ? this._face.isEqual(emoji._face) : (!this._face && !emoji._face);
-        const faceRectEqual = (this._face && emoji._face) ? isRectEqual(this._face_rect, emoji._face_rect) : true;
         const handsEqual = (this._hands && emoji._hands) ? this._hands.isEqual(emoji._hands) : (!this._hands && !emoji._hands);
         const foregroundEqual = (this._foreground_layer && emoji._foreground_layer) ? this._foreground_layer.isEqual(emoji._foreground_layer) : (!this._foreground_layer && !emoji._foreground_layer);
 
-        const isEqual = this._base_url == emoji._base_url && inherited_details_equal && facesEqual && handsEqual && faceRectEqual &&
+        const isEqual = baseEqual && facesEqual && handsEqual &&// faceRectEqual &&
         CustomEmojiItemObject.itemListsEqual(this._additional_objects,emoji._additional_objects) &&
         CustomEmojiItemObject.itemListsEqual(this._additional_objects_back,emoji._additional_objects_back) &&
         this._rotation == emoji._rotation &&
