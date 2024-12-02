@@ -50,6 +50,7 @@ function displayAllEmojis(toRender : CustomEmojiObject[]){
             {toRender.map((emoji) => (
                 <ImageListItem>
                     <img
+src={emoji.url()}
                         alt={emoji.emoji()}
                         id={emoji.id()}
                         loading="lazy"
@@ -65,6 +66,7 @@ function DisplayAllEmojis_Mobile(toRender : CustomEmojiObject[]){
             {toRender.map((emoji) => (
                 <ImageListItem>
                     <img
+                        src={emoji.url()}
                         alt={emoji.emoji()}
                         id={emoji.id()}
                         loading="lazy"
