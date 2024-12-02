@@ -267,15 +267,7 @@ export class CustomEmojiObject{
     }
 
     public url(){
-        return this._url ?? "";
-    }
-
-    private flatDetailsEqual(flat1 : EmojiFlatDetail | undefined, flat2 : EmojiFlatDetail | undefined){
-
-        if (!flat1?.url && !flat2?.url){
-            return true;
-        }
-        return flat1?.url == flat2?.url && isRectEqual(flat1?.rect, flat2?.rect);
+        return this._url ?? "assets/custom/loading.png";
     }
 
     public isEqual(emoji : CustomEmojiObject) : boolean{
