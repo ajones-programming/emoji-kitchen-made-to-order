@@ -38,6 +38,40 @@ export class CustomFaceObject{
 
     }
 
+    public static Inherit(face1 : CustomFaceObject, face2 : CustomFaceObject, ignoreTags = false){
+        const newFaces = [
+            face1.inheritTraits(face2, ignoreTags, false),
+            face1.inheritTraits(face2, ignoreTags, true),
+            face2.inheritTraits(face1, ignoreTags, false),
+            face2.inheritTraits(face1, ignoreTags, true)
+        ];
+        const toPush : CustomFaceObject[] = [];
+        newFaces.forEach(face =>
+        {
+            var canPush = true;
+            toPush.forEach(toCompare =>{
+                if (face.isEqual(toCompare)){
+                    canPush = false;
+                }
+            })
+
+            if (canPush){
+                if (face.isEqual(face1)){
+                    toPush.push(face1);
+                }
+                else if (face.isEqual(face2)){
+                    toPush.push(face2);
+                }
+                else{
+                    toPush.push(face);
+                }
+
+            }
+        }
+        )
+        return toPush;
+    }
+
     public inheritTraits(face : CustomFaceObject, ignoreTags : boolean = false, swap : boolean = true) : CustomFaceObject{
         const newFace : CustomFaceObject = new CustomFaceObject();
         newFace.category = this.category;

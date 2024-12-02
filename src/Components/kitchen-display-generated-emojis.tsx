@@ -46,22 +46,38 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
 }
 
 function displayAllEmojis(toRender : CustomEmojiObject[]){
-    return <Container>
-            <ImageList sx={{ width: 360, height: 360 }} cols={2} rowHeight={164}>
+    return <ImageList sx={{justifyContent: "center", pt: 2 }} cols={3} rowHeight={"auto"}>
             {toRender.map((emoji) => (
                 <ImageListItem>
                     <img
+                        src={emoji.url()}
                         alt={emoji.emoji()}
                         id={emoji.id()}
                         loading="lazy"
-                        width="150px"
-                        height="150px"
                     />
                 </ImageListItem>
             ))}
             </ImageList>
-        </Container>;
 }
+
+
+function DisplayAllEmojis_Mobile(toRender : CustomEmojiObject[]){
+    return <ImageList cols={3} rowHeight={"auto"}>
+            {toRender.map((emoji) => (
+                <ImageListItem>
+                    <img
+                        src={emoji.url()}
+                        alt={emoji.emoji()}
+                        id={emoji.id()}
+                        loading="lazy"
+                        width="256px"
+                        height="256px"
+                    />
+                </ImageListItem>
+            ))}
+            </ImageList>
+}
+
 
 function displayCopies(toRender : CustomEmojiObject[], onClick : () => void){
     return <Container>
@@ -90,16 +106,24 @@ function displayCopies(toRender : CustomEmojiObject[], onClick : () => void){
     </Container>
 }
 
+
+async function renderEmojiList( emojiList : CustomEmojiObject[]){
+    for (const emoji of emojiList){
+        await emoji.render();
+    }
+    //return await Promise.all(emojiList.map(renderEmoji));
+}
+
 export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji : string,
-    clearSelectedEmoji : () => void) : JSX.Element{
-    // Neither are selected, show left list, empty middle list, and disable right list
+    clearSelectedEmoji : () => void, isMobile : boolean) : JSX.Element{
+
 
     const emojis = getSelectedEmojis(selectedLeftEmoji, selectedRightEmoji);
     const leftEmoji = emojis.left;
     const rightEmoji = emojis.right;
 
-    leftEmoji?.render();
-    rightEmoji?.render();
+    //leftEmoji?.render();
+    //rightEmoji?.render();
 
     const topEmojis = TopEmojis(leftEmoji, rightEmoji);
 
@@ -112,10 +136,18 @@ export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji 
         toRender = getRenderList(leftEmoji, rightEmoji, true);
     }
 
-    toRender.forEach(emoji => emoji.render());
 
+    //figure out what the hell to do about mobile?
 
-    return <Container>
+    if (isMobile){
+        return(
+            <Container>
+                {DisplayAllEmojis_Mobile(toRender)}
+                {displayCopies(toRender, clearSelectedEmoji)}
+            </Container>);
+    }
+
+    return <Container sx={{width: "fit-content", paddingTop: 0}}>
         {topEmojis}
         {displayAllEmojis(toRender)}
         {displayCopies(toRender, clearSelectedEmoji)}

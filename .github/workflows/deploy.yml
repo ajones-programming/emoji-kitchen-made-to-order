@@ -31,11 +31,12 @@ jobs:
 
       - name: Install and Build 🔧
         run: |
+          export NODE_OPTIONS="--max_old_space_size=8192"
           npm install
           npm run build
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.6.1
+        uses: JamesIves/github-pages-deploy-action@v4.6.8
         with:
           branch: gh-pages
           folder: build
