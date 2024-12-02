@@ -78,12 +78,12 @@ export class CustomEmojiObject{
         const additionalObjectsBack = CustomEmojiItemObject.mergeItemLists(emoji1._additional_objects_back, emoji2._additional_objects_back);
         var rotation : number | undefined;
         if (emoji1._rotation || emoji2._rotation)
-                    {
+            {
                 rotation = ((emoji1._rotation ?? 0) + (emoji2._rotation ?? 0)+360)%360;
                 if (rotation == 0){
                     rotation = undefined;
-                        }
-                    }
+                }
+            }
 
         allBackgrounds.forEach((background, index) =>{
             allFaces.forEach((face, face_index) =>{
@@ -133,10 +133,10 @@ export class CustomEmojiObject{
                 allInstructions.push(image);
             }
         }
-        const finishedFaceAndBase = new mergeInfo(await mergeImagesCustom(allInstructions));
+
         var rect : BaseResizeObject | undefined;
 
-        if (this._is_just_face && !this._face_rect){
+        if (this._face && !this._base?.GetFaceRect()){
             if (this._hands){
                 rect = this._hands.getBaseResize();
             }
@@ -149,16 +149,20 @@ export class CustomEmojiObject{
             }
         }
 
+        //does it have a resize?
+
+
+
+
         if (rect && rect.hasEffect()){
-            finishedFaceAndBase.addAreaRect(rect.getRect(postCropSize()));
-            finishedFaceAndBase.allowCropArea = true;
-        }
-        else{
-            finishedFaceAndBase.ignoreOffset = true;
+            const finishedFaceMergeInfo = new mergeInfo(await mergeImagesCustom(allInstructions));
+            finishedFaceMergeInfo.addAreaRect(rect.getRect(postCropSize()));
+            finishedFaceMergeInfo.allowCropArea = true;
+            return [finishedFaceMergeInfo];
         }
 
 
-        return finishedFaceAndBase;
+        return allInstructions;
     }
 
     public async render(){
@@ -184,8 +188,9 @@ export class CustomEmojiObject{
             const mergeInfo = await this._foreground_layer.toMergeDetails();
             if (mergeInfo){
                 const resize = this._foreground_layer.getBaseResize();
-                if (resize && this._face_rect){
-                    mergeInfo.addAreaRect(resize.getInverseRect(this._face_rect));
+                const faceRect = this._base?.GetFaceRect();
+                if (resize && faceRect){
+                    mergeInfo.addAreaRect(resize.getInverseRect(faceRect));
                 }
                 allInstructions.push(mergeInfo);
             }
@@ -195,7 +200,7 @@ export class CustomEmojiObject{
             const faceRect = this._base?.GetFaceRect();
             if (faceRect){
                 const resize = this._hands.getBaseResize();
-                mergeInfo.addAreaRect(resize.getInverseRect(this._face_rect) );
+                mergeInfo.addAreaRect(resize.getInverseRect(faceRect) );
                 mergeInfo.allowCropArea = true;
             }
             else{
