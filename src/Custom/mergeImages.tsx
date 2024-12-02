@@ -179,19 +179,22 @@ export async function mergeImagesCustom(data : (mergeInfo | transformInfo)[], cr
   if (!context){
     return "";
   }
-  const allImages = await Promise.all(data.map(processCommand));
-  await Promise.all(allImages.map(imgdata => {
-      if (imgdata instanceof imageObject){
-        Draw(imgdata, context);
-      }
-      else if (imgdata instanceof transformInfo){
-        return TransformCanvas(imgdata,canvas);
-      }
-      else{
-        console.error(typeof(imgdata));
-      }
-      return undefined;
-  }));
+  const allImages = []
+  for (const dataItem of data){
+    allImages.push(await processCommand(dataItem));
+  };
+
+  for (const imgdata of allImages){
+    if (imgdata instanceof imageObject){
+      Draw(imgdata, context);
+    }
+    else if (imgdata instanceof transformInfo){
+      await TransformCanvas(imgdata,canvas);
+    }
+    else{
+      console.error(typeof(imgdata));
+    }
+  }
   if (crop){
     var size = postCropSize();
     if (crop_using_angle){
