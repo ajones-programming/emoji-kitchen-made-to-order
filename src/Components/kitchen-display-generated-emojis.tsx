@@ -137,6 +137,8 @@ export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji 
     }
 
 
+    renderEmojiList(toRender);
+
     //figure out what the hell to do about mobile?
 
     if (isMobile){

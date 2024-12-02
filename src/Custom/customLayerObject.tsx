@@ -1,6 +1,5 @@
 import { BaseResizeObject } from "./baseResizeObject";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
-import { mergeImagesCustom, mergeInfo } from "./mergeImages";
 import { RawLayer } from "./types";
 
 export class CustomLayer{
