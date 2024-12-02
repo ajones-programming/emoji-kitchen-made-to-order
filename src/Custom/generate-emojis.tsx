@@ -32,23 +32,11 @@ export function getSelectedEmojis(selectedLeftEmoji : string, selectedRightEmoji
 
 export function getRenderList(leftEmoji : CustomEmojiObject, rightEmoji : CustomEmojiObject, ignoreTags = false){
     const toRender : CustomEmojiObject[] = [];
-    const allEmojiCombinations : CustomEmojiObject[] = [
-        ...leftEmoji.createInherited(rightEmoji,ignoreTags),
-        ...rightEmoji.createInherited(leftEmoji, ignoreTags)
-    ];
+    const allEmojiCombinations : CustomEmojiObject[] = CustomEmojiObject.CreateInherited(leftEmoji, rightEmoji, ignoreTags);
     allEmojiCombinations.forEach(emoji =>{
         if (!emoji.isEqual(leftEmoji) && !emoji.isEqual(rightEmoji)){
-            var equal = false;
-            toRender.forEach(other => {
-                if (emoji.isEqual(other)){
-                    equal = true;
-                }
-            });
-            if (!equal){
-                toRender.push(emoji);
-            }
+            toRender.push(emoji);
         }
-
     })
     return toRender;
 }

@@ -64,75 +64,48 @@ export class CustomEmojiObject{
         }
     }
 
-    public sameBackground(emoji: CustomEmojiObject){
-        return emoji._base_url == this._base_url && this.flatDetailsEqual(this._inherited_details, emoji._inherited_details);;
-    }
+    public static CreateInherited(emoji1 : CustomEmojiObject, emoji2 : CustomEmojiObject, ignoreTags = false){
+        //create all unique attributes, then assign emojis to each of them
 
-    public createInherited( emoji : CustomEmojiObject, ignoreTags : boolean = false)
-    {
-        //now do this again for swapping?
         const allInherited : CustomEmojiObject[] = [];
-        allInherited.push(new CustomEmojiObject());
-        allInherited.push(new CustomEmojiObject());
-        if (!this.sameBackground(emoji)){
-            allInherited.push(new CustomEmojiObject);
-            allInherited.push(new CustomEmojiObject());
-        }
 
-        allInherited.forEach((value, index) => {
-            const swapBackground = index > 2;
-            if (swapBackground){
-                const previous = allInherited[index%2];
-                value._id = previous._id + "SB";
-                value._emoji = previous._emoji + "SB";
-                value._face = previous._face;
-                value._hands = previous._hands;
-                value._foreground_layer = previous._foreground_layer;
-                value._additional_objects = previous._additional_objects;
-                value._additional_objects_back = previous._additional_objects_back;
-                value._rotation = previous._rotation;
-            }
-            else{
-                const swap = index % 2 == 1;
-                if (swap){
-                    const previous = allInherited[index - 1];
-                    value._additional_objects = previous._additional_objects;
-                    value._additional_objects_back = previous._additional_objects_back;
-                    value._rotation = previous._rotation;
-                }
-                else{
-                    value._additional_objects = CustomEmojiItemObject.mergeItemLists(this._additional_objects, emoji._additional_objects);
-                    value._additional_objects_back = CustomEmojiItemObject.mergeItemLists(this._additional_objects_back, emoji._additional_objects_back);
-                    if (this._rotation || emoji._rotation)
+        const allBackgrounds = (emoji1._base && emoji2._base) ? BaseObject.Inherit(emoji1._base, emoji2._base) : [emoji1._base ?? emoji2._base];
+        const allFaces = (emoji1._face && emoji2._face) ? CustomFaceObject.Inherit(emoji1._face, emoji2._face,ignoreTags) : [emoji1._face ?? emoji2._face];
+        const allHands = (emoji1._hands && emoji2._hands) ? CustomHands.Inherit(emoji1._hands, emoji2._hands) : [emoji1._hands ?? emoji2._hands];
+        const foregroundLayers = emoji1._foreground_layer && emoji2._foreground_layer ? [emoji1._foreground_layer, emoji2._foreground_layer] : [emoji1._foreground_layer ?? emoji2._foreground_layer];
+
+        const additionalObjects = CustomEmojiItemObject.mergeItemLists(emoji1._additional_objects, emoji2._additional_objects);
+        const additionalObjectsBack = CustomEmojiItemObject.mergeItemLists(emoji1._additional_objects_back, emoji2._additional_objects_back);
+        var rotation : number | undefined;
+        if (emoji1._rotation || emoji2._rotation)
                     {
-                        value._rotation = ((this._rotation ?? 0) + (emoji._rotation ?? 0)+360)%360;
-                        if (value._rotation == 0){
-                            value._rotation = undefined;
+                rotation = ((emoji1._rotation ?? 0) + (emoji2._rotation ?? 0)+360)%360;
+                if (rotation == 0){
+                    rotation = undefined;
                         }
                     }
-                }
 
-                //inherit face and hands?
-                value._id = this.id() + (swap ? "" : "(" + this.id() + ")")+ emoji.id();
-                value._emoji = (this._emoji ?? "") + (swap ? "" :"(" + (this._emoji??"") + ")" ) + (emoji._emoji ?? "");
-                value._face = (this._face && emoji._face) ? this._face.inheritTraits(emoji._face,ignoreTags, swap) : (this._face ?? emoji._face);
+        allBackgrounds.forEach((background, index) =>{
+            allFaces.forEach((face, face_index) =>{
+                allHands.forEach((hand, hand_index) =>{
+                    foregroundLayers.forEach((layer, layer_index) =>{
+                        const newEmoji = new CustomEmojiObject();
+                        newEmoji._id = emoji1.id() + emoji2.id() + ":" + index.toString() + "-" + face_index.toString() + "-" + hand_index.toString() + "-" + layer_index.toString();
+                        newEmoji._emoji = emoji1.emoji() + emoji2.emoji() + ":" + index.toString() + "-" + face_index.toString() + "-" + hand_index.toString() + "-" + layer_index.toString();
+                        newEmoji._base = background;
+                        newEmoji._face = face;
+                        newEmoji._hands = hand;
+                        newEmoji._additional_objects = additionalObjects;
+                        newEmoji._additional_objects_back = additionalObjectsBack;
+                        newEmoji._rotation = rotation;
+                        newEmoji._foreground_layer =  layer;
+                        allInherited.push(newEmoji);
+                    });
 
-                value._hands = (this._hands && emoji._hands) ? this._hands.inheritTraits(emoji._hands, swap) : (this._hands ?? emoji._hands);
-                value._foreground_layer = this._foreground_layer ?? emoji._foreground_layer;
-            }
+                })
+            })
+        })
 
-            const base = (swapBackground ? emoji : this);
-            const inherited = (swapBackground ? this : emoji)._inherited_details_url;
-
-            value._base_url = base._base_url;
-            value._inherited_details_url = base._inherited_details_url;
-            if (base._inherited_details?.rect && inherited){
-                value._inherited_details = {url: inherited, rect: base._inherited_details.rect};
-            }
-            value._face_rect = base._face_rect;
-            value._is_just_face = base._is_just_face;
-
-        });
         return allInherited;
     }
 
