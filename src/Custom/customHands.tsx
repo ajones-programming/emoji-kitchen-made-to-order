@@ -23,6 +23,15 @@ export class CustomHands{
         this.base_resize = new BaseResizeObject(hands?.edge_ratio);
     }
 
+    public static Inherit(hands1 : CustomHands, hands2 : CustomHands){
+        const newBase1 = hands1.inheritTraits(hands2);
+        const newBase2 = hands2.inheritTraits(hands1);
+        if (newBase1.isEqual(newBase2)){
+            return [newBase1];
+        }
+        return [newBase1, newBase2];
+    }
+
     public inheritTraits(hands : CustomHands, swap : boolean = true){
         const combined = new CustomHands();
         combined.category = this.category;

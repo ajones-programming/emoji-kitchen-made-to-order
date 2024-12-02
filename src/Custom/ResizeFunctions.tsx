@@ -3,7 +3,7 @@ import { postCropSize } from "./mergeImages";
 import { Rect} from "./types";
 
 
-export function isResizeEqual(resize1 : Rect | undefined, resize2 : Rect | undefined){
+export function isRectEqual(resize1 : Rect | undefined, resize2 : Rect | undefined){
     if (resize1 == undefined || resize2 == undefined){
         return (resize1 == undefined && resize2 == undefined);
     }
