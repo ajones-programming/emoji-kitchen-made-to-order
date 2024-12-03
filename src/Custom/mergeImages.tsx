@@ -19,6 +19,7 @@ export class imageInfo{
   copies? : number;
   copy_vertically?:boolean;
   set_copy_offset?:number;
+  alpha? : number;
   //this is only for canvases
   private noCropOffset ? : boolean;
   private allowCropArea? : boolean;
@@ -35,8 +36,10 @@ export class imageInfo{
     }
   }
 
-  public static clearCache(){
-    this.imgCache = {};
+  public static updateCache(){
+    if (Object.keys(this.imgCache).length > 30){
+      this.imgCache = {};
+    }
   }
 
   public addAreaRect(resize : Rect)
@@ -95,6 +98,9 @@ export class imageInfo{
     if (!this.img){
       return;
     }
+    if (this.alpha){
+      context.globalAlpha = this.alpha;
+    }
 
     const cropOffset = this.noCropOffset ? 0 :((preCropSize() - postCropSize())/2);
     this.x = this.x ?? 0;
@@ -106,6 +112,9 @@ export class imageInfo{
       }
       else{
         context.drawImage(this.img, this.x + cropOffset, this.y + cropOffset);
+      }
+      if (this.alpha){
+        context.globalAlpha = 1;
       }
 
       return;
@@ -130,6 +139,9 @@ export class imageInfo{
       for (var i : number = 0; i < this.copies; i++){
         context.drawImage(this.img, startingPoint + (copy_offset * i) + cropOffset, this.y + cropOffset);
       }
+    }
+    if (this.alpha){
+      context.globalAlpha = 1;
     }
   }
 
@@ -191,7 +203,7 @@ export async function mergeImagesCustom(data : (imageInfo | transformInfo)[], cr
   }
   if (crop){
     var size = postCropSize();
-    return cropCanvas(canvas, size, size, preCropSize(), preCropSize());
+    return cropCanvas(canvas, size, size);
 
   }
   return canvas;

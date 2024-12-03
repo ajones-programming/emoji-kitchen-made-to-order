@@ -22,7 +22,7 @@ export function rotateCanvas(canvas : HTMLCanvasElement, rotation : number ,  wi
   return newCanvas;
 }
 
-export function cropCanvas(canvas : HTMLCanvasElement, width : number, height : number, oldWidth : number, oldHeight : number){
+export function cropCanvas(canvas : HTMLCanvasElement, width : number, height : number){
   var newCanvas = document.createElement('canvas');
   var ctx = newCanvas.getContext('2d');
 
@@ -30,7 +30,7 @@ export function cropCanvas(canvas : HTMLCanvasElement, width : number, height : 
   newCanvas.height = height;
 
   if (ctx != null){
-    ctx.drawImage(canvas,(width-oldWidth)/2, (height-oldHeight)/2);
+    ctx.drawImage(canvas,(width-canvas.width)/2, (height-canvas.height)/2);
   }
   return newCanvas;
 }

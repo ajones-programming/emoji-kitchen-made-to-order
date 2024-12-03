@@ -112,7 +112,7 @@ async function renderEmojiList( emojiList : CustomEmojiObject[]){
     for (const emoji of emojiList){
         await emoji.render();
     }
-    imageInfo.clearCache();
+    imageInfo.updateCache();
 }
 
 export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji : string,
