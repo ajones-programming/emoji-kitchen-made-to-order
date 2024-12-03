@@ -34,3 +34,18 @@ export function cropCanvas(canvas : HTMLCanvasElement, width : number, height : 
   }
   return newCanvas;
 }
+
+export function flipCanvasX(canvas : HTMLCanvasElement){
+  var newCanvas = document.createElement('canvas');
+  var ctx = newCanvas.getContext('2d');
+
+  newCanvas.width = canvas.width;
+  newCanvas.height = canvas.height;
+
+  if (ctx != null){
+    ctx.translate(canvas.width,0);
+    ctx.scale(-1,1)
+    ctx.drawImage(canvas,0, 0);
+  }
+  return newCanvas;
+}

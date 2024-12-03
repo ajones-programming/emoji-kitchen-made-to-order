@@ -8,6 +8,7 @@ import { CustomLayer } from './customLayerObject';
 import { getNotoEmojiUrl } from './utils';
 import { BaseObject } from './baseObject';
 import { cropCanvas } from './transformCanvas';
+import { Shake } from './SpecialCases/shake';
 
 
 export class CustomEmojiObject{
@@ -26,6 +27,8 @@ export class CustomEmojiObject{
     private _additional_objects_back : CustomEmojiItemObject[] = [];
 
     private _rotation? : number;
+
+    private _specialFeatures : string[]=[];
 
     constructor(id? : string, data?:  RawEmojiContent, emoji? : string) {
         if (id){
@@ -62,6 +65,10 @@ export class CustomEmojiObject{
             if (data.rotation){
                 this._rotation = (data.rotation + 360)%360;
             }
+
+            if (data.special_features){
+                this._specialFeatures = data.special_features;
+            }
         }
     }
 
@@ -77,6 +84,14 @@ export class CustomEmojiObject{
 
         const additionalObjects = CustomEmojiItemObject.mergeItemLists(emoji1._additional_objects, emoji2._additional_objects);
         const additionalObjectsBack = CustomEmojiItemObject.mergeItemLists(emoji1._additional_objects_back, emoji2._additional_objects_back);
+        const allSpecialFeatures : string[] = [];
+        if (emoji1._specialFeatures.length > 0){
+            allSpecialFeatures.push(...emoji1._specialFeatures);
+        }
+        if (emoji2._specialFeatures.length > 0){
+            allSpecialFeatures.push(...emoji2._specialFeatures);
+        }
+
         var rotation : number | undefined;
         if (emoji1._rotation || emoji2._rotation)
             {
@@ -100,6 +115,7 @@ export class CustomEmojiObject{
                         newEmoji._additional_objects_back = additionalObjectsBack;
                         newEmoji._rotation = rotation;
                         newEmoji._foreground_layer =  layer;
+                        newEmoji._specialFeatures = allSpecialFeatures;
                         allInherited.push(newEmoji);
                     });
 
@@ -152,27 +168,12 @@ export class CustomEmojiObject{
 
 
     async finalTouches(canvas : HTMLCanvasElement){
-        const shake = true;
-        if (shake){
-            const newInstructions : imageInfo[] = [];
-            const rect1 = new Rect()
-            rect1.x = 20;
-            rect1.y = 50;
-            rect1.width = 200;
-            rect1.height = 200;
-            const rect2 = new Rect()
-            rect2.x = 80;
-            rect2.y = 50;
-            rect2.width = 200;
-            rect2.height = 200;
-
-            const emoji1 = new imageInfo(undefined, canvas, rect1);
-            emoji1.alpha = 0.5;
-            const emoji2 = new imageInfo(undefined, canvas, rect2);
-            emoji2.alpha = 0.5;
-            newInstructions.push(emoji1);
-            newInstructions.push(emoji2);
-            canvas = await mergeImagesCustom(newInstructions);
+        for (const feature of this._specialFeatures){
+            switch(feature){
+                case "SHAKE":
+                    canvas = await Shake(canvas);
+                    break;
+            }
         }
         return canvas;
     }
@@ -256,18 +257,20 @@ export class CustomEmojiObject{
         return this._url ?? "assets/custom/loading.png";
     }
 
+    //ADD SPECIAL FEATURES
     public isEqual(emoji : CustomEmojiObject) : boolean{
 
         const baseEqual = (this._base && emoji._base ) ? this._base.isEqual(emoji._base) : (!this._base && !emoji._base);
         const facesEqual = (this._face && emoji._face ) ? this._face.isEqual(emoji._face) : (!this._face && !emoji._face);
         const handsEqual = (this._hands && emoji._hands) ? this._hands.isEqual(emoji._hands) : (!this._hands && !emoji._hands);
         const foregroundEqual = (this._foreground_layer && emoji._foreground_layer) ? this._foreground_layer.isEqual(emoji._foreground_layer) : (!this._foreground_layer && !emoji._foreground_layer);
+        const specialFeaturesEqual = (this._specialFeatures.length == emoji._specialFeatures.length);
 
         const isEqual = baseEqual && facesEqual && handsEqual &&// faceRectEqual &&
         CustomEmojiItemObject.itemListsEqual(this._additional_objects,emoji._additional_objects) &&
         CustomEmojiItemObject.itemListsEqual(this._additional_objects_back,emoji._additional_objects_back) &&
         this._rotation == emoji._rotation &&
-        foregroundEqual;
+        foregroundEqual && specialFeaturesEqual;
         return isEqual;
     }
 }

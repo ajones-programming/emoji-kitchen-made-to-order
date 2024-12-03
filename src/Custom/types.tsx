@@ -46,6 +46,8 @@ export interface RawEmojiContent{
     additional_parts?:RawEmojiItem[];
 
     rotation?: number;
+
+    special_features? : string[];
   }
 
 export interface RawFace{

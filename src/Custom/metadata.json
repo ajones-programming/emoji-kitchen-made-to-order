@@ -1310,6 +1310,34 @@
             }
         },
         {
+            "twemoji_name" : "shaking-face",
+            "char": "🫨",
+            "emoji_codepoint":"1fae8",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/default",
+                        "offset_x" : 25,
+                        "offset_y": 20,
+                        "scale_y" : 1.1,
+                        "ignore_properties" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "mouth/circle",
+                        "offset_x" : 25,
+                        "offset_y" : 10,
+                        "auto_scale" : true
+                    }
+                },
+                "special_features" :
+                [
+                    "SHAKE"
+                ]
+            }
+        },
+        {
             "twemoji_name" : "slightly-frowning-face",
             "char": "🙁",
             "emoji_codepoint":"1f641",
