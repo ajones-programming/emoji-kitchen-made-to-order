@@ -1,6 +1,7 @@
 import { Container, IconButton, ImageList, ImageListItem, Typography } from "@mui/material";
 import { CustomEmojiObject } from "../Custom/customEmojiObject";
 import { ClearSelected, EmojiSelected, getRenderList, getSelectedEmojis } from "../Custom/generate-emojis";
+import { imageInfo } from "../Custom/mergeImages";
 
 function selectedEmoji(emoji : CustomEmojiObject | undefined, additional : () => void){
     if (emoji){
@@ -63,19 +64,19 @@ function displayAllEmojis(toRender : CustomEmojiObject[]){
 
 function DisplayAllEmojis_Mobile(toRender : CustomEmojiObject[]){
     return <ImageList cols={3} rowHeight={"auto"}>
-            {toRender.map((emoji) => (
-                <ImageListItem>
-                    <img
-                        src={emoji.url()}
-                        alt={emoji.emoji()}
-                        id={emoji.id()}
-                        loading="lazy"
-                        width="256px"
-                        height="256px"
-                    />
-                </ImageListItem>
-            ))}
-            </ImageList>
+        {toRender.map((emoji) => (
+            <ImageListItem>
+                <img
+                    src={emoji.url()}
+                    alt={emoji.emoji()}
+                    id={emoji.id()}
+                    loading="lazy"
+                    width="256px"
+                    height="256px"
+                />
+            </ImageListItem>
+        ))}
+        </ImageList>
 }
 
 
@@ -111,7 +112,7 @@ async function renderEmojiList( emojiList : CustomEmojiObject[]){
     for (const emoji of emojiList){
         await emoji.render();
     }
-    //return await Promise.all(emojiList.map(renderEmoji));
+    imageInfo.updateCache();
 }
 
 export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji : string,

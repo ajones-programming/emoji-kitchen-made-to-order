@@ -1,5 +1,5 @@
-import { mergeImagesCustom, mergeInfo, postCropSize, transformInfo } from './mergeImages';
-import { RawEmojiContent} from './types';
+import { mergeImagesCustom, imageInfo, postCropSize, transformInfo } from './mergeImages';
+import { RawEmojiContent, Rect} from './types';
 import { CustomFaceObject } from './customFaceObject';
 import { CustomEmojiItemObject } from './customEmojiItemObject';
 import { CustomHands } from './customHands';
@@ -7,6 +7,7 @@ import { BaseResizeObject } from './baseResizeObject';
 import { CustomLayer } from './customLayerObject';
 import { getNotoEmojiUrl } from './utils';
 import { BaseObject } from './baseObject';
+import { cropCanvas } from './transformCanvas';
 
 
 export class CustomEmojiObject{
@@ -110,26 +111,17 @@ export class CustomEmojiObject{
     }
 
     private async renderBaseAndFace(){
-        const allInstructions : (mergeInfo | transformInfo) [] = [];
+        const allInstructions : (imageInfo | transformInfo) [] = [];
         if (this._base){
             const baseData = await this._base.render();
-            const base = new mergeInfo(baseData.src);
-            base.ignoreOffset = !baseData.cropped;
+            const base = new imageInfo(undefined,baseData);
             allInstructions.push(base);
         }
         if (this._face){
             //see if we can somehow put this into one command
-            const faceString = await this._face.Render();
-            if (faceString){
-                const image = new mergeInfo(faceString, this._base?.GetFaceRect());
-
-                //if face rect
-                if (this._base?.GetFaceRect()){
-                    image.allowCropArea = true;
-                }
-                else{
-                    image.ignoreOffset = true;
-                }
+            const face = await this._face.Render();
+            if (face){
+                const image = new imageInfo(undefined,face, this._base?.GetFaceRect());
                 allInstructions.push(image);
             }
         }
@@ -149,20 +141,40 @@ export class CustomEmojiObject{
             }
         }
 
-        //does it have a resize?
-
-
-
-
         if (rect && rect.hasEffect()){
-            const finishedFaceMergeInfo = new mergeInfo(await mergeImagesCustom(allInstructions));
-            finishedFaceMergeInfo.addAreaRect(rect.getRect(postCropSize()));
-            finishedFaceMergeInfo.allowCropArea = true;
-            return [finishedFaceMergeInfo];
+            const finishedFaceImageInfo = new imageInfo(undefined,await mergeImagesCustom(allInstructions),rect.getRect(postCropSize()));
+            return [finishedFaceImageInfo];
         }
 
 
         return allInstructions;
+    }
+
+
+    async finalTouches(canvas : HTMLCanvasElement){
+        const shake = true;
+        if (shake){
+            const newInstructions : imageInfo[] = [];
+            const rect1 = new Rect()
+            rect1.x = 20;
+            rect1.y = 50;
+            rect1.width = 200;
+            rect1.height = 200;
+            const rect2 = new Rect()
+            rect2.x = 80;
+            rect2.y = 50;
+            rect2.width = 200;
+            rect2.height = 200;
+
+            const emoji1 = new imageInfo(undefined, canvas, rect1);
+            emoji1.alpha = 0.5;
+            const emoji2 = new imageInfo(undefined, canvas, rect2);
+            emoji2.alpha = 0.5;
+            newInstructions.push(emoji1);
+            newInstructions.push(emoji2);
+            canvas = await mergeImagesCustom(newInstructions);
+        }
+        return canvas;
     }
 
     public async render(){
@@ -173,10 +185,10 @@ export class CustomEmojiObject{
             }
             return;
         }
-        const allInstructions : (mergeInfo | transformInfo) [] = [];
+        const allInstructions : (imageInfo | transformInfo) [] = [];
         if (this._additional_objects_back){
             //sort this later
-            allInstructions.push(...(await CustomEmojiItemObject.getListedMergeInfo(
+            allInstructions.push(...(await CustomEmojiItemObject.getListedImageInfo(
                 this._additional_objects_back.map(value => {return {item : value};})
             )));
         }
@@ -185,33 +197,29 @@ export class CustomEmojiObject{
             allInstructions.push(...await this.renderBaseAndFace());
         }
         if (this._foreground_layer){
-            const mergeInfo = await this._foreground_layer.toMergeDetails();
-            if (mergeInfo){
+            const imageInfo = await this._foreground_layer.toMergeDetails();
+            if (imageInfo){
                 const resize = this._foreground_layer.getBaseResize();
                 const faceRect = this._base?.GetFaceRect();
                 if (resize && faceRect){
-                    mergeInfo.addAreaRect(resize.getInverseRect(faceRect));
+                    imageInfo.addAreaRect(resize.getInverseRect(faceRect));
                 }
-                allInstructions.push(mergeInfo);
+                allInstructions.push(imageInfo);
             }
         }
         if (this._hands){
-            const mergeInfo = await this._hands.render();
+            const imageInfo = await this._hands.render();
             const faceRect = this._base?.GetFaceRect();
             if (faceRect){
                 const resize = this._hands.getBaseResize();
-                mergeInfo.addAreaRect(resize.getInverseRect(faceRect) );
-                mergeInfo.allowCropArea = true;
-            }
-            else{
-                mergeInfo.ignoreOffset = true;
+                imageInfo.addAreaRect(resize.getInverseRect(faceRect) );
             }
 
-            allInstructions.push(mergeInfo);
+            allInstructions.push(imageInfo);
         }
         if (this._additional_objects){
             //same as aboce
-            allInstructions.push(...(await CustomEmojiItemObject.getListedMergeInfo(
+            allInstructions.push(...(await CustomEmojiItemObject.getListedImageInfo(
                 this._additional_objects.map(value => {return {item : value};})
             )));
         }
@@ -222,8 +230,13 @@ export class CustomEmojiObject{
             allInstructions.push(rotation);
         }
 
+        var fullCanvas = await mergeImagesCustom(allInstructions);
+        fullCanvas = await this.finalTouches(fullCanvas);
 
-        this._url = await mergeImagesCustom(allInstructions,true);
+        const croppedCanvas = cropCanvas(fullCanvas, 300,300);
+
+
+        this._url = croppedCanvas.toDataURL();
 
         const item = document.getElementById(this.id()) as HTMLImageElement;
         if (item != null){

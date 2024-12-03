@@ -1,5 +1,5 @@
-import { mergeImagesCustom, mergeInfo, postCropSize, transformInfo } from "./mergeImages";
-import { ItemAnchor, RawFace, Rect} from "./types";
+import { mergeImagesCustom, imageInfo, postCropSize, transformInfo } from "./mergeImages";
+import { RawFace, Rect} from "./types";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
 import { getFaceObjectPlacement } from "./utils";
 
@@ -15,7 +15,7 @@ export class CustomFaceObject{
     private additionalObjects : CustomEmojiItemObject[] = [];
     private rotation? : number;
 
-    private _url? : string;
+    private _canvas? : HTMLCanvasElement;
 
     constructor(face? : RawFace){
         if (face){
@@ -121,37 +121,37 @@ export class CustomFaceObject{
     }
 
     public async Render(){
-        if (this._url){
-            return this._url;
+        if (this._canvas){
+            return this._canvas;
         }
-        const list : (mergeInfo | transformInfo)[] = [];
+        const list : (imageInfo | transformInfo)[] = [];
         const faceAnchor = getFaceObjectPlacement(this.category);
         if (this.cheeks?.can_render()){
             const anchor = faceAnchor?.cheeks ?? {x : 0, y : 0};
-            list.push(await this.cheeks.toMergeInfo(anchor, this.category));
+            list.push(await this.cheeks.toImageInfo(anchor, this.category));
         }
         if (this.eyes?.can_render()){
             const anchor = faceAnchor?.eyes ?? {x : 0, y : 0};
-            list.push(await this.eyes.toMergeInfo(anchor, this.category));
+            list.push(await this.eyes.toImageInfo(anchor, this.category));
         }
         if (this.eyebrows?.can_render()){
             const anchor = {x : (faceAnchor?.eyebrows.x ?? 0) + (this.eyes?.getOffset_x() ?? 0), y : (faceAnchor?.eyebrows.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
-            list.push(await this.eyebrows.toMergeInfo(anchor, this.category));
+            list.push(await this.eyebrows.toImageInfo(anchor, this.category));
         }
         if (this.mouth?.can_render()){
             const anchor = faceAnchor?.mouth ?? {x : 0, y : 0};
-            list.push(await this.mouth.toMergeInfo(anchor, this.category));
+            list.push(await this.mouth.toImageInfo(anchor, this.category));
         }
         if (this.tears?.can_render()){
             const anchor = {x : (faceAnchor?.tears.x ?? 0) + (this.eyes?.getOffset_x() ?? 0), y : (faceAnchor?.tears.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
-            list.push(await this.tears.toMergeInfo(anchor, this.category));
+            list.push(await this.tears.toImageInfo(anchor, this.category));
         }
         if (this.nose?.can_render()){
             const anchor = faceAnchor?.nose ?? {x : 0, y : 0};
-            list.push(await this.nose.toMergeInfo(anchor, this.category));
+            list.push(await this.nose.toImageInfo(anchor, this.category));
         }
         if (this.additionalObjects){
-            list.push(...(await CustomEmojiItemObject.getListedMergeInfo(
+            list.push(...(await CustomEmojiItemObject.getListedImageInfo(
                 this.additionalObjects.map(value => {return {item : value};})
             )));
         }
@@ -160,7 +160,7 @@ export class CustomFaceObject{
             transform.rotate = this.rotation;
             list.push(transform);
         }
-        this._url = await mergeImagesCustom(list);
-        return this._url;
+        this._canvas = await mergeImagesCustom(list);
+        return this._canvas;
     }
 }

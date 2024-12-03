@@ -1,5 +1,5 @@
 import { GetDimensions } from "./image";
-import { mergeInfo, postCropSize } from "./mergeImages";
+import { imageInfo, postCropSize } from "./mergeImages";
 import { RawEmojiItem, ItemAnchor, Rect } from "./types";
 
 export interface itemMergeDetails{
@@ -166,7 +166,7 @@ export class CustomEmojiItemObject{
         return this.url != "";
     }
 
-    public async toMergeInfo(anchor? : ItemAnchor, category? : string){
+    public async toImageInfo(anchor? : ItemAnchor, category? : string){
         var x = this.offset_x;
         var y = this.offset_y;
         var width : number | undefined;
@@ -192,7 +192,7 @@ export class CustomEmojiItemObject{
                 y += anchor.y - (dimensions.height / 2);
             }
         }
-        const info : mergeInfo = new mergeInfo(this.getFullURL(category));
+        const info : imageInfo = new imageInfo(this.getFullURL(category));
         info.x = x;
         info.y = y;
         info.width = width;
@@ -203,12 +203,12 @@ export class CustomEmojiItemObject{
         return info;
     }
 
-    private static async toMergeInfo (value : itemMergeDetails) : Promise<mergeInfo>{
-        return value.item.toMergeInfo(value.anchor,value.category);
+    private static async toImageInfo (value : itemMergeDetails) : Promise<imageInfo>{
+        return value.item.toImageInfo(value.anchor,value.category);
     }
 
-    public static async getListedMergeInfo(itemList: itemMergeDetails[]){
-        return await Promise.all(itemList.map(this.toMergeInfo));
+    public static async getListedImageInfo(itemList: itemMergeDetails[]){
+        return await Promise.all(itemList.map(this.toImageInfo));
     }
 
     public static mergeItemLists(itemList1 : CustomEmojiItemObject[], itemList2 : CustomEmojiItemObject[]){
