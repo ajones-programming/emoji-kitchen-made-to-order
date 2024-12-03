@@ -1,11 +1,10 @@
-import { mergeImagesCustom, mergeInfo, transformInfo } from "./mergeImages";
+import { mergeImagesCustom, imageInfo, transformInfo } from "./mergeImages";
 import { isRectEqual } from "./ResizeFunctions";
 import { EmojiFlatDetail, Rect } from "./types";
 
 export class BaseObject{
 
-    private _src? : string;
-    private _isCropped : boolean = false;
+    private _canvas? : HTMLCanvasElement;
 
     private _base_url? : string;
     private _inherited_details_url ? : string;
@@ -69,30 +68,20 @@ export class BaseObject{
         return this._face_rect;
     }
 
-    private returnFromRender(){
-        return {src: this._src ?? "", cropped : this._isCropped };
-    }
-
     public async render()
     {
-        if (this._src){
-            return this.returnFromRender();
-        }
-        if (this._base_url && !this._inherited_details_url){
-            this._src = this._base_url;
-            this._isCropped = true;
-            return this.returnFromRender();
+        if (this._canvas){
+            return this._canvas;
         }
 
-        const allInstructions : (mergeInfo | transformInfo) [] = [];
+        const allInstructions : (imageInfo | transformInfo) [] = [];
         if (this._base_url != undefined){
-            allInstructions.push(new mergeInfo(this._base_url));
+            allInstructions.push(new imageInfo(this._base_url));
         }
         if (this._inherited_details?.url){
-            allInstructions.push(new mergeInfo(this._inherited_details.url,this._inherited_details.rect));
+            allInstructions.push(new imageInfo(this._inherited_details.url, undefined,this._inherited_details.rect));
         }
-        this._src = await mergeImagesCustom(allInstructions);
-        this._isCropped = false;
-        return this.returnFromRender();
+        this._canvas = await mergeImagesCustom(allInstructions);
+        return this._canvas;
     }
 }

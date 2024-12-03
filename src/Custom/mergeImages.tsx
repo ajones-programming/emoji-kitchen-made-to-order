@@ -1,13 +1,17 @@
 //somehow use this for faces? no source?
 
-import { cropImage, resizeImage, rotate } from "./transformImages";
+import { cropCanvas, rotateCanvas } from "./transformCanvas";
 import { Rect } from "./types";
 
 function preCropSize(){return 700;}
 export function postCropSize(){return 300;}
 
-export class mergeInfo{
-  src : string = "";
+export class imageInfo{
+  private img : HTMLImageElement |HTMLCanvasElement | undefined = undefined;
+
+  private static imgCache : { [src: string] : HTMLImageElement | HTMLCanvasElement; }={};
+
+  src? : string = "";
   x? : number;
   y? : number;
   width? : number;
@@ -15,14 +19,24 @@ export class mergeInfo{
   copies? : number;
   copy_vertically?:boolean;
   set_copy_offset?:number;
-  ignoreOffset ? : boolean;
-  allowCropArea? : boolean;
+  //this is only for canvases
+  private noCropOffset ? : boolean;
+  private allowCropArea? : boolean;
 
-  constructor(src : string, resize? : Rect){
+  constructor(src? : string, canvas? : HTMLCanvasElement, resize? : Rect){
+
     this.src = src;
+    this.img = canvas;
+    if (canvas){
+      this.noCropOffset = true;
+    }
     if (resize){
       this.addAreaRect(resize);
     }
+  }
+
+  public static clearCache(){
+    this.imgCache = {};
   }
 
   public addAreaRect(resize : Rect)
@@ -31,143 +45,119 @@ export class mergeInfo{
     this.y = resize.y;
     this.width = resize.width;
     this.height = resize.height;
+    if (this.img instanceof HTMLCanvasElement){
+      this.allowCropArea = true;
+    }
+    this.noCropOffset = false;
   }
+
+  private adjustForCropArea(){
+    if (this.width && this.height && this.allowCropArea)
+      {
+        const oldWidth = this.width;
+        this.width *= preCropSize()/postCropSize();
+        this.x = (this.x ?? 0) - (this.width - oldWidth)/2;
+        const oldHeight = this.height;
+        this.height *= preCropSize()/postCropSize();
+        this.y = (this.y ?? 0) - (this.height - oldHeight)/2;
+      }
+  }
+
+  public async loadImage() : Promise<imageInfo>{
+    this.adjustForCropArea();
+    if (!this.src){
+      return this;
+    }
+    if (this.img){
+      return this;
+    }
+    if (imageInfo.imgCache[this.src] != undefined){
+      this.img = imageInfo.imgCache[this.src];
+      return this;
+    }
+
+    return new Promise((resolve, reject) => {
+      this.img = new Image();
+      this.img.onload = () =>
+        {
+          if (this.img && this.src){
+            imageInfo.imgCache[this.src] = this.img;
+          }
+          resolve(this);
+        }
+      this.img.onerror = reject;
+      this.img.src = this.src ?? "";
+    })
+  }
+
+  public draw(context : CanvasRenderingContext2D)
+  {
+    if (!this.img){
+      return;
+    }
+
+    const cropOffset = this.noCropOffset ? 0 :((preCropSize() - postCropSize())/2);
+    this.x = this.x ?? 0;
+    this.y = this.y ?? 0;
+  //simplify this bit
+    if (!this.copies || this.copies <= 1){
+      if (this.width && this.height){
+        context.drawImage(this.img, this.x + cropOffset, this.y + cropOffset, this.width, this.height);
+      }
+      else{
+        context.drawImage(this.img, this.x + cropOffset, this.y + cropOffset);
+      }
+
+      return;
+    }
+    //draw side by side
+    if (this.copy_vertically){
+      const copy_offset =  this.set_copy_offset ?? this.img.height;
+      var startingPoint = this.y - (copy_offset/2) *(this.copies - 1);
+      if (startingPoint + copy_offset*this.copies > postCropSize()){
+        startingPoint = postCropSize() - copy_offset*this.copies;
+      }
+      for (var i : number = 0; i < this.copies; i++){
+        context.drawImage(this.img, this.x + cropOffset,startingPoint + (copy_offset * i) + cropOffset);
+      }
+    }
+    else{
+      const copy_offset = this.set_copy_offset ?? this.img.width;
+      var startingPoint = this.x - (copy_offset/2) *(this.copies - 1);
+      if (startingPoint + copy_offset*this.copies > postCropSize()){
+        startingPoint = postCropSize() - copy_offset*this.copies;
+      }
+      for (var i : number = 0; i < this.copies; i++){
+        context.drawImage(this.img, startingPoint + (copy_offset * i) + cropOffset, this.y + cropOffset);
+      }
+    }
+  }
+
 };
 
 export class transformInfo{
   rotate? : number;
 }
 
-//used created image
-class imageObject{
-  img : HTMLImageElement | undefined = undefined;
-  x : number = 0;
-  y : number = 0;
-  ignoreOffset : boolean = false;
-  copies : number = 1;
-  copy_vertically : boolean = false;
-  set_copy_offset ? : number;
-}
 
-
-function processCommand(value : mergeInfo | transformInfo){
-  if (value instanceof mergeInfo){
-    return processImage(value);
+function processCommand(value : imageInfo | transformInfo){
+  if (value instanceof imageInfo){
+    return value.loadImage();
   }
   else{
-    return processTransform(value);
+    return value;
   }
 }
 
-//both width and height must be assigned? put them in some kind of pair?
-async function processImage(value : mergeInfo){
-  if (value.width && value.height){
-    if (value.allowCropArea){
-      const oldWidth = value.width;
-      value.width *= preCropSize()/postCropSize();
-      value.x = (value.x ?? 0) - (value.width - oldWidth)/2;
-      const oldHeight = value.height;
-      value.height *= preCropSize()/postCropSize();
-      value.y = (value.y ?? 0) - (value.height - oldHeight)/2;
-
-    }
-    value.src = await resizeImage(value.src, value.width, value.height);
-    value.width = undefined;
-    value.height = undefined;
-  }
-  return await addImage(value);
-}
-
-async function processTransform(value : transformInfo){
-  return value;
-}
-
-
-//creates image to be manipulated later
-//https://stackoverflow.com/questions/75322547/javascript-async-await-with-canvas
-async function addImage(value : mergeInfo) : Promise<imageObject>{
-    return new Promise((resolve, reject) => {
-      const x = value.x ?? 0;
-      const y = value.y ?? 0;
-      const copies = value.copies ?? 1;
-      let img = new Image()
-      img.onload = () =>
-        {
-          const drawInfo = new imageObject();
-          drawInfo.img = img;
-          drawInfo.x = x; //+ (value.ignoreOffset ? 0 : offset)
-          drawInfo.y = y;
-          drawInfo.copies = copies;
-          drawInfo.ignoreOffset = !!value.ignoreOffset;
-          drawInfo.copy_vertically = !!value.copy_vertically;
-          drawInfo.set_copy_offset = value.set_copy_offset;
-          resolve(drawInfo);
-        }
-      img.onerror = reject
-      img.src = value.src
-    })
-  }
-
-
-function Draw(imgdata : imageObject, context : CanvasRenderingContext2D)
-{
-  if (!imgdata.img){
-    return;
-  }
-  const offset = imgdata.ignoreOffset ? 0 :((preCropSize() - postCropSize())/2);
-  //simplify this bit
-  if (imgdata.copies <= 1){
-    context.drawImage(imgdata.img, imgdata.x + offset, imgdata.y + offset);
-    return;
-  }
-  //draw side by side
-  if (imgdata.copy_vertically){
-    const copy_offset =  imgdata.set_copy_offset ?? imgdata.img.height;
-    var startingPoint = imgdata.y - (copy_offset/2) *(imgdata.copies - 1);
-    if (startingPoint + copy_offset*imgdata.copies > postCropSize()){
-      startingPoint = postCropSize() - copy_offset*imgdata.copies;
-    }
-    for (var i : number = 0; i < imgdata.copies; i++){
-      context.drawImage(imgdata.img, imgdata.x + offset,startingPoint + (copy_offset * i) + offset);
-    }
-  }
-  else{
-    const copy_offset = imgdata.set_copy_offset ?? imgdata.img.width;
-    var startingPoint = imgdata.x - (copy_offset/2) *(imgdata.copies - 1);
-    if (startingPoint + copy_offset*imgdata.copies > postCropSize()){
-      startingPoint = postCropSize() - copy_offset*imgdata.copies;
-    }
-    for (var i : number = 0; i < imgdata.copies; i++){
-      context.drawImage(imgdata.img, startingPoint + (copy_offset * i) + offset, imgdata.y + offset);
-    }
-  }
-}
-
-async function TransformCanvas(transformInfo : transformInfo, canvas : HTMLCanvasElement)
+function GenerateNewCanvasFromTransform(transformInfo : transformInfo, canvas : HTMLCanvasElement)
 {
   if (transformInfo.rotate){
-    const dataURL = canvas.toDataURL();
-    const context = canvas.getContext('2d');
-    if (!context){
-      return;
-    }
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    if (transformInfo.rotate){
-      const val = await rotate(dataURL,transformInfo.rotate,preCropSize(),preCropSize());
-      const imgObj= new Image();
-      return new Promise<undefined>((resolve, reject)=>{
-        imgObj.onload = () =>{
-          context.drawImage(imgObj,0,0);
-          resolve(undefined);
-        }
-        imgObj.src = val;
-      });
-    }
+    return rotateCanvas(canvas, transformInfo.rotate, preCropSize(),preCropSize());
   }
 }
 
 //cant i just do this to merge images without a dependency lmao
-export async function mergeImagesCustom(data : (mergeInfo | transformInfo)[], crop : boolean = false, crop_using_angle : boolean = false) : Promise<string>{
+export async function mergeImagesCustom(data : (imageInfo | transformInfo)[], crop : boolean = false) : Promise<HTMLCanvasElement>{
   //create images
   //add urls
   //await canvas lmao
@@ -175,33 +165,34 @@ export async function mergeImagesCustom(data : (mergeInfo | transformInfo)[], cr
 
   canvas.width = preCropSize();
   canvas.height = preCropSize();
-  const context = canvas.getContext('2d');
+  var context = canvas.getContext('2d');
   if (!context){
-    return "";
+    return canvas;
   }
-  const allImages = []
   for (const dataItem of data){
-    allImages.push(await processCommand(dataItem));
+    await processCommand(dataItem);
   };
 
-  for (const imgdata of allImages){
-    if (imgdata instanceof imageObject){
-      Draw(imgdata, context);
+  for (const dataItem of data){
+    if (dataItem instanceof imageInfo){
+      dataItem.draw(context);
     }
-    else if (imgdata instanceof transformInfo){
-      await TransformCanvas(imgdata,canvas);
+    else if (dataItem instanceof transformInfo){
+      const newCanvas = GenerateNewCanvasFromTransform(dataItem,canvas);
+      const newContext = newCanvas?.getContext('2d');
+      if (newCanvas && newContext){
+        canvas = newCanvas;
+        context = newContext;
+      }
     }
     else{
-      console.error(typeof(imgdata));
+      console.error(typeof(dataItem));
     }
   }
   if (crop){
     var size = postCropSize();
-    if (crop_using_angle){
-      size *= Math.SQRT2;
-    }
-    return await cropImage(canvas.toDataURL(), size, size, preCropSize(), preCropSize());
+    return cropCanvas(canvas, size, size, preCropSize(), preCropSize());
 
   }
-  return canvas.toDataURL();
+  return canvas;
 }

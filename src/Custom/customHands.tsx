@@ -1,6 +1,6 @@
 import { BaseResizeObject } from "./baseResizeObject";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
-import { mergeImagesCustom, mergeInfo } from "./mergeImages";
+import { mergeImagesCustom, imageInfo } from "./mergeImages";
 import { RawHands } from "./types";
 
 export class CustomHands{
@@ -10,7 +10,7 @@ export class CustomHands{
     private right_hand? : CustomEmojiItemObject;
     private base_resize : BaseResizeObject = new BaseResizeObject();
 
-    private _src? : string;
+    private _canvas? : HTMLCanvasElement;
 
     constructor(hands? : RawHands, category? : string){
         if (category){
@@ -52,21 +52,21 @@ export class CustomHands{
 
     //this will have to change somehow?
     public async toMergeDetails(){
-        const mergeInfoList : mergeInfo[] = [];
+        const imageInfoList : imageInfo[] = [];
         if (this.left_hand){
-            mergeInfoList.push(await this.left_hand.toMergeInfo(undefined,this.category));
+            imageInfoList.push(await this.left_hand.toImageInfo(undefined,this.category));
         }
         if (this.right_hand){
-            mergeInfoList.push(await this.right_hand.toMergeInfo(undefined, this.category));
+            imageInfoList.push(await this.right_hand.toImageInfo(undefined, this.category));
         }
-        return mergeInfoList;
+        return imageInfoList;
     }
 
     public async render(){
-        if (this._src == undefined){
-            this._src = await mergeImagesCustom(await this.toMergeDetails());
+        if (this._canvas== undefined){
+            this._canvas = await mergeImagesCustom(await this.toMergeDetails());
         }
-        return new mergeInfo(this._src ?? "");
+        return new imageInfo(undefined,this._canvas ?? "");
     }
 
     public getBaseResize(){
