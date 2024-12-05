@@ -1,6 +1,7 @@
 # Emoji Kitchen, Made to Order FORK
 This is for generating emojis on the fly.
 Special thanks to [emojipedia.org](emojipedia.org) for providing all of the emoji resources required for this application.
+Additional credit to [Beej's Bit Bucket](https://beej.us/blog/data/html5s-canvas-2-pixel/) for pixel manipulation code.
 
 View below for the original information
 # 🧑‍🍳 Emoji Kitchen
