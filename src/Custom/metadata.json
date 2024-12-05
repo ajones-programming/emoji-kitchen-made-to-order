@@ -1328,13 +1328,63 @@
                         "url" : "mouth/circle",
                         "offset_x" : 25,
                         "offset_y" : 10,
-                        "auto_scale" : true
+                        "auto_scale" : true,
+                        "ignore_properties" : true
                     }
                 },
                 "special_features" :
                 [
                     "SHAKE"
                 ]
+            }
+        },
+        {
+            "twemoji_name" : "relieved-face",
+            "char": "😌",
+            "emoji_codepoint":"1f60c",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/closed_2",
+                        "offset_y" : 35
+                    },
+                    "eyebrows" : {
+                        "url" : "eyebrows/smile",
+                        "offset_y" : -24
+                    } ,
+                    "mouth" : {
+                        "url" : "mouth/small_smile",
+                        "auto_scale" : true,
+                        "offset_y":4
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "pensive-face",
+            "char": "😔",
+            "emoji_codepoint":"1f614",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/closed_2",
+                        "offset_y" : 50
+                    },
+                    "eyebrows" : {
+                        "url" : "eyebrows/pensive",
+                        "offset_y" : -29
+                    } ,
+                    "mouth" : {
+                        "url" : "mouth/straight_line",
+                        "auto_scale" : true,
+                        "scale_x" : 0.6,
+                        "offset_y":15
+                    }
+                }
             }
         },
         {
