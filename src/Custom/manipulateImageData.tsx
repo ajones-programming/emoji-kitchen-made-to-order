@@ -31,6 +31,80 @@ function setPixelGradient(imageData : ImageData, x : number, y: number, colour_0
     //imageData.data[index+3] = a;
 }
 
+function hasColor(imageData : ImageData, x : number, y : number){
+    const index = (x + y * imageData.width) * 4;
+    return imageData.data[index+3] != 0;
+}
+
+export function cropTransparent(canvas : HTMLCanvasElement){
+    const context = canvas.getContext("2d");
+    const imageData = context?.getImageData(0,0,canvas.width, canvas.height);
+
+    if (!imageData){
+        console.error("NO IMAGE DATA SOMEHOWW");
+        return;
+    }
+    //get left
+    var left : number | undefined;
+    for (var x = 200; x >= 0 && !left; --x){
+        for  (var y = 0; y < canvas.height; y++){
+            if (hasColor(imageData, x, y)){
+                x--;
+                y=0;
+                continue;
+            }
+            left = x;
+        }
+    }
+    var right : number | undefined;
+    for (var x = 500; x < canvas.width && !right; ++x){
+        for  (var y = 0; y < canvas.height; y++){
+            if (hasColor(imageData, x, y)){
+                x++;
+                y=0;
+                continue;
+            }
+            right = x;
+        }
+    }
+
+    var top : number | undefined;
+    for (var y = 200; y >= 0 && !top; --y){
+        for  (var x = 0; x < canvas.width; x++){
+            if (hasColor(imageData, x, y)){
+                y--;
+                x=0;
+                continue;
+            }
+            top = y;
+        }
+    }
+    var bottom : number | undefined;
+    for (var y = 500; y < canvas.height && !bottom; ++y){
+        for  (var x = 0; x < canvas.width; x++){
+            if (hasColor(imageData, x, y)){
+                y++;
+                x=0;
+                continue;
+            }
+            bottom = y;
+        }
+    }
+
+    var newCanvas = document.createElement('canvas');
+    var ctx = newCanvas.getContext('2d');
+
+    const width = (right ?? canvas.width) - (left ?? canvas.width);
+    const height = (bottom ?? canvas.height) - (top ?? canvas.height);
+    newCanvas.width = Math.max(width, height);
+    newCanvas.height = Math.max(width, height);
+
+    if (ctx != null){
+        ctx.drawImage(canvas,-(left ?? canvas.width), -(top ?? canvas.height));
+    }
+    return newCanvas;
+}
+
 
 //ABSOLUTE WORST CASE SCENARIO!!
 export function changeImage(canvas : HTMLCanvasElement){
@@ -49,13 +123,5 @@ export function changeImage(canvas : HTMLCanvasElement){
             setPixelGradient(imageData, x, y, colour0, colour1);
         }
     }
-    // for (var i = 0; i < 1000; i++) {
-    //     const x = Math.random() * canvas.width | 0; // |0 to truncate to Int32
-    //     const y = Math.random() * canvas.height | 0;
-    //     const r = Math.random() * 256 | 0;
-    //     const g = Math.random() * 256 | 0;
-    //     const b = Math.random() * 256 | 0;
-    //     setPixel(imageData, x, y, r, g, b, 255); // 255 opaque
-    // }
     context?.putImageData(imageData, 0, 0);
 }

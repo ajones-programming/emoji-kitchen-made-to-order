@@ -1,5 +1,6 @@
 import { BaseResizeObject } from "./baseResizeObject";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
+import { MergedCanvas } from "./mergedCanvas";
 import { mergeImagesCustom, imageInfo } from "./mergeImages";
 import { RawHands } from "./types";
 
@@ -10,7 +11,7 @@ export class CustomHands{
     private right_hand? : CustomEmojiItemObject;
     private base_resize : BaseResizeObject = new BaseResizeObject();
 
-    private _canvas? : HTMLCanvasElement;
+    private _canvas? : MergedCanvas;
 
     constructor(hands? : RawHands, category? : string){
         if (category){

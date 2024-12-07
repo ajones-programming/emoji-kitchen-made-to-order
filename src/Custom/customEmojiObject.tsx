@@ -1,4 +1,5 @@
-import { mergeImagesCustom, imageInfo, postCropSize, transformInfo } from './mergeImages';
+import { mergeImagesCustom, imageInfo, targetSize, transformInfo} from './mergeImages';
+import { MergedCanvas } from "./mergedCanvas";
 import { RawEmojiContent, Rect} from './types';
 import { CustomFaceObject } from './customFaceObject';
 import { CustomEmojiItemObject } from './customEmojiItemObject';
@@ -7,7 +8,6 @@ import { BaseResizeObject } from './baseResizeObject';
 import { CustomLayer } from './customLayerObject';
 import { getNotoEmojiUrl } from './utils';
 import { BaseObject } from './baseObject';
-import { cropCanvas } from './transformCanvas';
 import { Shake } from './SpecialCases/shake';
 
 
@@ -158,7 +158,7 @@ export class CustomEmojiObject{
         }
 
         if (rect && rect.hasEffect()){
-            const finishedFaceImageInfo = new imageInfo(undefined,await mergeImagesCustom(allInstructions),rect.getRect(postCropSize()));
+            const finishedFaceImageInfo = new imageInfo(undefined,await mergeImagesCustom(allInstructions),rect.getRect(targetSize()));
             return [finishedFaceImageInfo];
         }
 
@@ -167,7 +167,7 @@ export class CustomEmojiObject{
     }
 
 
-    async finalTouches(canvas : HTMLCanvasElement){
+    async finalTouches(canvas : MergedCanvas){
         for (const feature of this._specialFeatures){
             switch(feature){
                 case "SHAKE":
@@ -232,12 +232,12 @@ export class CustomEmojiObject{
         }
 
         var fullCanvas = await mergeImagesCustom(allInstructions);
-        fullCanvas = await this.finalTouches(fullCanvas);
+        if (fullCanvas){
+            fullCanvas = await this.finalTouches(fullCanvas);
+        }
+        const croppedCanvas = fullCanvas?.cropCanvas();
 
-        const croppedCanvas = cropCanvas(fullCanvas, 300,300);
-
-
-        this._url = croppedCanvas.toDataURL();
+        this._url = croppedCanvas;
 
         const item = document.getElementById(this.id()) as HTMLImageElement;
         if (item != null){

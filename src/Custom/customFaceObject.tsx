@@ -1,4 +1,5 @@
-import { mergeImagesCustom, imageInfo, postCropSize, transformInfo } from "./mergeImages";
+import { mergeImagesCustom, imageInfo, transformInfo} from "./mergeImages";
+import { MergedCanvas } from "./mergedCanvas";
 import { RawFace, Rect} from "./types";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
 import { getFaceObjectPlacement } from "./utils";
@@ -15,7 +16,7 @@ export class CustomFaceObject{
     private additionalObjects : CustomEmojiItemObject[] = [];
     private rotation? : number;
 
-    private _canvas? : HTMLCanvasElement;
+    private _canvas? : MergedCanvas;
 
     constructor(face? : RawFace){
         if (face){

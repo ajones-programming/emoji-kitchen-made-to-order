@@ -1,10 +1,11 @@
-import { mergeImagesCustom, imageInfo, transformInfo } from "./mergeImages";
+import { MergedCanvas } from "./mergedCanvas";
+import { mergeImagesCustom, imageInfo, transformInfo} from "./mergeImages";
 import { isRectEqual } from "./ResizeFunctions";
 import { EmojiFlatDetail, Rect } from "./types";
 
 export class BaseObject{
 
-    private _canvas? : HTMLCanvasElement;
+    private _canvas? : MergedCanvas;
 
     private _base_url? : string;
     private _inherited_details_url ? : string;

@@ -1,5 +1,5 @@
 import { GetDimensions } from "./image";
-import { imageInfo, postCropSize } from "./mergeImages";
+import { imageInfo, targetSize } from "./mergeImages";
 import { RawEmojiItem, ItemAnchor, Rect } from "./types";
 
 export interface itemMergeDetails{
@@ -75,7 +75,7 @@ export class CustomEmojiItemObject{
         const x_plus_width = x + this.custom_dimensions.width*this.scale_x;
         const y_plus_height = y + this.custom_dimensions.height*this.scale_y;
 
-        if ((x >= 0) && (y >= 0) && (x_plus_width < postCropSize()) && (y_plus_height < postCropSize())){
+        if ((x >= 0) && (y >= 0) && (x_plus_width < targetSize()) && (y_plus_height < targetSize())){
             return;
         }
         rect.x = Math.min(x,0);
