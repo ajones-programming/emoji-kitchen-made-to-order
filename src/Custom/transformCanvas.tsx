@@ -3,8 +3,7 @@
 //https://stackoverflow.com/questions/20958078/resize-a-base-64-image-in-javascript-without-using-canvas
 // Takes a data URI and returns the Data URI corresponding to the resized image at the wanted size.
 
-export function rotateCanvas(canvas : HTMLCanvasElement, rotation : number ,  width : number, height : number){
-  const inradians = rotation * Math.PI / 180;
+export function rotateCanvas(canvas : HTMLCanvasElement, radians : number ,  width : number, height : number){
   var newCanvas = document.createElement('canvas');
   var ctx = newCanvas.getContext('2d');
 
@@ -14,7 +13,7 @@ export function rotateCanvas(canvas : HTMLCanvasElement, rotation : number ,  wi
 
   if (ctx != null){
     ctx.translate(width/2, height/2);
-    ctx.rotate(inradians);
+    ctx.rotate(radians);
     ctx.translate(-width/2, -width/2);
     ctx.drawImage(canvas, 0,0);
   }

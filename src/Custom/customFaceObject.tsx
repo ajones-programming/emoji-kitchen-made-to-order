@@ -129,30 +129,30 @@ export class CustomFaceObject{
         const faceAnchor = getFaceObjectPlacement(this.category);
         if (this.cheeks?.can_render()){
             const anchor = faceAnchor?.cheeks ?? {x : 0, y : 0};
-            list.push(await this.cheeks.toImageInfo(anchor, this.category));
+            list.push(this.cheeks.toImageInfo(anchor, this.category));
         }
         if (this.eyes?.can_render()){
             const anchor = faceAnchor?.eyes ?? {x : 0, y : 0};
-            list.push(await this.eyes.toImageInfo(anchor, this.category));
+            list.push(this.eyes.toImageInfo(anchor, this.category));
         }
         if (this.eyebrows?.can_render()){
             const anchor = {x : (faceAnchor?.eyebrows.x ?? 0) + (this.eyes?.getOffset_x() ?? 0), y : (faceAnchor?.eyebrows.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
-            list.push(await this.eyebrows.toImageInfo(anchor, this.category));
+            list.push(this.eyebrows.toImageInfo(anchor, this.category));
         }
         if (this.mouth?.can_render()){
             const anchor = faceAnchor?.mouth ?? {x : 0, y : 0};
-            list.push(await this.mouth.toImageInfo(anchor, this.category));
+            list.push(this.mouth.toImageInfo(anchor, this.category));
         }
         if (this.tears?.can_render()){
             const anchor = {x : (faceAnchor?.tears.x ?? 0) + (this.eyes?.getOffset_x() ?? 0), y : (faceAnchor?.tears.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
-            list.push(await this.tears.toImageInfo(anchor, this.category));
+            list.push(this.tears.toImageInfo(anchor, this.category));
         }
         if (this.nose?.can_render()){
             const anchor = faceAnchor?.nose ?? {x : 0, y : 0};
-            list.push(await this.nose.toImageInfo(anchor, this.category));
+            list.push(this.nose.toImageInfo(anchor, this.category));
         }
-        if (this.additionalObjects){
-            list.push(...(await CustomEmojiItemObject.getListedImageInfo(
+        if (this.additionalObjects && this.additionalObjects.length > 0){
+            list.push(...(CustomEmojiItemObject.getListedImageInfo(
                 this.additionalObjects.map(value => {return {item : value};})
             )));
         }

@@ -80,7 +80,7 @@ export class BaseObject{
             allInstructions.push(new imageInfo(this._base_url));
         }
         if (this._inherited_details?.url){
-            allInstructions.push(new imageInfo(this._inherited_details.url, undefined,this._inherited_details.rect));
+            allInstructions.push(new imageInfo(this._inherited_details.url, this._inherited_details.rect));
         }
         this._canvas = await mergeImagesCustom(allInstructions);
         return this._canvas;

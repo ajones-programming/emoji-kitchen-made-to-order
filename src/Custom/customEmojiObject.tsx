@@ -130,14 +130,16 @@ export class CustomEmojiObject{
         const allInstructions : (imageInfo | transformInfo) [] = [];
         if (this._base){
             const baseData = await this._base.render();
-            const base = new imageInfo(undefined,baseData);
+            if (baseData){
+                const base = new imageInfo(baseData);
             allInstructions.push(base);
+        }
         }
         if (this._face){
             //see if we can somehow put this into one command
             const face = await this._face.Render();
             if (face){
-                const image = new imageInfo(undefined,face, this._base?.GetFaceRect());
+                const image = new imageInfo(face, this._base?.GetFaceRect());
                 allInstructions.push(image);
             }
         }
@@ -158,7 +160,7 @@ export class CustomEmojiObject{
         }
 
         if (rect && rect.hasEffect()){
-            const finishedFaceImageInfo = new imageInfo(undefined,await mergeImagesCustom(allInstructions),rect.getRect(targetSize()));
+            const finishedFaceImageInfo = new imageInfo(await mergeImagesCustom(allInstructions),rect.getRect(targetSize()));
             return [finishedFaceImageInfo];
         }
 
@@ -187,9 +189,9 @@ export class CustomEmojiObject{
             return;
         }
         const allInstructions : (imageInfo | transformInfo) [] = [];
-        if (this._additional_objects_back){
+        if (this._additional_objects_back && this._additional_objects_back.length > 0){
             //sort this later
-            allInstructions.push(...(await CustomEmojiItemObject.getListedImageInfo(
+            allInstructions.push(...(CustomEmojiItemObject.getListedImageInfo(
                 this._additional_objects_back.map(value => {return {item : value};})
             )));
         }
@@ -218,9 +220,9 @@ export class CustomEmojiObject{
 
             allInstructions.push(imageInfo);
         }
-        if (this._additional_objects){
+        if (this._additional_objects && this._additional_objects.length > 0){
             //same as aboce
-            allInstructions.push(...(await CustomEmojiItemObject.getListedImageInfo(
+            allInstructions.push(...(CustomEmojiItemObject.getListedImageInfo(
                 this._additional_objects.map(value => {return {item : value};})
             )));
         }

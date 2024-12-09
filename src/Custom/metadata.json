@@ -1388,6 +1388,65 @@
             }
         },
         {
+            "twemoji_name" : "sleepy-face",
+            "char": "😪",
+            "emoji_codepoint":"1f62a",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/closed",
+                        "offset_y" : 46,
+                        "ignore_properties" : true
+                    },
+                    "mouth" : {
+                        "url" : "mouth/small_frown",
+                        "offset_y": 13,
+                        "auto_scale" : true,
+                        "ignore_properties" : true
+                    },
+                    "eyebrows":{
+                        "url" : "eyebrows/middle_wide",
+                        "offset_y" : -10
+                    },
+                    "additional_parts":[{
+                        "url": "additional/snot_bubble",
+                        "can_copy" : true,
+                        "offset_x" : 194,
+                        "offset_y" : 192
+                    }]
+                }
+            }
+        },
+        {
+            "twemoji_name" : "drooling-face",
+            "char": "🤤",
+            "emoji_codepoint":"1f924",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/smiling_eyes",
+                        "offset_y" : 25,
+                        "ignore_properties" : true
+                    },
+                    "mouth" : {
+                        "url" : "mouth/drool",
+                        "offset_y": 38,
+                        "auto_scale" : true,
+                        "ignore_properties" : true
+                    },
+                    "eyebrows":{
+                        "url" : "eyebrows/one_brow_raised",
+                        "offset_y" : -15
+
+                    }
+                }
+            }
+        },
+        {
             "twemoji_name" : "slightly-frowning-face",
             "char": "🙁",
             "emoji_codepoint":"1f641",

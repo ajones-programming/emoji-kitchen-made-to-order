@@ -1,4 +1,3 @@
-import { GetDimensions } from "./image";
 import { imageInfo, targetSize } from "./mergeImages";
 import { RawEmojiItem, ItemAnchor, Rect } from "./types";
 
@@ -166,30 +165,17 @@ export class CustomEmojiItemObject{
         return this.url != "";
     }
 
-    public async toImageInfo(anchor? : ItemAnchor, category? : string){
+    public toImageInfo(anchor? : ItemAnchor, category? : string){
         var x = this.offset_x;
         var y = this.offset_y;
         var width : number | undefined;
         var height : number | undefined;
         if (this.custom_dimensions){
-            x += (anchor ? anchor.x : 0) - this.custom_dimensions.x * this.scale_x;
-            y += (anchor ? anchor.y : 0) - this.custom_dimensions.y * this.scale_y;
+            x -= this.custom_dimensions.x * this.scale_x;
+            y -= this.custom_dimensions.y * this.scale_y;
             if (this.scale_x != 1.0 || this.scale_y != 1.0){
                 width = this.custom_dimensions.width * this.scale_x;
                 height = this.custom_dimensions.height * this.scale_y;
-            }
-        }
-        else if (anchor || this.scale_x != 1.0 || this.scale_y != 1.0){
-            const dimensions = await GetDimensions(this.getFullURL(category));
-            if (this.scale_x != 1.0 || this.scale_y != 1.0){
-                width = dimensions.width * this.scale_x;
-                height = dimensions.height * this.scale_y;
-                dimensions.width = width;
-                dimensions.height = height;
-            }
-            if (anchor){
-                x += anchor.x - (dimensions.width / 2);
-                y += anchor.y - (dimensions.height / 2);
             }
         }
         const info : imageInfo = new imageInfo(this.getFullURL(category));
@@ -200,15 +186,18 @@ export class CustomEmojiItemObject{
         info.copies = this.num_of_copies;
         info.copy_vertically = this.copy_vertically;
         info.set_copy_offset = this.set_copy_offset;
+        info.anchor = anchor;
+        info.scale_x = this.scale_x != 1.0 ? this.scale_x : undefined;
+        info.scale_y = this.scale_y != 1.0 ? this.scale_y : undefined;
         return info;
     }
 
-    private static async toImageInfo (value : itemMergeDetails) : Promise<imageInfo>{
+    private static toImageInfo (value : itemMergeDetails){
         return value.item.toImageInfo(value.anchor,value.category);
     }
 
-    public static async getListedImageInfo(itemList: itemMergeDetails[]){
-        return await Promise.all(itemList.map(this.toImageInfo));
+    public static getListedImageInfo(itemList: itemMergeDetails[]){
+        return itemList.map(this.toImageInfo);
     }
 
     public static mergeItemLists(itemList1 : CustomEmojiItemObject[], itemList2 : CustomEmojiItemObject[]){

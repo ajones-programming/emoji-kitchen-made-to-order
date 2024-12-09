@@ -46,10 +46,10 @@ export function cropTransparent(canvas : HTMLCanvasElement){
     }
     //get left
     var left : number | undefined;
-    for (var x = 200; x >= 0 && !left; --x){
-        for  (var y = 0; y < canvas.height; y++){
+    for (var x = 200; x >= 0 && !left; x-=5){
+        for  (var y = 0; y < canvas.height; y+=5){
             if (hasColor(imageData, x, y)){
-                x--;
+                x-=5;
                 y=0;
                 continue;
             }
@@ -57,10 +57,10 @@ export function cropTransparent(canvas : HTMLCanvasElement){
         }
     }
     var right : number | undefined;
-    for (var x = 500; x < canvas.width && !right; ++x){
-        for  (var y = 0; y < canvas.height; y++){
+    for (var x = 500; x < canvas.width && !right; x+=5){
+        for  (var y = 0; y < canvas.height; y+=5){
             if (hasColor(imageData, x, y)){
-                x++;
+                x+=5;
                 y=0;
                 continue;
             }
@@ -69,10 +69,10 @@ export function cropTransparent(canvas : HTMLCanvasElement){
     }
 
     var top : number | undefined;
-    for (var y = 200; y >= 0 && !top; --y){
-        for  (var x = 0; x < canvas.width; x++){
+    for (var y = 200; y >= 0 && !top; y-=5){
+        for  (var x = 0; x < canvas.width; x+=5){
             if (hasColor(imageData, x, y)){
-                y--;
+                y-=5;
                 x=0;
                 continue;
             }
@@ -80,10 +80,10 @@ export function cropTransparent(canvas : HTMLCanvasElement){
         }
     }
     var bottom : number | undefined;
-    for (var y = 500; y < canvas.height && !bottom; ++y){
-        for  (var x = 0; x < canvas.width; x++){
+    for (var y = 500; y < canvas.height && !bottom; y+=5){
+        for  (var x = 0; x < canvas.width; x+=5){
             if (hasColor(imageData, x, y)){
-                y++;
+                y+=5;
                 x=0;
                 continue;
             }
