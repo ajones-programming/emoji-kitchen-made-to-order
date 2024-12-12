@@ -26,6 +26,6 @@ export async function Shake(canvas : MergedCanvas){
     emoji2.alpha = 0.8;
     newInstructions.push(emoji1);
     newInstructions.push(emoji2);
-    newInstructions.push(new imageInfo("./assets/custom/additional/shake.png"));
+    newInstructions.push(new imageInfo("./assets/custom/additional/shake.webp"));
     return (await mergeImagesCustom(newInstructions)) ?? canvas;
 }

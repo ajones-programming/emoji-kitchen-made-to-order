@@ -40,7 +40,7 @@ export class CustomEmojiObject{
         if (data){
             this._url = getNotoEmojiUrl(id ?? "");
             this._base = new BaseObject(
-                "./assets/custom/" + (data.base_url ?? "") + ".png",
+                "./assets/custom/" + (data.base_url ?? "") + ".webp",
                 (data.inherited_details_url ? "./assets/custom/" + data.inherited_details_url + ".png" : undefined),
                 data.inherited_details_rect,
                 data.face_rect
