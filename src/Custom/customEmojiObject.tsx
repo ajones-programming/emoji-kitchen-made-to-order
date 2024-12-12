@@ -1,6 +1,6 @@
 import { mergeImagesCustom, imageInfo, targetSize, transformInfo} from './mergeImages';
 import { MergedCanvas } from "./mergedCanvas";
-import { RawEmojiContent, Rect} from './types';
+import { RawEmojiContent} from './types';
 import { CustomFaceObject } from './customFaceObject';
 import { CustomEmojiItemObject } from './customEmojiItemObject';
 import { CustomHands } from './customHands';
@@ -196,7 +196,7 @@ export class CustomEmojiObject{
             allInstructions.push(...await this.renderBaseAndFace());
         }
         if (this._foreground_layer){
-            const imageInfo = await this._foreground_layer.toMergeDetails();
+            const imageInfo = this._foreground_layer.toMergeDetails();
             if (imageInfo){
                 const resize = this._foreground_layer.getBaseResize();
                 const faceRect = this._base?.GetFaceRect();

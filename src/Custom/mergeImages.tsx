@@ -47,6 +47,10 @@ export class imageInfo{
     }
   }
 
+  public Canvas(){
+    return this.canvas;
+  }
+
   public addAreaRect(resize : Rect)
   {
     this.x = resize.x;
@@ -178,6 +182,14 @@ function Transform(transformInfo : transformInfo, canvas : MergedCanvas)
 
 //cant i just do this to merge images without a dependency lmao
 export async function mergeImagesCustom(data : (imageInfo | transformInfo)[]) : Promise<MergedCanvas>{
+
+  if (data.length == 1 && data[0] instanceof imageInfo){
+    const possibleCanvas = data[0].Canvas();
+    if (possibleCanvas){
+      return possibleCanvas;
+    }
+  }
+
   const canvasData = new MergedCanvas ();
 
   await Promise.all(data.map(processCommand));

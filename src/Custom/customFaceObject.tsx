@@ -1,6 +1,6 @@
 import { mergeImagesCustom, imageInfo, transformInfo} from "./mergeImages";
 import { MergedCanvas } from "./mergedCanvas";
-import { RawFace, Rect} from "./types";
+import { RawFace } from "./types";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
 import { getFaceObjectPlacement } from "./utils";
 

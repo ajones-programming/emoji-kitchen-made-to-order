@@ -1445,6 +1445,34 @@
             }
         },
         {
+            "twemoji_name" : "sleeping-face",
+            "char": "😴",
+            "emoji_codepoint":"1f634",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/closed_2",
+                        "offset_y" : 40
+                    },
+                    "mouth" : {
+                        "url" : "mouth/circle",
+                        "auto_scale" : true,
+                        "offset_y":2,
+                        "scale_x":0.76,
+                        "scale_y":0.76
+                    }
+                },
+                "additional_parts":[{
+                    "url": "additional/zzz",
+                    "can_copy" : true,
+                    "offset_x" : 110,
+                    "offset_y" : 0
+                }]
+            }
+        },
+        {
             "twemoji_name" : "slightly-frowning-face",
             "char": "🙁",
             "emoji_codepoint":"1f641",

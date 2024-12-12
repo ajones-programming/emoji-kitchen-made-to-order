@@ -23,9 +23,9 @@ export class CustomLayer{
     }
 
     //this will have to change somehow?
-    public async toMergeDetails(){
+    public toMergeDetails(){
         if (this.object){
-            return await this.object.toImageInfo(undefined);
+            return this.object.toImageInfo(undefined);
         }
         return undefined;
     }

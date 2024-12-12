@@ -1,5 +1,5 @@
-import { imageInfo, targetSize } from "./mergeImages";
-import { RawEmojiItem, ItemAnchor, Rect } from "./types";
+import { imageInfo } from "./mergeImages";
+import { RawEmojiItem, ItemAnchor } from "./types";
 
 export interface itemMergeDetails{
     item : CustomEmojiItemObject;
