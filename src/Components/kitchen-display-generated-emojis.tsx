@@ -23,7 +23,7 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
     return <div>
         {(leftEmoji != undefined || rightEmoji != undefined) &&
             <Container sx={{ display: "flex", justifyContent: "center", pt: 2 }}>
-                {leftEmoji != undefined &&
+                <>{leftEmoji != undefined &&
                     <img
                     id={leftEmoji.id()}
                     src={leftEmoji.url()}
@@ -31,8 +31,8 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
                     height="100px"
                     style={imgStyle}
                     />
-                }
-                {rightEmoji != undefined}{
+                }</>
+                <>{rightEmoji != undefined}{
                     <img
                     id={rightEmoji?.id()}
                     src={rightEmoji?.url()}
@@ -40,7 +40,7 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
                     height="100px"
                     style={imgStyle}
                 />
-                }
+                }</>
             </Container>
         }
         </div>;
@@ -48,8 +48,8 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
 
 function displayAllEmojis(toRender : CustomEmojiObject[]){
     return <ImageList sx={{justifyContent: "center", pt: 2 }} cols={3} rowHeight={"auto"}>
-            {toRender.map((emoji) => (
-                <ImageListItem>
+            {toRender.map((emoji,index) => (
+                <ImageListItem key={index}>
                     <img
                         src={emoji.url()}
                         alt={emoji.emoji()}
@@ -93,7 +93,7 @@ function displayCopies(toRender : CustomEmojiObject[], onClick : () => void){
             }}>copy
         </Typography>
         {toRender.map((emoji,index) => (
-            <IconButton onClick={() => selectedEmoji(emoji, onClick)}>
+            <IconButton onClick={() => selectedEmoji(emoji, onClick)} key={index}>
             {index + 1}
             </IconButton>
         ))}
