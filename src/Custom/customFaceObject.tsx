@@ -103,23 +103,6 @@ export class CustomFaceObject{
         CustomEmojiItemObject.itemListsEqual(this.additionalObjects,face.additionalObjects) &&
         this.rotation == face.rotation;
     }
-    public getExpansionRect() : Rect | undefined{
-        var rect : Rect | undefined;
-        var newRect;
-        const faceAnchor = getFaceObjectPlacement(this.category);
-        if (newRect = this.nose?.getRectSize(faceAnchor?.nose)){
-            if (!rect){
-                rect = newRect;
-            }
-            else{
-                rect.x = Math.min(rect.x,newRect.x);
-                rect.y = Math.min(rect.y, newRect.y);
-                rect.width = Math.max(rect.width, newRect.width);
-                rect.height = Math.max(rect.height, newRect.height);
-            }
-        }
-        return rect;
-    }
 
     public async Render(){
         if (this._canvas){

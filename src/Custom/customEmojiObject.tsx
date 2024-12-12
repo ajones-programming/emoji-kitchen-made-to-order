@@ -132,8 +132,8 @@ export class CustomEmojiObject{
             const baseData = await this._base.render();
             if (baseData){
                 const base = new imageInfo(baseData);
-            allInstructions.push(base);
-        }
+                allInstructions.push(base);
+            }
         }
         if (this._face){
             //see if we can somehow put this into one command
@@ -152,10 +152,6 @@ export class CustomEmojiObject{
             }
             if (this._foreground_layer){
                 rect = this._foreground_layer.getBaseResize();
-            }
-            const faceRect = this._face?.getExpansionRect();
-            if (faceRect){
-                rect = new BaseResizeObject(undefined,faceRect);
             }
         }
 

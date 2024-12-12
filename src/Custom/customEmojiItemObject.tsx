@@ -61,28 +61,6 @@ export class CustomEmojiItemObject{
     }
 
 
-    public getRectSize(anchor? : ItemAnchor) : Rect | undefined{
-        if (!this.custom_dimensions){
-            return;
-        }
-
-        const rect = new Rect();
-
-        const x = this.offset_x + (anchor ? anchor.x : 0) - this.custom_dimensions.x*this.scale_x;
-        const y = this.offset_y + (anchor ? anchor.y : 0) - this.custom_dimensions.y*this.scale_y;
-
-        const x_plus_width = x + this.custom_dimensions.width*this.scale_x;
-        const y_plus_height = y + this.custom_dimensions.height*this.scale_y;
-
-        if ((x >= 0) && (y >= 0) && (x_plus_width < targetSize()) && (y_plus_height < targetSize())){
-            return;
-        }
-        rect.x = Math.min(x,0);
-        rect.y = Math.min(y,0);
-        rect.width = Math.max(300,x_plus_width);
-        rect.height = Math.max(300,y_plus_height);
-        return rect;
-    }
 
     private inheritTraits(item : CustomEmojiItemObject, ignoreTags : boolean = false){
 
