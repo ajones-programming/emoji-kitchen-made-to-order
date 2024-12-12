@@ -105,7 +105,7 @@ export interface RawEmojiItem{
   copy_set_offset?:number;
   can_copy? : boolean;
 
-  custom_dimensions? : Rect;
+  custom_anchor? : Vector2;
 
   edge_ratio? : EdgeRatios;
 

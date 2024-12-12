@@ -22,7 +22,7 @@ export class CustomEmojiItemObject{
     private set_copy_offset?:number;
     private can_copy : boolean = false;
 
-    private custom_dimensions? : Rect;
+    private custom_anchor? : ItemAnchor;
 
     constructor(item? : RawEmojiItem, copy? : CustomEmojiItemObject){
         if (item){
@@ -37,7 +37,7 @@ export class CustomEmojiItemObject{
             this.copy_vertically = item.copy_vertically ?? false;
             this.set_copy_offset = item.copy_set_offset;
             this.can_copy = item.can_copy ?? false;
-            this.custom_dimensions = item.custom_dimensions;
+            this.custom_anchor = item.custom_anchor;
         }
         if (copy){
             this.url = copy.url;
@@ -52,7 +52,7 @@ export class CustomEmojiItemObject{
             this.copy_vertically = copy.copy_vertically;
             this.set_copy_offset = copy.set_copy_offset;
             this.can_copy = copy.can_copy;
-            this.custom_dimensions = copy.custom_dimensions;
+            this.custom_anchor = copy.custom_anchor;
         }
     }
     public static InheritTraits(base : CustomEmojiItemObject | undefined, toBeInherited : CustomEmojiItemObject | undefined,
@@ -95,7 +95,7 @@ export class CustomEmojiItemObject{
             return newItem;
         }
 
-        newItem.custom_dimensions = this.custom_dimensions;
+        newItem.custom_anchor = this.custom_anchor;
 
         newItem.offset_x = this.offset_x + (ignoreProperty ? 0 :item.offset_x);
         newItem.offset_y = this.offset_y + (ignoreProperty ? 0 : item.offset_y);
@@ -170,14 +170,6 @@ export class CustomEmojiItemObject{
         var y = this.offset_y;
         var width : number | undefined;
         var height : number | undefined;
-        if (this.custom_dimensions){
-            x -= this.custom_dimensions.x * this.scale_x;
-            y -= this.custom_dimensions.y * this.scale_y;
-            if (this.scale_x != 1.0 || this.scale_y != 1.0){
-                width = this.custom_dimensions.width * this.scale_x;
-                height = this.custom_dimensions.height * this.scale_y;
-            }
-        }
         const info : imageInfo = new imageInfo(this.getFullURL(category));
         info.x = x;
         info.y = y;
@@ -187,6 +179,7 @@ export class CustomEmojiItemObject{
         info.copy_vertically = this.copy_vertically;
         info.set_copy_offset = this.set_copy_offset;
         info.anchor = anchor;
+        info.custom_anchor = this.custom_anchor;
         info.scale_x = this.scale_x != 1.0 ? this.scale_x : undefined;
         info.scale_y = this.scale_y != 1.0 ? this.scale_y : undefined;
         return info;

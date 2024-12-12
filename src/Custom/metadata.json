@@ -1299,11 +1299,9 @@
                         "offset_x" : -10,
                         "auto_scale" : true,
                         "ignore_properties" : true,
-                        "custom_dimensions":{
+                        "custom_anchor":{
                             "x" : 8,
-                            "y" : 28,
-                            "width" : 194,
-                            "height" : 57
+                            "y" : 28
                         }
                     }
                 }

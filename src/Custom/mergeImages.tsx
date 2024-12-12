@@ -24,10 +24,11 @@ export class imageInfo{
   set_copy_offset?:number;
   alpha? : number;
   anchor? : ItemAnchor;
+  custom_anchor? : ItemAnchor;
   scale_x? : number;
   scale_y? : number;
 
-  constructor(input : canvasInput, resize? : Rect){
+  constructor(input : imageInput, resize? : Rect){
 
     if (input instanceof MergedCanvas){
       this.canvas = input;
@@ -90,28 +91,41 @@ export class imageInfo{
     if (!this.img && !this.canvas){
       return;
     }
-    this.x = this.x ?? 0;
-    this.y = this.y ?? 0;
+    var x = this.x ?? 0;
+    var y = this.y ?? 0;
+    var _width = this.width ?? undefined;
+    var _height = this.height ?? undefined;
+    var _customAnchor : ItemAnchor | undefined;
+    if (this.custom_anchor){
+      _customAnchor = new ItemAnchor();
+      _customAnchor.x = this.custom_anchor.x;
+      _customAnchor.y = this.custom_anchor.y;
+    }
+
     const additional = this.makeAdditionalObject();
 
     if (this.scale_x || this.scale_y){
-      this.width =(this.width ?? (this.img?.width || this.canvas?.width()) ?? 0) * (this.scale_x ?? 1.0);
-      this.height =(this.height ?? (this.img?.height || this.canvas?.height()) ?? 0) * (this.scale_y ?? 1.0);
+      if (_customAnchor){
+        _customAnchor.x *= (this.scale_x ?? 1.0);
+        _customAnchor.y *= (this.scale_y ?? 1.0);
+      }
+      _width =(_width ?? (this.img?.width || this.canvas?.width()) ?? 0) * (this.scale_x ?? 1.0);
+      _height =(_height ?? (this.img?.height || this.canvas?.height()) ?? 0) * (this.scale_y ?? 1.0);
     }
 
     if (this.anchor){
       if (this.img){
-        this.x += this.anchor.x - (this.width ?? this.img.width)/2;
-        this.y += this.anchor.y - (this.height ?? this.img.height)/2;
+        x += this.anchor.x - (_customAnchor?.x ?? (_width ?? this.img.width)/2);
+        y += this.anchor.y - (_customAnchor?.y ?? (_height ?? this.img.height)/2);
       }
       else if (this.canvas){
-        this.x += this.anchor.x - (this.width ?? this.canvas.width())/2;
-        this.y += this.anchor.y - (this.height ?? this.canvas.height())/2;
+        x += this.anchor.x - (_customAnchor?.x ?? (_width ?? this.canvas.width())/2);
+        y += this.anchor.y - (_customAnchor?.y ?? (_height ?? this.canvas.height())/2);
       }
     }
   //simplify this bit
     if (!this.copies || this.copies <= 1){
-      canvasData.drawToCanvas(this.img ?? this.canvas, this.x, this.y, this.width, this.height, additional);
+      canvasData.drawToCanvas(this.img ?? this.canvas, x, y, _width, _height, additional);
       return;
     }
 
@@ -121,22 +135,22 @@ export class imageInfo{
     //draw side by side
     if (this.copy_vertically){
       const copy_offset =  this.set_copy_offset ?? height;
-      var startingPoint = this.y - (copy_offset/2) *(this.copies - 1);
+      var startingPoint = y - (copy_offset/2) *(this.copies - 1);
       if (startingPoint + copy_offset*this.copies > targetSize()){
         startingPoint = targetSize() - copy_offset*this.copies;
       }
       for (var i : number = 0; i < this.copies; i++){
-        canvasData.drawToCanvas(this.img ?? this.canvas, this.x, startingPoint + (copy_offset * i), this.width, this.height, additional);
+        canvasData.drawToCanvas(this.img ?? this.canvas, x, startingPoint + (copy_offset * i),  _width, _height, additional);
       }
     }
     else{
       const copy_offset = this.set_copy_offset ?? width;
-      var startingPoint = this.x - (copy_offset/2) *(this.copies - 1);
+      var startingPoint = x - (copy_offset/2) *(this.copies - 1);
       if (startingPoint + copy_offset*this.copies > targetSize()){
         startingPoint = targetSize() - copy_offset*this.copies;
       }
       for (var i : number = 0; i < this.copies; i++){
-        canvasData.drawToCanvas(this.img ?? this.canvas, startingPoint + (copy_offset * i) , this.y, this.width, this.height, additional);
+        canvasData.drawToCanvas(this.img ?? this.canvas, startingPoint + (copy_offset * i) , y,  _width, _height, additional);
       }
     }
   }
