@@ -6,7 +6,7 @@ export function targetSize(){return 300;}
 
 
 
-type canvasInput = string | MergedCanvas;
+export type imageInput = string | MergedCanvas;
 
 export class imageInfo{
   private img : HTMLImageElement | undefined = undefined;
