@@ -1,6 +1,6 @@
 import { mergeImagesCustom, imageInfo, transformInfo} from "./mergeImages";
 import { MergedCanvas } from "./mergedCanvas";
-import { RawFace } from "./types";
+import { RawFace, Rect } from "./types";
 import { CustomEmojiItemObject } from "./customEmojiItemObject";
 import { getFaceObjectPlacement } from "./utils";
 
@@ -12,11 +12,14 @@ export class CustomFaceObject{
     private nose ? : CustomEmojiItemObject;
     private tears? : CustomEmojiItemObject;
     private mouth? : CustomEmojiItemObject;
+    private mask? : CustomEmojiItemObject;
     private cheeks? : CustomEmojiItemObject;
     private additionalObjects : CustomEmojiItemObject[] = [];
     private rotation? : number;
 
     private _canvas? : MergedCanvas;
+    private _canRenderAdditionalCanvas = true;
+    private _additionalCanvas? : MergedCanvas;
 
     constructor(face? : RawFace){
         if (face){
@@ -24,6 +27,7 @@ export class CustomFaceObject{
             this.eyes = face.eyes ? new CustomEmojiItemObject(face.eyes) : undefined;
             this.nose = face.nose ? new CustomEmojiItemObject(face.nose) : undefined;
             this.mouth = face.mouth ? new CustomEmojiItemObject(face.mouth) : undefined;
+            this.mask = face.mask ? new CustomEmojiItemObject(face.mask) : undefined;
             this.eyebrows = face.eyebrows ? new CustomEmojiItemObject(face.eyebrows) : undefined;
             this.tears = face.tears ? new CustomEmojiItemObject(face.tears) : undefined;
             this.cheeks = face.cheeks ? new CustomEmojiItemObject(face.cheeks) : undefined;
@@ -80,6 +84,7 @@ export class CustomFaceObject{
         newFace.eyes = CustomEmojiItemObject.InheritTraits(face.eyes , this.eyes, ignoreTags);
         newFace.nose = CustomEmojiItemObject.InheritTraits(this.nose, face.nose, ignoreTags);
         newFace.mouth = CustomEmojiItemObject.InheritTraits(swap ? this.mouth : face.mouth, swap ? face.mouth : this.mouth, ignoreTags);
+        newFace.mask = CustomEmojiItemObject.InheritTraits(this.mask, face.mask);
         newFace.tears = CustomEmojiItemObject.InheritTraits(this.tears, face.tears, ignoreTags);
         newFace.cheeks = CustomEmojiItemObject.InheritTraits(this.cheeks, face.cheeks, ignoreTags);
         newFace.additionalObjects = CustomEmojiItemObject.mergeItemLists(this.additionalObjects, face.additionalObjects);
@@ -98,10 +103,20 @@ export class CustomFaceObject{
         CustomEmojiItemObject.IsEqual(this.eyebrows, face.eyebrows) &&
         CustomEmojiItemObject.IsEqual(this.nose, face.nose) &&
         CustomEmojiItemObject.IsEqual(this.mouth, face.mouth) &&
+        CustomEmojiItemObject.IsEqual(this.mask, face.mask) &&
         CustomEmojiItemObject.IsEqual(this.cheeks, face.cheeks) &&
         CustomEmojiItemObject.IsEqual(this.tears, face.tears) &&
         CustomEmojiItemObject.itemListsEqual(this.additionalObjects,face.additionalObjects) &&
         this.rotation == face.rotation;
+    }
+
+    public getMask(faceRect? : Rect){
+        if (this.mask?.can_render()){
+            console.log(faceRect);
+            const mask = this.mask.toImageInfo(undefined, this.category, faceRect);
+            return mask;
+        }
+        return undefined;
     }
 
     public async Render(){
@@ -126,25 +141,44 @@ export class CustomFaceObject{
             const anchor = faceAnchor?.mouth ?? {x : 0, y : 0};
             list.push(this.mouth.toImageInfo(anchor, this.category));
         }
-        if (this.tears?.can_render()){
-            const anchor = {x : (faceAnchor?.tears.x ?? 0) + (this.eyes?.getOffset_x() ?? 0), y : (faceAnchor?.tears.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
-            list.push(this.tears.toImageInfo(anchor, this.category));
-        }
+
         if (this.nose?.can_render()){
             const anchor = faceAnchor?.nose ?? {x : 0, y : 0};
             list.push(this.nose.toImageInfo(anchor, this.category));
+        }
+
+        this._canvas = await mergeImagesCustom(list);
+        return this._canvas;
+    }
+
+    public async RenderAdditional(){
+        if (this._additionalCanvas){
+            return this._additionalCanvas;
+        }
+        if (!this._canRenderAdditionalCanvas){
+            return undefined;
+        }
+        const list : (imageInfo | transformInfo)[] = [];
+        const faceAnchor = getFaceObjectPlacement(this.category);
+        if (this.tears?.can_render()){
+            const anchor = {x : (faceAnchor?.tears.x ?? 0) + (this.eyes?.getOffset_x() ?? 0), y : (faceAnchor?.tears.y ?? 0) + (this.eyes?.getOffset_y() ?? 0) } ;
+            list.push(this.tears.toImageInfo(anchor, this.category));
         }
         if (this.additionalObjects && this.additionalObjects.length > 0){
             list.push(...(CustomEmojiItemObject.getListedImageInfo(
                 this.additionalObjects.map(value => {return {item : value};})
             )));
         }
+        if (list.length == 0){
+            this._canRenderAdditionalCanvas = false;
+            return undefined;
+        }
         if (this.rotation){
             const transform = new transformInfo();
             transform.rotate = this.rotation;
             list.push(transform);
         }
-        this._canvas = await mergeImagesCustom(list);
-        return this._canvas;
+        this._additionalCanvas = await mergeImagesCustom(list);
+        return this._additionalCanvas;
     }
 }

@@ -58,6 +58,7 @@ export interface RawFace{
   eyebrows?: RawEmojiItem;
   nose? : RawEmojiItem;
   mouth? : RawEmojiItem;
+  mask? : RawEmojiItem;
   cheeks? : RawEmojiItem;
   additional_parts?:RawEmojiItem[];
   rotation? : number;
@@ -104,6 +105,7 @@ export interface RawEmojiItem{
   copy_vertically?:boolean;
   copy_set_offset?:number;
   can_copy? : boolean;
+  keep_original_transparent?: boolean;
 
   custom_anchor? : Vector2;
 

@@ -1,5 +1,5 @@
 import { imageInfo } from "./mergeImages";
-import { RawEmojiItem, ItemAnchor } from "./types";
+import { RawEmojiItem, ItemAnchor, Rect } from "./types";
 
 export interface itemMergeDetails{
     item : CustomEmojiItemObject;
@@ -21,6 +21,7 @@ export class CustomEmojiItemObject{
     private copy_vertically : boolean = false;
     private set_copy_offset?:number;
     private can_copy : boolean = false;
+    private keep_original_transparent: boolean = false;
 
     private custom_anchor? : ItemAnchor;
 
@@ -38,6 +39,7 @@ export class CustomEmojiItemObject{
             this.set_copy_offset = item.copy_set_offset;
             this.can_copy = item.can_copy ?? false;
             this.custom_anchor = item.custom_anchor;
+            this.keep_original_transparent = item.keep_original_transparent ?? false;
         }
         if (copy){
             this.url = copy.url;
@@ -53,6 +55,7 @@ export class CustomEmojiItemObject{
             this.set_copy_offset = copy.set_copy_offset;
             this.can_copy = copy.can_copy;
             this.custom_anchor = copy.custom_anchor;
+            this.keep_original_transparent = copy.keep_original_transparent;
         }
     }
     public static InheritTraits(base : CustomEmojiItemObject | undefined, toBeInherited : CustomEmojiItemObject | undefined,
@@ -72,13 +75,14 @@ export class CustomEmojiItemObject{
         if (!newItem.can_render()){
             return newItem;
         }
+        newItem.keep_original_transparent = this.keep_original_transparent;
 
         newItem.custom_anchor = this.custom_anchor;
 
         newItem.offset_x = this.offset_x + (ignoreProperty ? 0 :item.offset_x);
         newItem.offset_y = this.offset_y + (ignoreProperty ? 0 : item.offset_y);
-        newItem.scale_x = this.scale_x * item.scale_x;//(ignoreProperty ? 1.0 : item.scale_x);
-        newItem.scale_y = this.scale_y * item.scale_y;//(ignoreProperty ? 1.0 : item.scale_y);
+        newItem.scale_x = this.scale_x * item.scale_x;
+        newItem.scale_y = this.scale_y * item.scale_y;
         newItem.auto_scale = this.auto_scale;
         //this is not correct, it should be able to scale more somehow, but idk how
         const willAutoScale = ((this.scale_x == 1.0 && this.scale_y == 1.0) || (item.scale_x == 1.0 && item.scale_y == 1.0)) &&
@@ -143,16 +147,12 @@ export class CustomEmojiItemObject{
         return this.url != "";
     }
 
-    public toImageInfo(anchor? : ItemAnchor, category? : string){
+    public toImageInfo(anchor? : ItemAnchor, category? : string, rect? : Rect){
         var x = this.offset_x;
         var y = this.offset_y;
-        var width : number | undefined;
-        var height : number | undefined;
-        const info : imageInfo = new imageInfo(this.getFullURL(category));
-        info.x = x;
-        info.y = y;
-        info.width = width;
-        info.height = height;
+        const info : imageInfo = new imageInfo(this.getFullURL(category),rect);
+        info.x = (info.x ?? 0) + x;
+        info.y = (info.y ?? 0) + y;
         info.copies = this.num_of_copies;
         info.copy_vertically = this.copy_vertically;
         info.set_copy_offset = this.set_copy_offset;
@@ -160,6 +160,7 @@ export class CustomEmojiItemObject{
         info.custom_anchor = this.custom_anchor;
         info.scale_x = this.scale_x != 1.0 ? this.scale_x : undefined;
         info.scale_y = this.scale_y != 1.0 ? this.scale_y : undefined;
+        info.keep_original_transparent = this.keep_original_transparent;
         return info;
     }
 

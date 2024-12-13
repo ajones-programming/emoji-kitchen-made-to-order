@@ -1473,6 +1473,28 @@
             }
         },
         {
+            "twemoji_name" : "face-with-medical-mask",
+            "char": "😷",
+            "emoji_codepoint":"1f637",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/default",
+                        "offset_y": -8
+                    },
+                    "mask":
+                    {
+                        "url" : "mouth/mask",
+                        "ignore_properties":true,
+                        "keep_original_transparent":true
+                    }
+                }
+
+            }
+        },
+        {
             "twemoji_name" : "slightly-frowning-face",
             "char": "🙁",
             "emoji_codepoint":"1f641",

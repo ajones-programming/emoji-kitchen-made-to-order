@@ -27,6 +27,7 @@ export class imageInfo{
   custom_anchor? : ItemAnchor;
   scale_x? : number;
   scale_y? : number;
+  keep_original_transparent? : boolean;
 
   constructor(input : imageInput, resize? : Rect){
 
@@ -86,6 +87,9 @@ export class imageInfo{
     const object : any = {};
     if (this.alpha){
       object.alpha = this.alpha;
+    }
+    if (this.keep_original_transparent == true){
+      object.keep_original_transparent = true;
     }
     return object;
   }

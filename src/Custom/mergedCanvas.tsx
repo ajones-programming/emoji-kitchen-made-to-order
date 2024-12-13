@@ -73,6 +73,9 @@ export class MergedCanvas{
     if (additional.alpha){
       this.context.globalAlpha = switchOn ? additional.alpha : 1;
     }
+    if (additional.keep_original_transparent){
+      this.context.globalCompositeOperation = switchOn ? "source-atop" : "source-over";
+    }
   }
 
   //include alpha??

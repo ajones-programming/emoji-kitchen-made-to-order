@@ -141,6 +141,15 @@ export class CustomEmojiObject{
             if (face){
                 const image = new imageInfo(face, this._base?.GetFaceRect());
                 allInstructions.push(image);
+                const faceMask = this._face.getMask(this._base?.GetFaceRect());
+                if (faceMask){
+                    allInstructions.push(faceMask);
+                }
+                const additional = await this._face.RenderAdditional();
+                if (additional){
+                    const image = new imageInfo(additional, this._base?.GetFaceRect());
+                    allInstructions.push(image);
+                }
             }
         }
 
