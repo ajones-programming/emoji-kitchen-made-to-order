@@ -43,7 +43,8 @@ export class CustomEmojiObject{
                 "./assets/custom/" + (data.base_url ?? "") + ".webp",
                 (data.inherited_details_url ? "./assets/custom/" + data.inherited_details_url + ".png" : undefined),
                 data.inherited_details_rect,
-                data.face_rect
+                data.face_rect,
+                data.hat_rect
             );
 
             this._face = data.face ? new CustomFaceObject(data.face) : undefined;
@@ -144,6 +145,10 @@ export class CustomEmojiObject{
                 const faceMask = this._face.getMask(this._base?.GetFaceRect());
                 if (faceMask){
                     allInstructions.push(faceMask);
+                }
+                const hat = this._face.getHat(this._base?.GetHatRect());
+                if (hat){
+                    allInstructions.push(hat);
                 }
                 const additional = await this._face.RenderAdditional();
                 if (additional){

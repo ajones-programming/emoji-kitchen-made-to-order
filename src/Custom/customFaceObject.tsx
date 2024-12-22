@@ -13,6 +13,7 @@ export class CustomFaceObject{
     private tears? : CustomEmojiItemObject;
     private mouth? : CustomEmojiItemObject;
     private mask? : CustomEmojiItemObject;
+    private hat? : CustomEmojiItemObject;
     private cheeks? : CustomEmojiItemObject;
     private additionalObjects : CustomEmojiItemObject[] = [];
     private rotation? : number;
@@ -28,6 +29,7 @@ export class CustomFaceObject{
             this.nose = face.nose ? new CustomEmojiItemObject(face.nose) : undefined;
             this.mouth = face.mouth ? new CustomEmojiItemObject(face.mouth) : undefined;
             this.mask = face.mask ? new CustomEmojiItemObject(face.mask) : undefined;
+            this.hat = face.hat ? new CustomEmojiItemObject(face.hat) : undefined;
             this.eyebrows = face.eyebrows ? new CustomEmojiItemObject(face.eyebrows) : undefined;
             this.tears = face.tears ? new CustomEmojiItemObject(face.tears) : undefined;
             this.cheeks = face.cheeks ? new CustomEmojiItemObject(face.cheeks) : undefined;
@@ -85,6 +87,7 @@ export class CustomFaceObject{
         newFace.nose = CustomEmojiItemObject.InheritTraits(this.nose, face.nose, ignoreTags);
         newFace.mouth = CustomEmojiItemObject.InheritTraits(swap ? this.mouth : face.mouth, swap ? face.mouth : this.mouth, ignoreTags);
         newFace.mask = CustomEmojiItemObject.InheritTraits(this.mask, face.mask);
+        newFace.hat = CustomEmojiItemObject.InheritTraits(this.hat, face.hat);
         newFace.tears = CustomEmojiItemObject.InheritTraits(this.tears, face.tears, ignoreTags);
         newFace.cheeks = CustomEmojiItemObject.InheritTraits(this.cheeks, face.cheeks, ignoreTags);
         newFace.additionalObjects = CustomEmojiItemObject.mergeItemLists(this.additionalObjects, face.additionalObjects);
@@ -104,6 +107,7 @@ export class CustomFaceObject{
         CustomEmojiItemObject.IsEqual(this.nose, face.nose) &&
         CustomEmojiItemObject.IsEqual(this.mouth, face.mouth) &&
         CustomEmojiItemObject.IsEqual(this.mask, face.mask) &&
+        CustomEmojiItemObject.IsEqual(this.hat, face.hat) &&
         CustomEmojiItemObject.IsEqual(this.cheeks, face.cheeks) &&
         CustomEmojiItemObject.IsEqual(this.tears, face.tears) &&
         CustomEmojiItemObject.itemListsEqual(this.additionalObjects,face.additionalObjects) &&
@@ -115,6 +119,15 @@ export class CustomFaceObject{
             console.log(faceRect);
             const mask = this.mask.toImageInfo(undefined, this.category, faceRect);
             return mask;
+        }
+        return undefined;
+    }
+
+    public getHat(faceRect? : Rect){
+        if (this.hat?.can_render()){
+            console.log(faceRect);
+            const hat = this.hat.toImageInfo(undefined, this.category, faceRect);
+            return hat;
         }
         return undefined;
     }

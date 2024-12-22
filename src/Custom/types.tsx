@@ -37,6 +37,7 @@ export interface RawEmojiContent{
     face? : RawFace;
     is_only_face? : boolean;
     face_rect? : Rect;
+    hat_rect? : Rect;
 
     hands? : RawHands;
 
@@ -59,6 +60,7 @@ export interface RawFace{
   nose? : RawEmojiItem;
   mouth? : RawEmojiItem;
   mask? : RawEmojiItem;
+  hat? : RawEmojiItem;
   cheeks? : RawEmojiItem;
   additional_parts?:RawEmojiItem[];
   rotation? : number;

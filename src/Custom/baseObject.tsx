@@ -10,9 +10,10 @@ export class BaseObject{
     private _inherited_details_url ? : string;
     private _inherited_details? : EmojiFlatDetail;
     private _face_rect? : Rect;
+    private _hat_rect? : Rect;
 
 
-    constructor(base_url? : string, inherited_details_url? : string, inherited_details_rect? : Rect, face_rect? : Rect){
+    constructor(base_url? : string, inherited_details_url? : string, inherited_details_rect? : Rect, face_rect? : Rect, hat_rect? : Rect){
         this._base_url =  base_url;
         if (inherited_details_url){
             this._inherited_details_url = inherited_details_url;
@@ -22,6 +23,9 @@ export class BaseObject{
         }
         if (face_rect){
             this._face_rect = face_rect;
+        }
+        if (hat_rect){
+            this._hat_rect = hat_rect;
         }
     }
 
@@ -51,6 +55,7 @@ export class BaseObject{
         }
         //this only comes with backgrounds with inherited details?
         newBase._face_rect = this._face_rect;
+        newBase._hat_rect = this._hat_rect;
         return newBase;
     }
 
@@ -66,6 +71,9 @@ export class BaseObject{
 
     public GetFaceRect(){
         return this._face_rect;
+    }
+    public GetHatRect(){
+        return this._hat_rect;
     }
 
     public async render()
