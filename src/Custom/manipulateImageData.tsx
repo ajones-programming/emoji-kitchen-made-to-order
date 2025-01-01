@@ -1,3 +1,5 @@
+import { colour } from "./types";
+
 //https://beej.us/blog/data/html5s-canvas-2-pixel/
 function setPixel(imageData : ImageData, x : number, y: number, r: number, g: number, b: number) {
     const index = (x + y * imageData.width) * 4;
@@ -9,13 +11,6 @@ function setPixel(imageData : ImageData, x : number, y: number, r: number, g: nu
     imageData.data[index+1] = g;
     imageData.data[index+2] = b;
     //imageData.data[index+3] = a;
-}
-
-export interface colour{
-    r: number;
-    g: number;
-    b: number;
-
 }
 
 
@@ -105,6 +100,39 @@ export function cropTransparent(canvas : HTMLCanvasElement){
     return newCanvas;
 }
 
+function componentToHex(c : number) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+
+//https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+function rgbToHex(r : number, g : number, b : number) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  }
+
+export function setColour(canvas : HTMLCanvasElement, colour : colour, blendmode : GlobalCompositeOperation = "hard-light"){
+    const newcanvas = document.createElement("canvas");
+    if (!newcanvas){
+        return canvas;
+    }
+    newcanvas.width = canvas.width;
+    newcanvas.height = canvas.height;
+    const newContext = newcanvas.getContext("2d");
+
+    if (newContext){
+        newContext.drawImage(canvas, 0, 0);
+        newContext.globalCompositeOperation = blendmode;  // AKA add / linear-dodge
+        newContext.fillStyle = rgbToHex(colour.r, colour.g, colour.b);
+        newContext.fillRect(0, 0, canvas.width, canvas.height);
+        newContext.globalCompositeOperation = "saturation";
+        newContext.fillRect(0, 0, canvas.width, canvas.height);
+        newContext.globalCompositeOperation = "destination-atop";
+        newContext.drawImage(canvas, 0, 0);
+        newContext.globalCompositeOperation = "destination-over";
+    }
+
+    return newcanvas;
+}
 
 //ABSOLUTE WORST CASE SCENARIO!!
 export function changeImage(canvas : HTMLCanvasElement){

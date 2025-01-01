@@ -9,6 +9,7 @@ import { CustomLayer } from './customLayerObject';
 import { getNotoEmojiUrl } from './utils';
 import { BaseObject } from './baseObject';
 import { Shake } from './SpecialCases/shake';
+import { Colour } from './Colour';
 
 
 export class CustomEmojiObject{
@@ -25,6 +26,8 @@ export class CustomEmojiObject{
 
     private _additional_objects : CustomEmojiItemObject[] = [];
     private _additional_objects_back : CustomEmojiItemObject[] = [];
+
+    private _colour? : Colour;
 
     private _rotation? : number;
 
@@ -51,6 +54,9 @@ export class CustomEmojiObject{
 
             this._hands = data.hands ? new CustomHands(data.hands, data.face?.category) : undefined;
             this._foreground_layer = data.foreground_layer ? new CustomLayer(data.foreground_layer) : undefined;
+            if (data.colour){
+                this._colour = new Colour(data.colour);
+            }
 
             if (data.additional_parts){
                 data.additional_parts.forEach(item =>{
@@ -86,6 +92,8 @@ export class CustomEmojiObject{
         const additionalObjects = CustomEmojiItemObject.mergeItemLists(emoji1._additional_objects, emoji2._additional_objects);
         const additionalObjectsBack = CustomEmojiItemObject.mergeItemLists(emoji1._additional_objects_back, emoji2._additional_objects_back);
         const allSpecialFeatures : string[] = [];
+        const colour = Colour.Inherit(emoji1._colour, emoji2._colour);
+
         if (emoji1._specialFeatures.length > 0){
             allSpecialFeatures.push(...emoji1._specialFeatures);
         }
@@ -117,6 +125,7 @@ export class CustomEmojiObject{
                         newEmoji._rotation = rotation;
                         newEmoji._foreground_layer =  layer;
                         newEmoji._specialFeatures = allSpecialFeatures;
+                        newEmoji._colour = colour;
                         allInherited.push(newEmoji);
                     });
 
@@ -130,16 +139,23 @@ export class CustomEmojiObject{
     private async renderBaseAndFace(){
         const allInstructions : (imageInfo | transformInfo) [] = [];
         if (this._base){
-            const baseData = await this._base.render();
+            var baseData = await this._base.render();
             if (baseData){
+                if (this._colour){
+                    baseData = baseData.applyColour(this._colour.getColour());
+                }
                 const base = new imageInfo(baseData);
                 allInstructions.push(base);
             }
         }
         if (this._face){
             //see if we can somehow put this into one command
-            const face = await this._face.Render();
+            var face = await this._face.Render();
             if (face){
+                if (this._colour){
+                    face = face.applyColour(this._colour.getColour(),"soft-light");
+                }
+
                 const image = new imageInfo(face, this._base?.GetFaceRect());
                 allInstructions.push(image);
                 const faceMask = this._face.getMask(this._base?.GetFaceRect());
@@ -221,14 +237,18 @@ export class CustomEmojiObject{
             }
         }
         if (this._hands){
-            const imageInfo = await this._hands.render();
+            var hands = await this._hands.render();
+            if (this._colour){
+                hands = hands.applyColour(this._colour.getColour());
+            }
+            const image = new imageInfo(hands);
             const faceRect = this._base?.GetFaceRect();
             if (faceRect){
                 const resize = this._hands.getBaseResize();
-                imageInfo.addAreaRect(resize.getInverseRect(faceRect) );
+                image.addAreaRect(resize.getInverseRect(faceRect) );
             }
 
-            allInstructions.push(imageInfo);
+            allInstructions.push(image);
         }
         if (this._additional_objects && this._additional_objects.length > 0){
             //same as aboce
@@ -281,7 +301,7 @@ export class CustomEmojiObject{
         const isEqual = baseEqual && facesEqual && handsEqual &&// faceRectEqual &&
         CustomEmojiItemObject.itemListsEqual(this._additional_objects,emoji._additional_objects) &&
         CustomEmojiItemObject.itemListsEqual(this._additional_objects_back,emoji._additional_objects_back) &&
-        this._rotation == emoji._rotation &&
+        this._rotation == emoji._rotation && Colour.IsEqual(this._colour, emoji._colour) &&
         foregroundEqual && specialFeaturesEqual;
         return isEqual;
     }

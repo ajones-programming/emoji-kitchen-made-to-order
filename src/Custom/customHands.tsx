@@ -67,7 +67,7 @@ export class CustomHands{
         if (this._canvas== undefined){
             this._canvas = await mergeImagesCustom(await this.toMergeDetails());
         }
-        return new imageInfo(this._canvas);
+        return this._canvas;
     }
 
     public getBaseResize(){

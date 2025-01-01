@@ -1,8 +1,8 @@
 import { ImageRectArea } from "./imageRectArea";
-import { cropTransparent } from "./manipulateImageData";
+import { cropTransparent, setColour } from "./manipulateImageData";
 import { targetSize} from "./mergeImages";
 import { flipCanvasX, rotateCanvas } from "./transformCanvas";
-import { Rect } from "./types";
+import { colour, Rect } from "./types";
 
 
 function preCropSize(){return 700;}
@@ -140,6 +140,14 @@ export class MergedCanvas{
       return;
     }
     return new MergedCanvas(flipCanvasX(this.canvas), this.imageRect.flipX());
+  }
+
+
+  public applyColour(colour : colour, blendmode : GlobalCompositeOperation = "hard-light"){
+    if (!this.canvas){
+      return this;
+    }
+    return new MergedCanvas(setColour(this.canvas, colour, blendmode),this.imageRect);
   }
 
 

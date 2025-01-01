@@ -8,6 +8,12 @@ export interface Vector2{
   y : number;
 }
 
+export interface colour{
+  r: number;
+  g: number;
+  b: number;
+}
+
 export class Rect{
   x : number = 0;
   y : number = 0;
@@ -47,6 +53,7 @@ export interface RawEmojiContent{
     additional_parts?:RawEmojiItem[];
 
     rotation?: number;
+    colour? : colour;
 
     special_features? : string[];
   }

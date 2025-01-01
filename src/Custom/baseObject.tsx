@@ -1,10 +1,11 @@
+import { MergedCanvas } from "./mergedCanvas";
 import { mergeImagesCustom, imageInfo, transformInfo, imageInput} from "./mergeImages";
 import { isRectEqual } from "./ResizeFunctions";
 import { EmojiFlatDetail, Rect } from "./types";
 
 export class BaseObject{
 
-    private _input? : imageInput;
+    private _input? : MergedCanvas;
 
     private _base_url? : string;
     private _inherited_details_url ? : string;
@@ -81,11 +82,6 @@ export class BaseObject{
         if (this._input){
             return this._input;
         }
-        if (this._base_url && !this._inherited_details?.url){
-            this._input = this._base_url;
-            return this._input;
-        }
-
         const allInstructions : (imageInfo | transformInfo) [] = [];
         if (this._base_url != undefined){
             allInstructions.push(new imageInfo(this._base_url));

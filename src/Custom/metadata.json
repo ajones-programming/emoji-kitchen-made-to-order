@@ -1533,12 +1533,14 @@
                     "category": "smileys",
                     "eyes" : {
                         "url" : "eyes/smiling_eyes",
-                        "offset_y" : 46,
+                        "offset_y" : 26,
                         "ignore_properties" : true
                     },
                     "mouth" : {
                         "url" : "mouth/small_frown",
-                        "offset_y": 13,
+                        "offset_y": 3,
+                        "scale_x": 0.95,
+                        "scale_y" : 0.85,
                         "auto_scale" : true,
                         "ignore_properties" : true
                     },
@@ -1547,6 +1549,55 @@
                         "url" : "hat/bandages",
                         "ignore_properties":true,
                         "keep_original_transparent":true
+                    }
+                }
+            }
+        },
+        {
+            "twemoji_name" : "nauseated-face",
+            "char": "🤢",
+            "emoji_codepoint":"1f922",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/nauseated",
+                        "offset_y":5
+                    },
+                    "mouth" : {
+                        "url" : "mouth/nauseated",
+                        "auto_scale" : true,
+                        "offset_y": -10
+
+                    }
+                },
+                "colour":{
+                    "r" : 45,
+                    "g" : 130,
+                    "b" : 45
+                }
+            }
+        },
+        {
+            "twemoji_name" : "face-vomiting",
+            "emoji_codepoint":"1f92e",
+            "char": "🤮",
+            "data" : {
+                "base_url": "smileys/body/default",
+                "face":{
+                    "category": "smileys",
+                    "eyes" : {
+                        "url" : "eyes/squinting",
+                        "offset_y" : 21,
+                        "proportionate" : true
+                    } ,
+                    "mouth" : {
+                        "url" : "mouth/vomit",
+                        "offset_y" : 25,
+                        "scale_x" : 1.05,
+                        "scale_y" : 1.05,
+                        "auto_scale" : true
                     }
                 }
             }
