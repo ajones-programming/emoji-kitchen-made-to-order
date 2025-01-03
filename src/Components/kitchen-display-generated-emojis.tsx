@@ -46,6 +46,31 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
         </div>;
 }
 
+function TopEmojisMobile(leftEmoji : CustomEmojiObject | undefined, rightEmoji : CustomEmojiObject | undefined, combineView : () => void){
+    if (!leftEmoji || !rightEmoji){
+        return <></>
+    }
+    return <ImageList sx={{justifyContent: "center", pt: 2, marginY: 0, padding: 0, width: "40%"}} cols={3} rowHeight={"auto"} id="preview_image_list" onClick={combineView}>
+        <ImageListItem key={"left"}>
+            <img
+                src={leftEmoji.url()}
+                alt={leftEmoji.emoji()}
+                id={leftEmoji.id()}
+                loading="lazy"
+            />
+        </ImageListItem>
+        {/* <Typography>+</Typography> */}
+        <ImageListItem key={"right"}>
+            <img
+                src={rightEmoji.url()}
+                alt={rightEmoji.emoji()}
+                id={rightEmoji.id()}
+                loading="lazy"
+            />
+        </ImageListItem>
+        </ImageList>;
+}
+
 function displayAllEmojis(toRender : CustomEmojiObject[]){
     return <ImageList sx={{justifyContent: "center", pt: 2 }} cols={3} rowHeight={"auto"}>
             {toRender.map((emoji,index) => (
@@ -60,6 +85,7 @@ function displayAllEmojis(toRender : CustomEmojiObject[]){
             ))}
             </ImageList>
 }
+
 function displayAllEmojisPreview(toRender : CustomEmojiObject[], onClick : () => void){
     return <ImageList sx={{justifyContent: "center", pt: 2, margin: 0, padding: 0}} cols={9} rowHeight={"auto"} id="preview_image_list" onClick={onClick}>
             {toRender.slice(0,Math.min(8,toRender.length)).map(
@@ -99,7 +125,7 @@ function DisplayAllEmojis_Mobile(toRender : CustomEmojiObject[]){
 
 
 function displayCopies(toRender : CustomEmojiObject[], onClick : () => void){
-    return <Container>
+    return <Container sx={{paddingX: 0}}>
         <Typography
             sx={{
                 fontFamily: "Noto Emoji, Apple Color Emoji, sans-serif",
@@ -108,8 +134,21 @@ function displayCopies(toRender : CustomEmojiObject[], onClick : () => void){
                 borderRadius: 2,
                 color: (theme) => theme.palette.action.active
 
-            }}>copy
+            }}>reiterate
         </Typography>
+        {/* <ImageList sx={{justifyContent: "center", pt: 2, margin: 0, padding: 0}} cols={9} rowHeight={"auto"} id="preview_image_list">
+            {toRender.map(
+                (emoji,index) => (
+                <ImageListItem key={index} onClick={() => selectedEmoji(emoji, onClick)}>
+                    <img
+                        src={emoji.url()}
+                        alt={emoji.emoji()}
+                        id={emoji.id()}
+                        loading="lazy"
+                    />
+                </ImageListItem>
+            ))}
+        </ImageList> */}
         {toRender.map((emoji,index) => (
             <IconButton onClick={() => selectedEmoji(emoji, onClick)} key={index}>
             {index + 1}
@@ -162,7 +201,7 @@ export function createMobilePreviewList(selectedLeftEmoji : string, selectedRigh
 
 
 export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji : string,
-    clearSelectedEmoji : () => void, isMobile : boolean) : JSX.Element{
+    clearSelectedEmoji : () => void, backToCombineViewMobile : () => void, isMobile : boolean) : JSX.Element{
 
 
     const emojis = getSelectedEmojis(selectedLeftEmoji, selectedRightEmoji);
@@ -191,6 +230,7 @@ export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji 
     if (isMobile){
         return(
             <Container>
+                {TopEmojisMobile(leftEmoji, rightEmoji, backToCombineViewMobile)}
                 {DisplayAllEmojis_Mobile(toRender)}
                 {displayCopies(toRender, clearSelectedEmoji)}
             </Container>);

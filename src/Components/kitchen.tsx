@@ -315,7 +315,7 @@ export default function Kitchen() {
   var hasClipboardSupport = "write" in navigator.clipboard;
   //THIS IS WHAT WE NEED TO CHANGE
 
-  var middleList : JSX.Element = createMiddleList(selectedLeftEmoji, selectedRightEmoji, clearSelectedEmoji, isMobile);
+  var middleList : JSX.Element = createMiddleList(selectedLeftEmoji, selectedRightEmoji, clearSelectedEmoji, () => setSelectedMode("combine"), isMobile);
   // var middleList;
   var showOneCombo = !(selectedLeftEmoji === "" || selectedRightEmoji === "");
 
@@ -393,11 +393,11 @@ export default function Kitchen() {
                           marginBottom: "4px",
                           backgroundColor: (theme) =>
                             additionalEmojiInUse()
-                              ? theme.palette.action.disabledBackground
+                              ? "#d7f8fa"//theme.palette.action.disabledBackground
                               : ( leftEmojiSelected ?theme.palette.action.selected :theme.palette.background.default),
                           "&:hover": {
                             backgroundColor: (theme) =>
-                              additionalEmojiInUse() ? theme.palette.action.disabledBackground : theme.palette.action.hover,
+                              additionalEmojiInUse() ? "#d7f8fa" : theme.palette.action.hover,
                           },
                         }}
                       >
@@ -414,27 +414,43 @@ export default function Kitchen() {
                           />
                         ) : null}
                       </Paper>
-                      {!additionalEmojiInUse() &&
-                          <IconButton
-                          onClick={handleLeftEmojiRandomize}
-                          sx={{
-                            width: "fit-content",
-                            marginX: "auto",
-                          }}
-                        >
-                          <Typography
+                      {additionalEmojiInUse() ?
+                      (
+                        <Typography
                             sx={{
                               textAlign: "center",
                               fontFamily:
                                 "Noto Emoji, Apple Color Emoji, sans-serif",
                               height: "24px",
                               width: "24px",
+                              color: "#ddd",
+                              marginX: "auto"
                             }}
                           >
-                            🎲
-                          </Typography>
-                        </IconButton>
+                            🔒
+                          </Typography>) :
+                      (
+                        <IconButton
+                        onClick={handleLeftEmojiRandomize}
+                        sx={{
+                          width: "fit-content",
+                          marginX: "auto",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            textAlign: "center",
+                            fontFamily:
+                              "Noto Emoji, Apple Color Emoji, sans-serif",
+                            height: "24px",
+                            width: "24px",
+                          }}
+                        >
+                          🎲
+                        </Typography>
+                      </IconButton>)
                       }
+
 
                     </Stack>
                   </Grid>
