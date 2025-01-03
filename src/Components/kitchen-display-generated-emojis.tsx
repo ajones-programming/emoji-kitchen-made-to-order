@@ -60,6 +60,24 @@ function displayAllEmojis(toRender : CustomEmojiObject[]){
             ))}
             </ImageList>
 }
+function displayAllEmojisPreview(toRender : CustomEmojiObject[], onClick : () => void){
+    return <ImageList sx={{justifyContent: "center", pt: 2, margin: 0, padding: 0}} cols={9} rowHeight={"auto"} id="preview_image_list" onClick={onClick}>
+            {toRender.slice(0,Math.min(8,toRender.length)).map(
+                (emoji,index) => (
+                <ImageListItem key={index}>
+                    <img
+                        src={emoji.url()}
+                        alt={emoji.emoji()}
+                        id={emoji.id()}
+                        loading="lazy"
+                    />
+                </ImageListItem>
+            ))}
+            {toRender.length > 8 &&
+                <Typography>+</Typography>
+            }
+            </ImageList>
+}
 
 
 function DisplayAllEmojis_Mobile(toRender : CustomEmojiObject[]){
@@ -114,6 +132,34 @@ async function renderEmojiList( emojiList : CustomEmojiObject[]){
     }
     imageInfo.updateCache();
 }
+
+export function createMobilePreviewList(selectedLeftEmoji : string, selectedRightEmoji : string, onClick : () => void) : JSX.Element{
+
+
+
+        const emojis = getSelectedEmojis(selectedLeftEmoji, selectedRightEmoji);
+        const leftEmoji = emojis.left;
+        const rightEmoji = emojis.right;
+
+        if (!leftEmoji || !rightEmoji){
+            return <></>;
+        }
+        //leftEmoji?.render();
+        //rightEmoji?.render();
+
+        var toRender = getRenderList(leftEmoji, rightEmoji);
+        if (toRender.length == 0){
+            toRender = getRenderList(leftEmoji, rightEmoji, true);
+        }
+
+
+        renderEmojiList(toRender);
+
+        return(
+            displayAllEmojisPreview(toRender, onClick)
+        )
+    }
+
 
 export function createMiddleList(selectedLeftEmoji : string, selectedRightEmoji : string,
     clearSelectedEmoji : () => void, isMobile : boolean) : JSX.Element{

@@ -29,7 +29,7 @@ import RightEmojiList from "./right-emoji-list";
 import LeftEmojiList from "./left-emoji-list";
 import MobileEmojiList from "./mobile-emoji-list";
 import { additionalEmojiInUse, getSelectedEmojis } from "../Custom/generate-emojis";
-import { createMiddleList } from "./kitchen-display-generated-emojis";
+import { createMiddleList, createMobilePreviewList } from "./kitchen-display-generated-emojis";
 import { getSvgIconUtilityClass } from "@mui/material";
 
 export default function Kitchen() {
@@ -506,6 +506,9 @@ export default function Kitchen() {
                     </Stack>
                   </Grid>
                 </Grid>
+                {
+                createMobilePreviewList(selectedLeftEmoji, selectedRightEmoji,() => setSelectedMode("browse"))
+                }
                 </div>
               ) : (
 
