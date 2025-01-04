@@ -206,12 +206,24 @@ export class CustomEmojiObject{
         return canvas;
     }
 
-    public async render(){
-        if (this._url){
-            const item = document.getElementById(this.id()) as HTMLImageElement;
-            if (item != null){
-                item.src = this._url;
+    private setSource(){
+        if (!this._url){
+            return false;
+        }
+        [...document.getElementsByClassName(this.id())].forEach(
+            value=>{
+                const item = value as HTMLImageElement;
+                if (item != null){
+                    item.src = this._url ?? "";
+
+                }
             }
+        )
+        return true;
+    }
+
+    public async render(){
+        if (this.setSource()){
             return;
         }
         const allInstructions : (imageInfo | transformInfo) [] = [];
@@ -271,10 +283,7 @@ export class CustomEmojiObject{
 
         this._url = croppedCanvas;
 
-        const item = document.getElementById(this.id()) as HTMLImageElement;
-        if (item != null){
-            item.src = this._url ?? "";
-        }
+        this.setSource();
     }
 
     public id(){

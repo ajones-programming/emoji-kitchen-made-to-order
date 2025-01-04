@@ -1,6 +1,6 @@
 import { Container, IconButton, ImageList, ImageListItem, Typography } from "@mui/material";
 import { CustomEmojiObject } from "../Custom/customEmojiObject";
-import { ClearSelected, EmojiSelected, getRenderList, getSelectedEmojis } from "../Custom/generate-emojis";
+import { additionalEmojiInUse, ClearSelected, EmojiSelected, getRenderList, getSelectedEmojis } from "../Custom/generate-emojis";
 import { imageInfo } from "../Custom/mergeImages";
 
 function selectedEmoji(emoji : CustomEmojiObject | undefined, additional : () => void){
@@ -27,6 +27,7 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
                     <img
                     id={leftEmoji.id()}
                     src={leftEmoji.url()}
+                    className={leftEmoji?.id()}
                     width="100px"
                     height="100px"
                     style={imgStyle}
@@ -36,6 +37,7 @@ function TopEmojis(leftEmoji : CustomEmojiObject | undefined, rightEmoji : Custo
                     <img
                     id={rightEmoji?.id()}
                     src={rightEmoji?.url()}
+                    className={rightEmoji?.id()}
                     width="100px"
                     height="100px"
                     style={imgStyle}
@@ -56,15 +58,19 @@ function TopEmojisMobile(leftEmoji : CustomEmojiObject | undefined, rightEmoji :
                 src={leftEmoji.url()}
                 alt={leftEmoji.emoji()}
                 id={leftEmoji.id()}
+                className={leftEmoji.id()}
                 loading="lazy"
             />
         </ImageListItem>
-        {/* <Typography>+</Typography> */}
+        <ImageListItem key={"+"}>
+            <Typography textAlign={"center"}>+</Typography>
+        </ImageListItem>
         <ImageListItem key={"right"}>
             <img
                 src={rightEmoji.url()}
                 alt={rightEmoji.emoji()}
                 id={rightEmoji.id()}
+                className={rightEmoji.id()}
                 loading="lazy"
             />
         </ImageListItem>
@@ -79,6 +85,7 @@ function displayAllEmojis(toRender : CustomEmojiObject[]){
                         src={emoji.url()}
                         alt={emoji.emoji()}
                         id={emoji.id()}
+                        className={emoji.id()}
                         loading="lazy"
                     />
                 </ImageListItem>
@@ -95,12 +102,15 @@ function displayAllEmojisPreview(toRender : CustomEmojiObject[], onClick : () =>
                         src={emoji.url()}
                         alt={emoji.emoji()}
                         id={emoji.id()}
+                        className={emoji.id()}
                         loading="lazy"
                     />
                 </ImageListItem>
             ))}
             {toRender.length > 8 &&
-                <Typography>+</Typography>
+                <ImageListItem key={"+"}>
+                    <Typography textAlign={"center"}>+</Typography>
+                </ImageListItem>
             }
             </ImageList>
 }
@@ -114,6 +124,7 @@ function DisplayAllEmojis_Mobile(toRender : CustomEmojiObject[]){
                     src={emoji.url()}
                     alt={emoji.emoji()}
                     id={emoji.id()}
+                    className={emoji.id()}
                     loading="lazy"
                     width="256px"
                     height="256px"
@@ -125,43 +136,52 @@ function DisplayAllEmojis_Mobile(toRender : CustomEmojiObject[]){
 
 
 function displayCopies(toRender : CustomEmojiObject[], onClick : () => void){
-    return <Container sx={{paddingX: 0}}>
-        <Typography
-            sx={{
-                fontFamily: "Noto Emoji, Apple Color Emoji, sans-serif",
-                height: "24px",
-                p: 0.5,
-                borderRadius: 2,
-                color: (theme) => theme.palette.action.active
+    return (
+        <>
+            <Container sx={{paddingX: 0}}>
+                <Typography
+                    sx={{
+                        fontFamily: "Noto Emoji, Apple Color Emoji, sans-serif",
+                        height: "24px",
+                        p: 0.5,
+                        borderRadius: 2,
+                        color: (theme) => theme.palette.action.active
 
-            }}>reiterate
-        </Typography>
-        {/* <ImageList sx={{justifyContent: "center", pt: 2, margin: 0, padding: 0}} cols={9} rowHeight={"auto"} id="preview_image_list">
-            {toRender.map(
-                (emoji,index) => (
-                <ImageListItem key={index} onClick={() => selectedEmoji(emoji, onClick)}>
-                    <img
-                        src={emoji.url()}
-                        alt={emoji.emoji()}
-                        id={emoji.id()}
-                        loading="lazy"
-                    />
-                </ImageListItem>
-            ))}
-        </ImageList> */}
-        {toRender.map((emoji,index) => (
-            <IconButton onClick={() => selectedEmoji(emoji, onClick)} key={index}>
-            {index + 1}
-            </IconButton>
-        ))}
-        <IconButton
-            onClick={() => clearEmoji(onClick)}
-            sx={{
-                color: (theme) => theme.palette.action.active
-            }}>
-            CLEAR
-        </IconButton>
-    </Container>
+                    }}>reiterate
+                </Typography>
+                <ImageList sx={{justifyContent: "center", pt: 2, margin: 0, padding: 0}} cols={9} rowHeight={"auto"} id="preview_image_list">
+                    {toRender.map(
+                        (emoji,index) => (
+                        <ImageListItem key={index} onClick={() => selectedEmoji(emoji, onClick)}>
+                            <img
+                                src={emoji.url()}
+                                alt={emoji.emoji()}
+                                id={emoji.id()}
+                                className={emoji.id()}
+                                loading="lazy"
+                            />
+                        </ImageListItem>
+                    ))}
+                </ImageList>
+            </Container>
+            {additionalEmojiInUse() &&
+                <IconButton
+                    onClick={() => clearEmoji(onClick)}
+                    sx={{
+                        color: (theme) => theme.palette.action.active,
+                        padding: 0,
+                        paddingTop: "10px",
+                        width: "100%"
+                    }}>
+                    <Typography sx={{
+                        }}>
+                        CLEAR
+                    </Typography>
+                </IconButton>
+            }
+        </>
+
+    )
 }
 
 
