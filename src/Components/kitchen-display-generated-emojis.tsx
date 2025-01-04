@@ -165,19 +165,28 @@ function displayCopies(toRender : CustomEmojiObject[], onClick : () => void){
                 </ImageList>
             </Container>
             {additionalEmojiInUse() &&
+            <Container
+                sx={{
+                    color: (theme) => theme.palette.action.active,
+                    padding: 0,
+                    paddingTop: "10px",
+                    display: "flex",
+                    justifyContent: "center"
+                }}
+            >
                 <IconButton
                     onClick={() => clearEmoji(onClick)}
                     sx={{
                         color: (theme) => theme.palette.action.active,
-                        padding: 0,
-                        paddingTop: "10px",
-                        width: "100%"
                     }}>
                     <Typography sx={{
+                        fontSize: "20pt"
                         }}>
                         CLEAR
                     </Typography>
                 </IconButton>
+            </Container>
+
             }
         </>
 
