@@ -583,7 +583,8 @@ export default function Kitchen() {
           </Box>
 
           {/* Full randomizer */}
-          <Fab
+          {selectedMode == "browse" &&
+            <Fab
             color="primary"
             onClick={handleFullEmojiRandomize}
             sx={{
@@ -603,6 +604,8 @@ export default function Kitchen() {
               🎲
             </Typography>
           </Fab>
+          }
+
         </Box>
       </Container>
     );
