@@ -377,7 +377,7 @@ export default function Kitchen() {
 
               {selectedMode === "combine" ? (
                 <div style={{width: "-webkit-fill-available"}}>
-                <Grid container columns={9} spacing={2}>
+                <Grid container columns={10} spacing={1}>
                   {/* Left Emoji */}
                   <Grid size={4}>
                     <Stack direction="column">
@@ -431,24 +431,25 @@ export default function Kitchen() {
                           </Typography>) :
                       (
                         <IconButton
-                        onClick={handleLeftEmojiRandomize}
-                        sx={{
-                          width: "fit-content",
-                          marginX: "auto",
-                        }}
-                      >
-                        <Typography
+                          onClick={handleLeftEmojiRandomize}
                           sx={{
-                            textAlign: "center",
-                            fontFamily:
-                              "Noto Emoji, Apple Color Emoji, sans-serif",
-                            height: "24px",
-                            width: "24px",
+                            width: "fit-content",
+                            marginX: "auto",
+
                           }}
                         >
-                          🎲
-                        </Typography>
-                      </IconButton>)
+                          <Typography
+                            sx={{
+                              textAlign: "center",
+                              fontFamily:
+                                "Noto Emoji, Apple Color Emoji, sans-serif",
+                              height: "24px",
+                              width: "24px",
+                            }}
+                          >
+                            🎲
+                          </Typography>
+                        </IconButton>)
                       }
 
 
@@ -461,10 +462,25 @@ export default function Kitchen() {
                     display="flex"
                     justifyContent="center"
                     paddingBottom="45px"
-                    size={1}
+                    size={2}
                     textAlign="center"
                   >
-                    <Typography>+</Typography>
+                    <Fab
+                      color="primary"
+                      onClick={handleFullEmojiRandomize}
+                      size="small"
+
+                    >
+                      <Typography
+                        sx={{
+                          textAlign: "center",
+                          fontFamily: "Noto Emoji, Apple Color Emoji, sans-serif",
+                          height: "24px",
+                        }}
+                      >
+                        🎲
+                      </Typography>
+                    </Fab>
                   </Grid>
 
                   {/* Right Emoji */}
